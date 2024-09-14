@@ -9,11 +9,6 @@ CREATE TABLE IF NOT EXISTS users (
     full_name VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE
 );
-
-ALTER TABLE users ADD COLUMN status ENUM('admin', 'user') DEFAULT 'user';
-
-GRANT ALL PRIVILEGES ON MGF.* TO 'nfinohenov'@'localhost';
-
+CREATE USER IF NOT EXISTS 'rootuser'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON mgf.* TO 'rootuser'@'localhost';
 FLUSH PRIVILEGES;
-
-

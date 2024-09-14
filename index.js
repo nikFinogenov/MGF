@@ -19,6 +19,7 @@ wss.on('connection', function connection(ws) {
   });
 });
 
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static('views'));
 app.use(express.static('assets'));
 
@@ -27,7 +28,10 @@ app.get('/', (req, res) => {
 });
 
 app.post('/register', (req, res) => {
-  res.redirect('login.html');
+  // const { name, email, password } = req.body;
+  console.log(req.body);
+
+  // res.redirect('login.html');
 });
 app.post('/login', (req, res) => {
   res.redirect('menu.html');
