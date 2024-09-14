@@ -15,7 +15,7 @@
             <p>Join the ranks of the great heroes!</p>
         </div>
 
-        <form class="registration-form" action="/register" method="POST" id="registerForm">
+        <form class="registration-form" id="registerForm">
             <h2>Register Now</h2>
 
             <label for="name">Name</label>
@@ -42,13 +42,50 @@
     </div>
 
     <script>
-        document.getElementById('registerForm').addEventListener('submit', function (event) {
+        const form = document.getElementById('registerForm');
+        form.addEventListener('submit', async function (event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            const formData = new FormData(this);
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirm-password').value;
 
+            // Check if passwords match
             if (password !== confirmPassword) {
-                event.preventDefault();
                 alert('Passwords do not match!');
+                return;
+            }
+
+            try {
+                const response = await fetch('/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json(); // Get the response in JSON format
+
+                if (response.ok) {
+                    // If the server responded successfully
+                    // alert('Registration successful!');
+                    form.reset();
+                    localStorage.setItem('registrationInfo', 'Registration successful!');
+                    window.location.href = "login.html"
+                } else if (response.status === 400) {
+                    // If there was an error, show it
+                    alert("User with this email already exists");
+                } else {
+                    alert(result.error);
+                }
+            } catch (error) {
+                alert('An error occurred: ' + error.message);
             }
         });
     </script>

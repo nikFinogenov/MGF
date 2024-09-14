@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registration - Colosseum</title>
     <link rel="stylesheet" href="style2.css">
 </head>
+
 <body>
+    <div id="infoMessage" class="info-message"></div>
     <div class="registration-container">
         <div class="colosseum-header">
             <h1>Welcome to the MGF</h1>
             <!-- <p>Join the ranks of the great heroes!</p> -->
         </div>
-        
+
         <form class="registration-form" action="/login" method="POST">
             <h2>Login</h2>
 
@@ -31,5 +34,22 @@
             </div>
         </form>
     </div>
+    <script>
+        window.addEventListener('DOMContentLoaded', (event) => {
+            const message = localStorage.getItem('registrationInfo');
+            if (message) {
+                const infoMessageDiv = document.getElementById('infoMessage');
+                infoMessageDiv.textContent = message;
+                infoMessageDiv.style.display = 'block';
+
+                setTimeout(() => {
+                    infoMessageDiv.style.display = 'none';
+                }, 3000);
+
+                localStorage.removeItem('registrationInfo');
+            }
+        });
+    </script>
 </body>
+
 </html>
