@@ -5,86 +5,107 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Card Layout</title>
+    <title>Arena</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+    <!-- Начальный экран выбора карт -->
+    <div class="card-selection-screen" id="cardSelectionScreen">
+        <div class="screen-header">
+            <div class="timer">00:30</div>
+            <div class="choose-hero">Choose Your Hero</div>
+        </div>
+        <div class="card-options">
+            <div class="card-option" data-card="card1">Card 1</div>
+            <div class="card-option" data-card="card2">Card 2</div>
+            <div class="card-option" data-card="card3">Card 3</div>
+        </div>
+        <button class="random-button">Random</button>
+    </div>
+
     <!-- Фон арены -->
     <img class="arena" src="/assets/arena.png" alt="collesium">
+    <div class="all">
+        <!-- Кнопка для открытия/закрытия панели -->
+        <div class="toggle-panel" id="togglePanel">
+            <div class="toggle-arrow">></div>
+        </div>
 
-    <!-- Кнопка для открытия/закрытия панели -->
-    <div class="toggle-panel" id="togglePanel">
-        <div class="toggle-arrow">→</div>
+        <!-- Выезжающая панель -->
+        <div class="side-panel" id="sidePanel">
+            <button class="surrender-button">Сдаться</button>
+        </div>
+
+        <div class="opponent-avatar-block">
+            <div class="avatar opponent-avatar">Opponent</div>
+            <div class="enemy-nickname">Opponent Nick</div> <!-- Ник противника -->
+        </div>
+
+        <!-- Блок для счёта раундов и таймера -->
+        <div class="round-timer">
+            <!-- Круглый счётчик раундов -->
+            <button class="button">Ready</button>
+            <div class="round-display">Round: 1</div>
+
+            <!-- Таймер под счётом раундов -->
+            <div class="timer-display">00:30</div>
+        </div>
+
+        <!-- Блок для аватара и ника игрока -->
+        <div class="player-avatar-block">
+            <div class="avatar player-avatar">Player</div>
+            <div class="nickname">Player Nick</div> <!-- Ник игрока -->
+        </div>
+
+        <!-- Блок для карты противника сверху -->
+        <div class="opponent-card">
+            <div class="card-large">Opponent Card</div>
+        </div>
+
+        <!-- Блок для карт сверху -->
+        <div class="top-cards">
+            <div class="enemycard card-left">Card left</div>
+            <div class="enemycard card-center">Card Center</div>
+            <div class="enemycard card-right">Card Right</div>
+        </div>
+
+        <!-- Блок для карты на поле -->
+        <div class="field-card">
+            <div class="card-large">Field Card</div>
+        </div>
+
+        <!-- Блок для карт снизу -->
+        <div class="bottom-cards">
+            <div class="card">Card 4</div>
+            <div class="card">Card 5</div>
+            <div class="card">Card 6</div>
+        </div>
+
+        <div class="button-block">
+            <button class="button">Action 1</button>
+            <button class="button">Action 2</button>
+            <div class="gold-display">Gold: 1000</div>
+        </div>
+
+        <!-- Вертикальный блок справа -->
+        <div class="side-rect">
+            <p>Side Block</p>
+        </div>
     </div>
-
-    <!-- Выезжающая панель -->
-    <div class="side-panel" id="sidePanel">
-        <button class="surrender-button">Сдаться</button>
-    </div>
-
-
-    <div class="opponent-avatar-block">
-        <div class="avatar opponent-avatar">Opponent</div>
-        <div class="enemy-nickname">Opponent Nick</div> <!-- Ник противника -->
-    </div>
-
-    <!-- Блок для счёта раундов и таймера -->
-    <div class="round-timer">
-        <!-- Круглый счётчик раундов -->
-        <button class="button">Ready</button>
-        <div class="round-display">Round: 1</div>
-
-        <!-- Таймер под счётом раундов -->
-        <div class="timer-display">00:30</div>
-    </div>
-
-    <!-- Блок для аватара и ника игрока -->
-    <div class="player-avatar-block">
-        <div class="avatar player-avatar">Player</div>
-        <div class="nickname">Player Nick</div> <!-- Ник игрока -->
-    </div>
-
-    <!-- Блок для карты противника сверху -->
-    <div class="opponent-card">
-        <div class="card-large">Opponent Card</div>
-    </div>
-
-    <!-- Блок для карт сверху -->
-    <div class="top-cards">
-        <div class="enemycard card-left">Card left</div>
-        <div class="enemycard card-center">Card Center</div>
-        <div class="enemycard card-right">Card Right</div>
-    </div>
-
-    <!-- Блок для карты на поле -->
-    <div class="field-card">
-        <div class="card-large">Field Card</div>
-    </div>
-
-    <!-- Блок для карт снизу -->
-    <div class="bottom-cards">
-        <div class="card">Card 4</div>
-        <div class="card">Card 5</div>
-        <div class="card">Card 6</div>
-    </div>
-
-    <div class="button-block">
-        <button class="button">Action 1</button>
-        <button class="button">Action 2</button>
-        <div class="gold-display">Gold: 1000</div>
-    </div>
-
-    <!-- Вертикальный блок справа -->
-    <div class="side-rect">
-        <p>Side Block</p>
-    </div>
-
     <script>
+        const cardSelectionScreen = document.getElementById('cardSelectionScreen');
+        const arena = document.querySelector('.all');
+
+        if (localStorage.getItem('cardsSelected') === 'true') {
+            cardSelectionScreen.style.display = 'none'; // Скрываем экран выбора карт
+            arena.style.display = 'block'; // Показываем арену
+        }
         document.addEventListener('DOMContentLoaded', function () {
             const togglePanel = document.getElementById('togglePanel');
             const sidePanel = document.getElementById('sidePanel');
             const arrow = document.querySelector('.toggle-arrow');
+
 
             // Открытие и закрытие панели
             togglePanel.addEventListener('click', function () {
@@ -107,6 +128,17 @@
                     sidePanel.style.left = '-250px';
                     arrow.style.transform = 'rotate(0deg)'; // Возвращаем стрелку вправо
                 }
+            });
+
+            // Показ арены после выбора карты
+            const cardOptions = document.querySelectorAll('.card-option');
+            cardOptions.forEach(option => {
+                option.addEventListener('click', function () {
+                    cardSelectionScreen.style.display = 'none'; // Скрываем экран выбора карт
+                    arena.style.display = 'block'; // Показываем арену
+                    // Сохраняем состояние выбора карт в localStorage
+                    localStorage.setItem('cardsSelected', 'true');
+                });
             });
         });
     </script>

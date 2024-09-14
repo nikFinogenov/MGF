@@ -17,6 +17,99 @@ body {
     overflow: hidden;
 }
 
+/* Затемненный фон */
+.card-selection-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+/* Заголовок экрана выбора карт */
+.screen-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.timer {
+    width: 100px;
+    height: 40px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border: 2px solid #d4af37;
+    border-radius: 5px;
+    color: #fff;
+    font-family: 'Cinzel', serif;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.choose-hero {
+    font-family: 'Cinzel', serif;
+    font-size: 24px;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+/* Блок для карт */
+.card-options {
+    display: flex;
+    gap: 20px;
+}
+
+/* Стиль для карт на экране выбора */
+.card-option {
+    width: 180px;
+    height: 250px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border: 2px solid #d4af37;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-family: 'Cinzel', serif;
+    font-size: 16px;
+    text-align: center;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.card-option:hover {
+    transform: scale(1.1);
+}
+
+/* Кнопка Random */
+.random-button {
+    width: 150px;
+    height: 40px;
+    background-color: #d4af37;
+    border: none;
+    border-radius: 5px;
+    color: #000;
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+}
+
+.random-button:hover {
+    background-color: #b9922e;
+}
+
+/* Обновленные стили для арены и других элементов */
 .arena {
     position: absolute;
     top: 0;
@@ -26,6 +119,10 @@ body {
     height: 100%;
     object-fit: cover;
     z-index: -1;
+}
+
+.all {
+    display: none;
 }
 
 .enemycard {
@@ -379,6 +476,7 @@ body {
 /* Стрелка для открытия/закрытия */
 .toggle-arrow {
     font-size: 24px;
+    font-weight: bolder;
     color: #d4af37;
     transition: transform 0.3s ease; /* Плавная анимация для стрелки */
 }
