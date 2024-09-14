@@ -102,7 +102,7 @@ class User {
         }
     }
     async checkUser() {
-        const [rows] = await db.query(`SELECT name, password FROM users WHERE email = ? LIMIT 1`, [this.email]);
+        const [rows] = await db.query(`SELECT id, name, password FROM users WHERE email = ? LIMIT 1`, [this.email]);
     
         if (rows.length > 0) {
             const result = await new Promise((resolve, reject) => {
@@ -115,7 +115,7 @@ class User {
             });
     
             if (result) {
-                return rows[0].name;
+                return rows[0];
             } else {
                 throw new Error("Incorrect password.");
             }

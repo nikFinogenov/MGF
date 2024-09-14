@@ -46,12 +46,27 @@ app.post('/register', async (req, res) => {
     }
   }
 });
+
+app.put('/user/:username', function (req, res) {
+  var username = req.username;
+  // let newname = req.body.name;
+  // let newemail = req.body.email;
+
+  let user = new User(req.body.name, req.body.email, null);
+  if(user.password === null) {
+    console.log("null");
+  }
+  else if (user.password === '') console.log("pusto");
+  else console.log("dalshe");
+});
+
 app.post('/login', async (request, response) => {
   try {
     // const { email, password } = req.body;
       let user = new User('', request.body.email, request.body.password);
-      let name = await user.checkUser();
-      user.name = name;
+      let row = await user.checkUser();
+      user.name = row.name;
+      user.id = row.id;
       // console.log(user);
       response.status(200).json({ user: user, message: 'Logged in successfully' });
   } catch (error) {

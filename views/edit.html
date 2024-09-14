@@ -25,7 +25,8 @@
 
         <!-- Отображение текущей почты -->
         <div class="form-group">
-            <label for="email">Current Email: <span class="current-value" id="current-email">Negr123@example.com</span></label>
+            <label for="email">Current Email: <span class="current-value"
+                    id="current-email">Negr123@example.com</span></label>
             <input type="email" id="email" name="email" placeholder="Enter your new email">
         </div>
 
@@ -42,7 +43,7 @@
 
         <!-- Кнопка сохранения изменений профиля -->
         <div class="form-group">
-            <button type="submit" class="save-btn">Save Changes</button>
+            <button type="submit" class="save-btn" id="saveChanges">Save Changes</button>
         </div>
     </div>
 
@@ -73,6 +74,27 @@
     </div>
 
     <script>
+        document.getElementById("saveChanges").addEventListener("click", async (event) => {
+            event.preventDefault();
+            let newMail = document.getElementById("email").value;
+            let newName = document.getElementById("name").value;
+
+            const response = await fetch(`/user/${localStorage.getItem('userName')}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: newName,
+                    email: newMail
+                })
+            });
+            if(response.ok) {
+                console.log("done");
+            }
+
+        });
+
         document.getElementById("current-name").textContent = localStorage.getItem("userName");
         document.getElementById("current-email").textContent = localStorage.getItem("userEmail");
 
