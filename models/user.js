@@ -4,12 +4,12 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 class User {
-    constructor(name, password, email) {
+    constructor(name, email, password) {
         // super('users', attributes);
-        this.name = name;
-        this.password = password;
+        this.name = name || '';
+        this.email = email || '';
+        this.password = password || '';
         // this.full_name = attributes.full_name || '';
-        this.email = email;
         // this.status = '';
         this.id = -1;
     }
@@ -101,14 +101,25 @@ class User {
             throw new Error(`Not found`);
         }
     }
-    async getUser() {
-        const [rows] = await db.query(`SELECT * FROM users WHERE name = ? AND password = ? LIMIT 1`, [this.name, this.password]);
+    async checkUser() {
+        const [rows] = await db.query(`SELECT password FROM users WHERE email = ? LIMIT 1`, [this.email]);
         if (rows.length > 0) {
-            this.attributes = rows[0];
-            this.full_name = this.attributes.full_name;
-            this.email = this.attributes.email;
-            this.status = this.attributes.status;
-            this.id = this.attributes.id;
+            bcrypt.compare(this.password, rows[0].password, (err, result) => {
+                if (result) {
+                    return true;
+                //   req.session.userId = user.id;
+                //   req.session.status = user.status;
+                //   res.redirect('/dashboard');
+                } else {
+                    throw new Error("Does not match.");
+                //   res.send('Incorrect password.');
+                }
+              });
+            // this.attributes = rows[0];
+            // this.name = this.attributes.name;
+            // this.email = this.attributes.email;
+            // this.status = this.attributes.status;
+            // this.id = this.attributes.id;
         } else {
             throw new Error(`Does not match`);
         }

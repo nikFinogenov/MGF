@@ -16,7 +16,7 @@
             <!-- <p>Join the ranks of the great heroes!</p> -->
         </div>
 
-        <form class="registration-form" action="/login" method="POST">
+        <form class="registration-form" id="loginForm">
             <h2>Login</h2>
 
             <label for="email">Email</label>
@@ -47,6 +47,46 @@
                 }, 3000);
 
                 localStorage.removeItem('registrationInfo');
+            }
+        });
+        const form = document.getElementById('loginForm');
+        form.addEventListener('submit', async function (event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            const formData = new FormData(this);
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+
+
+                if (response.ok) {
+                    form.reset();
+                    localStorage.setItem('loginInfo', 'Logged in successfully!');
+                    const data = await response.json();
+                    localStorage.setItem('userName', data.user.name);
+                    window.location.href = "menu.html";
+                    // setTimeout(() => alert('Login successful!'), 0);
+                } else if (response.status === 400) {
+                    const data = await response.json();
+                    alert(data.error);
+                }
+                else {
+                    alert('Login failed!');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred.');
             }
         });
     </script>

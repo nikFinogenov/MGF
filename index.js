@@ -30,9 +30,8 @@ app.get('/', (req, res) => {
 
 app.post('/register', async (req, res) => {
   try {
-    const { name, email, password } = req.body;
-    // console.log(name);
-    let user = new User(name, email, password);
+    // const { name, email, password } = req.body;
+    let user = new User(req.body.name, req.body.email, req.body.password);
     await user.save();
     res.status(200).json({ message: 'User created successfully' });
     // if(result.)
@@ -47,8 +46,23 @@ app.post('/register', async (req, res) => {
     }
   }
 });
-app.post('/login', (req, res) => {
-  res.redirect('menu.html');
+app.post('/login', async (request, response) => {
+  try {
+    // const { email, password } = req.body;
+      let user = new User('', request.body.email, request.body.password);
+      await user.checkUser();
+      // console.log(user);
+      response.status(200).json({ user: user, message: 'Logged in successfully' });
+  } catch (error) {
+      // console.log(error);
+      if (error.message.includes("Does not match")) {
+          response.status(400).json({ error: "Login or password doesn't match" });
+      }
+      else {
+        console.error(error);
+          response.status(500).json({ error: 'An error occurred while logining the user.' });
+      }
+  }
 });
 // app.get('/game', (req, res) => {
 //   res.sendFile(__dirname + '/frontend/game.html');
