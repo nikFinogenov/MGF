@@ -1,0 +1,209 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-image: url('colosseum-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    font-family: 'Times New Roman', serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #f5f5f5;
+    overflow: hidden;
+}
+
+.registration-container {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 30px;
+    border-radius: 10px;
+    width: 350px;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+.colosseum-header h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 36px;
+    color: #d4af37;
+    margin-bottom: 10px;
+}
+
+.colosseum-header p {
+    font-size: 18px;
+    color: #d4af37;
+    margin-bottom: 30px;
+}
+
+.registration-form h2 {
+    font-family: 'Cinzel', serif;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.registration-form label {
+    font-size: 14px;
+    text-align: left;
+    display: block;
+    margin-top: 10px;
+    color: #d4af37;
+}
+
+.registration-form input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #d4af37;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #f5f5f5;
+}
+
+.registration-form input::placeholder {
+    color: #ccc;
+}
+
+.btn-register {
+    background-color: #d4af37;
+    color: #000;
+    font-size: 16px;
+    padding: 10px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+    cursor: pointer;
+    font-family: 'Cinzel', serif;
+}
+
+.btn-register:hover {
+    background-color: #b38e27;
+}
+
+.registration-container::before {
+    content: '';
+    background: url('colosseum-arch.png') no-repeat center center;
+    background-size: 100px;
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 100px;
+}
+
+/* Стили, добавленные ранее */
+.login-micro {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.login-micro p {
+    font-size: 12px;
+    color: #f5f5f5;
+    margin-bottom: 5px;
+}
+
+.login-link {
+    font-size: 14px;
+    color: #d4af37;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.login-link:hover {
+    color: #b38e27;
+    text-decoration: underline;
+}
+
+.menu-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+/* Аватар и меню профиля */
+.avatar-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    text-align: center;
+}
+
+.avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 2px solid #d4af37;
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    display: none;
+    background-color: rgba(0, 0, 0, 0.8);
+    border: 1px solid #d4af37;
+    border-radius: 5px;
+    position: absolute;
+    top: 90px;
+    right: 0;
+    padding: 10px;
+    text-align: left;
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0s linear 0.3s; /* Убираем меню с задержкой */
+}
+
+.dropdown-menu.show {
+    display: block;
+    opacity: 1;
+    transition: opacity 0.3s ease, visibility 0s;
+}
+
+.menu-option {
+    display: block;
+    color: #f5f5f5;
+    padding: 10px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.menu-option:hover {
+    background-color: #b38e27;
+    color: #000;
+}
+
+/* Основное меню с заголовком и кнопкой */
+.menu-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.menu-content h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 48px;
+    color: #d4af37;
+    margin-bottom: 30px;
+}
+
+.start-game-btn {
+    background-color: #d4af37;
+    color: #000;
+    font-family: 'Cinzel', serif;
+    font-size: 24px;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.start-game-btn:hover {
+    background-color: #b38e27;
+}

@@ -1,35 +1,36 @@
-// const express = require('express');
-// const http = require('http');
-// const WebSocket = require('ws');
+const express = require('express');
+const http = require('http');
+const WebSocket = require('ws');
 
-// const app = express();
-// const port = 3000;
+const app = express();
+const port = 3000;
 
-// const server = http.createServer(app);
+const server = http.createServer(app);
 
-// const wss = new WebSocket.Server({ server });
+const wss = new WebSocket.Server({ server });
 
-// wss.on('connection', function connection(ws) {
-//   console.log('Новое соединение по WebSocket');
+wss.on('connection', function connection(ws) {
+  console.log('Новое соединение по WebSocket');
   
-//   ws.on('message', function incoming(message) {
-//     console.log('Получено сообщение:', message);
+  ws.on('message', function incoming(message) {
+    console.log('Получено сообщение:', message);
     
-//     ws.send('Сообщение получено!');
-//   });
-// });
+    ws.send('Сообщение получено!');
+  });
+});
 
-// app.use(express.static('public'))
+app.use(express.static('views'));
+app.use(express.static('assets'));
 
-// // app.get('/', (req, res) => {
-// //   res.sendFile(__dirname + '/frontend/index.html');
-// // });
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/views/reg.html');
+});
 
 // app.get('/game', (req, res) => {
 //   res.sendFile(__dirname + '/frontend/game.html');
 // });
 
-// // Запускаем сервер
-// server.listen(port, () => {
-//   console.log(`Сервер запущен на http://localhost:${port}`);
-// });
+// Запускаем сервер
+server.listen(port, () => {
+  console.log(`Сервер запущен на http://localhost:${port}`);
+});

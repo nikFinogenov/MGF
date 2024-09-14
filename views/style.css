@@ -1,11 +1,23 @@
-img {
-    display: block;
-    /* transform: rotate(90deg); */
-    width: 1920px;
-    height: 1280px;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-html,
-body {
+html, body {
     height: 100%;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.arena {
+    max-height: 100vh;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }

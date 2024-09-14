@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Game - Main Menu</title>
+    <link rel="stylesheet" href="style2.css">
+</head>
+
+<body>
+    <div class="menu-container">
+        <!-- Аватар и всплывающее меню -->
+        <div class="avatar-container">
+            <img src="fpl.jpg" alt="Player Avatar" class="avatar">
+            <div class="dropdown-menu">
+                <a href="#" class="menu-option">Edit Profile</a>
+                <a href="#" class="menu-option">Logout</a>
+            </div>
+        </div>
+
+        <!-- Заголовок и кнопка "Начать игру" -->
+        <div class="menu-content">
+            <h1>Welcome to the Arena</h1>
+            <button class="start-game-btn">Start Game</button>
+        </div>
+    </div>
+
+    <script>
+        const avatar = document.querySelector('.avatar');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+        let timeoutId;
+
+        // Функция для закрытия меню, если курсор уходит из области меню
+        function hideMenu() {
+            timeoutId = setTimeout(() => {
+                dropdownMenu.classList.remove('show');
+            }, 300); // Задержка в 300 мс
+        }
+
+        // Открытие меню при нажатии на аватар
+        avatar.addEventListener('click', () => {
+            if (!dropdownMenu.classList.contains('show')) {
+                dropdownMenu.classList.add('show');
+            } else {
+                dropdownMenu.classList.remove('show');
+            }
+        });
+
+        // Если курсор уходит из меню, начинается таймер на закрытие
+        dropdownMenu.addEventListener('mouseleave', () => {
+            hideMenu();
+        });
+
+        // Если курсор возвращается в меню до завершения таймера, меню не закроется
+        dropdownMenu.addEventListener('mouseenter', () => {
+            clearTimeout(timeoutId);
+        });
+
+        // Закрытие меню при клике вне области аватара и меню
+        document.addEventListener('click', (event) => {
+            if (!avatar.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                dropdownMenu.classList.remove('show');
+            }
+        });
+
+    </script>
+</body>
+
+</html>
