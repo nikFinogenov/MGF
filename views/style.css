@@ -1,0 +1,11 @@
+img {
+    display: block;
+    /* transform: rotate(90deg); */
+    width: 1920px;
+    height: 1280px;
+}
+
+html,
+body {
+    height: 100%;
+}

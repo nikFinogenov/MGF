@@ -1,0 +1,26 @@
+{
+  "name": "mgf",
+  "version": "1.0.0",
+  "description": "Multi Gandons Fighting",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nikFinogenov/MGF.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nikFinogenov/MGF/issues"
+  },
+  "homepage": "https://github.com/nikFinogenov/MGF#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "express": "^4.21.0",
+    "express-session": "^1.18.0",
+    "mysql2": "^3.11.2",
+    "ws": "^8.18.0"
+  }
+}
