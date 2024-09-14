@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Layout</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Фон арены -->
+    <img class="arena" src="/assets/arena.png" alt="collesium">
+
+    <!-- Кнопка для открытия/закрытия панели -->
+    <div class="toggle-panel" id="togglePanel">
+        <div class="toggle-arrow">→</div>
+    </div>
+
+    <!-- Выезжающая панель -->
+    <div class="side-panel" id="sidePanel">
+        <button class="surrender-button">Сдаться</button>
+    </div>
+
+
+    <div class="opponent-avatar-block">
+        <div class="avatar opponent-avatar">Opponent</div>
+        <div class="enemy-nickname">Opponent Nick</div> <!-- Ник противника -->
+    </div>
+
+    <!-- Блок для счёта раундов и таймера -->
+    <div class="round-timer">
+        <!-- Круглый счётчик раундов -->
+        <div class="round-display">Round: 1</div>
+
+        <!-- Таймер под счётом раундов -->
+        <div class="timer-display">00:30</div>
+    </div>
+
+    <!-- Блок для аватара и ника игрока -->
+    <div class="player-avatar-block">
+        <div class="avatar player-avatar">Player</div>
+        <div class="nickname">Player Nick</div> <!-- Ник игрока -->
+    </div>
+
+    <!-- Блок для карты противника сверху -->
+    <div class="opponent-card">
+        <div class="card-large">Opponent Card</div>
+    </div>
+
+    <!-- Блок для карт сверху -->
+    <div class="top-cards">
+        <div class="enemycard card-left">Card left</div>
+        <div class="enemycard card-center">Card Center</div>
+        <div class="enemycard card-right">Card Right</div>
+    </div>
+
+    <!-- Блок для карты на поле -->
+    <div class="field-card">
+        <div class="card-large">Field Card</div>
+    </div>
+
+    <!-- Блок для карт снизу -->
+    <div class="bottom-cards">
+        <div class="card">Card 4</div>
+        <div class="card">Card 5</div>
+        <div class="card">Card 6</div>
+    </div>
+
+    <div class="button-block">
+        <button class="button">Action 1</button>
+        <button class="button">Action 2</button>
+        <div class="gold-display">Gold: 1000</div>
+    </div>
+
+    <!-- Вертикальный блок справа -->
+    <div class="side-rect">
+        <p>Side Block</p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const togglePanel = document.getElementById('togglePanel');
+            const sidePanel = document.getElementById('sidePanel');
+            const arrow = document.querySelector('.toggle-arrow');
+
+            // Открытие и закрытие панели
+            togglePanel.addEventListener('click', function () {
+                if (sidePanel.style.left === '0px') {
+                    sidePanel.style.left = '-250px';
+                    arrow.style.transform = 'rotate(0deg)'; // Возвращаем стрелку вправо
+                } else {
+                    sidePanel.style.left = '0px';
+                    arrow.style.transform = 'rotate(180deg)'; // Поворачиваем стрелку влево
+                }
+            });
+
+            // Закрытие панели при клике вне её области
+            document.addEventListener('click', function (event) {
+                const isClickInsidePanel = sidePanel.contains(event.target);
+                const isClickOnToggle = togglePanel.contains(event.target);
+
+                if (!isClickInsidePanel && !isClickOnToggle) {
+                    // Закрываем панель, если клик вне её области и вне кнопки
+                    sidePanel.style.left = '-250px';
+                    arrow.style.transform = 'rotate(0deg)'; // Возвращаем стрелку вправо
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
