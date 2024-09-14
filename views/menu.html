@@ -9,6 +9,7 @@
 </head>
 
 <body>
+    <div id="infoMessage" class="info-message"></div>
     <div class="menu-container">
         <!-- Аватар и всплывающее меню -->
         <div class="avatar-container">
@@ -27,6 +28,20 @@
     </div>
 
     <script>
+                window.addEventListener('DOMContentLoaded', (event) => {
+            const message = localStorage.getItem('loginInfo');
+            if (message) {
+                const infoMessageDiv = document.getElementById('infoMessage');
+                infoMessageDiv.textContent = message;
+                infoMessageDiv.style.display = 'block';
+
+                setTimeout(() => {
+                    infoMessageDiv.style.display = 'none';
+                }, 3000);
+
+                localStorage.removeItem('loginInfo');
+            }
+        });
         const avatar = document.querySelector('.avatar');
         const dropdownMenu = document.querySelector('.dropdown-menu');
         let timeoutId;
