@@ -26,6 +26,12 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/reg.html');
 });
 
+app.post('/register', (req, res) => {
+  res.redirect('login.html');
+});
+app.post('/login', (req, res) => {
+  res.redirect('menu.html');
+});
 // app.get('/game', (req, res) => {
 //   res.sendFile(__dirname + '/frontend/game.html');
 // });
