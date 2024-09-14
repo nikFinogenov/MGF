@@ -75,6 +75,7 @@
                     localStorage.setItem('loginInfo', 'Logged in successfully!');
                     const data = await response.json();
                     localStorage.setItem('userName', data.user.name);
+                    localStorage.setItem('userEmail', data.user.email);
                     window.location.href = "menu.html";
                     // setTimeout(() => alert('Login successful!'), 0);
                 } else if (response.status === 400) {

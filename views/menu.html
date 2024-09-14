@@ -16,7 +16,7 @@
             <img src="123.png" alt="Player Avatar" class="avatar">
             <div class="dropdown-menu">
                 <a href="edit.html" class="menu-option">Edit Profile</a>
-                <a href="login.html" class="menu-option">Logout</a>
+                <a href="login.html" class="menu-option" id="logout">Logout</a>
             </div>
         </div>
 
@@ -28,7 +28,12 @@
     </div>
 
     <script>
-                window.addEventListener('DOMContentLoaded', (event) => {
+
+        document.getElementById("logout").addEventListener('click', (event) => {
+            localStorage.clear();
+            localStorage.setItem('registrationInfo', 'Logged out successfully!');
+        });
+        window.addEventListener('DOMContentLoaded', (event) => {
             const message = localStorage.getItem('loginInfo');
             if (message) {
                 const infoMessageDiv = document.getElementById('infoMessage');

@@ -25,7 +25,7 @@ app.use(express.json());
 app.use(express.static('assets'));
 
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/views/reg.html');
+  res.sendFile(__dirname + '/views/login.html');
 });
 
 app.post('/register', async (req, res) => {
@@ -50,7 +50,8 @@ app.post('/login', async (request, response) => {
   try {
     // const { email, password } = req.body;
       let user = new User('', request.body.email, request.body.password);
-      await user.checkUser();
+      let name = await user.checkUser();
+      user.name = name;
       // console.log(user);
       response.status(200).json({ user: user, message: 'Logged in successfully' });
   } catch (error) {

@@ -19,13 +19,13 @@
 
         <!-- Отображение текущего никнейма -->
         <div class="form-group">
-            <label for="nickname">Current Nickname: <span class="current-value">Negr123</span></label>
-            <input type="text" id="nickname" name="nickname" placeholder="Enter your new nickname">
+            <label for="name">Current Name: <span class="current-value" id="current-name">Negr123</span></label>
+            <input type="text" id="name" name="name" placeholder="Enter your new name">
         </div>
 
         <!-- Отображение текущей почты -->
         <div class="form-group">
-            <label for="email">Current Email: <span class="current-value">Negr123@example.com</span></label>
+            <label for="email">Current Email: <span class="current-value" id="current-email">Negr123@example.com</span></label>
             <input type="email" id="email" name="email" placeholder="Enter your new email">
         </div>
 
@@ -73,6 +73,9 @@
     </div>
 
     <script>
+        document.getElementById("current-name").textContent = localStorage.getItem("userName");
+        document.getElementById("current-email").textContent = localStorage.getItem("userEmail");
+
         // Открытие и закрытие модального окна для смены пароля
         const openPasswordModalBtn = document.getElementById('open-password-modal');
         const closePasswordModalBtn = document.getElementById('close-password-modal');

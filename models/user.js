@@ -102,28 +102,28 @@ class User {
         }
     }
     async checkUser() {
-        const [rows] = await db.query(`SELECT password FROM users WHERE email = ? LIMIT 1`, [this.email]);
+        const [rows] = await db.query(`SELECT name, password FROM users WHERE email = ? LIMIT 1`, [this.email]);
+    
         if (rows.length > 0) {
-            bcrypt.compare(this.password, rows[0].password, (err, result) => {
-                if (result) {
-                    return true;
-                //   req.session.userId = user.id;
-                //   req.session.status = user.status;
-                //   res.redirect('/dashboard');
-                } else {
-                    throw new Error("Does not match.");
-                //   res.send('Incorrect password.');
-                }
-              });
-            // this.attributes = rows[0];
-            // this.name = this.attributes.name;
-            // this.email = this.attributes.email;
-            // this.status = this.attributes.status;
-            // this.id = this.attributes.id;
+            const result = await new Promise((resolve, reject) => {
+                bcrypt.compare(this.password, rows[0].password, (err, result) => {
+                    if (err) {
+                        return reject(err);
+                    }
+                    resolve(result);
+                });
+            });
+    
+            if (result) {
+                return rows[0].name;
+            } else {
+                throw new Error("Incorrect password.");
+            }
         } else {
-            throw new Error(`Does not match`);
+            throw new Error("No user found with the given email.");
         }
     }
+    
 }
 
 module.exports = User;
