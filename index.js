@@ -53,11 +53,12 @@ app.put('/user/:username', function (req, res) {
   // let newemail = req.body.email;
 
   let user = new User(req.body.name, req.body.email, null);
-  if(user.password === null) {
-    console.log("null");
-  }
-  else if (user.password === '') console.log("pusto");
-  else console.log("dalshe");
+  console.log(user, username);
+  // if(user.password === null) {
+  //   console.log("null");
+  // }
+  // else if (user.password === '') console.log("pusto");
+  // else console.log("dalshe");
 });
 
 app.post('/login', async (request, response) => {
