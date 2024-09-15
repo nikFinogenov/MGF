@@ -13,7 +13,6 @@
     <div class="registration-container">
         <div class="colosseum-header">
             <h1>Welcome to the MGF</h1>
-            <!-- <p>Join the ranks of the great heroes!</p> -->
         </div>
 
         <form class="registration-form" id="loginForm">
@@ -27,7 +26,6 @@
 
             <button type="submit" class="btn-register">Enter the Arena</button>
 
-            <!-- Micro-login button -->
             <div class="login-micro">
                 <p>Don't have an account?</p>
                 <a href="reg.html" class="login-link">Register here</a>
@@ -76,7 +74,7 @@
                     const data = await response.json();
                     localStorage.setItem('userName', data.user.name);
                     localStorage.setItem('userEmail', data.user.email);
-                    // localStorage.setItem('userId', data.user.id); //here we can hide ID somehow (V)0.o(v)
+                    localStorage.setItem('userId', data.user.id); //here we can hide ID somehow (V)0.o(v)
                     window.location.href = "menu.html";
                     // setTimeout(() => alert('Login successful!'), 0);
                 } else if (response.status === 400) {

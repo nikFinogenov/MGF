@@ -37,7 +37,7 @@ app.post('/register', async (req, res) => {
     // if(result.)
   } catch (error) {
     if (error.message.includes("Duplicate")) {
-      res.status(400).json({ error: 'A user with the same login or email already exists.' });
+      res.status(400).json({ error: 'A user with the same email already exists.' });
       // res.send('A user with the same login or email already exists.');
     }
     else {
@@ -47,13 +47,24 @@ app.post('/register', async (req, res) => {
   }
 });
 
-app.put('/user/:username', function (req, res) {
-  var username = req.username;
+app.put('/user/:userid', async function (req, res) {
   // let newname = req.body.name;
   // let newemail = req.body.email;
-
+try {
   let user = new User(req.body.name, req.body.email, null);
-  console.log(user, username);
+  user.id = req.params.userid;
+  await user.save();
+  res.status(200).json({ message: 'User updated successfully' });
+}  catch (error) {
+  if (error.message.includes("Duplicate")) {
+    res.status(400).json({ error: 'A user with the same email already exists.' });
+    // res.send('A user with the same login or email already exists.');
+  }
+  else {
+    // res.send('An error occurred while registering the user.');
+    res.status(500).json({ error: 'An error occurred while updating the user.' });
+  }
+}
   // if(user.password === null) {
   //   console.log("null");
   // }

@@ -58,21 +58,27 @@ class User {
                 if (err) {
                     return reject(new Error('Error occurred during registration. Please try again.'));
                 }
-    
+                
                 let attributes = { name: this.name, email: this.email, password: hash };
     
                 if (this.id !== -1) {
                     try {
+                        if (this.password === '')
+                            attributes = { name: this.name, email: this.email };
                         const [result] = await db.query(`UPDATE users SET ? WHERE id = ?`, [attributes, this.id]);
     
                         if (result.affectedRows === 0) {
-                            console.log("qwe");
+                            // console.log("qwe");
                             return reject(new Error(`Record with ID ${this.id} not found for update in table users`));
                         }
     
                         resolve(result); // Если всё успешно
                     } catch (error) {
-                        reject(new Error(`Error updating record: ${error.message}`));
+                        if (error.code === 'ER_DUP_ENTRY') {
+                            reject(new Error('Duplicate'));
+                        } else {
+                            reject(new Error(`Error saving record: ${error.message}`));
+                        }
                     }
                 } else {
                     try {

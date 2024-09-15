@@ -9,43 +9,46 @@
 </head>
 
 <body>
+    <div id="infoMessage" class="info-message"></div>
     <div class="profile-edit-container">
-        <h1>Edit Your Profile</h1>
+        <form enctype="multipart/form-data" id="editForm">
+            <h1>Edit Your Profile</h1>
 
-        <!-- Отображение текущего аватара -->
-        <div class="current-avatar">
-            <img src="123.png" alt="Current Avatar">
-        </div>
+            <div class="current-avatar">
+                <img src="123.png" alt="Current Avatar">
+            </div>
 
-        <!-- Отображение текущего никнейма -->
-        <div class="form-group">
-            <label for="name">Current Name: <span class="current-value" id="current-name">Negr123</span></label>
-            <input type="text" id="name" name="name" placeholder="Enter your new name">
-        </div>
+            <div class="form-group">
+                <label for="name">Current Name: <span class="current-value" id="current-name">Negr123</span></label>
+                <input type="text" id="name" name="name" placeholder="Enter your new name">
+            </div>
 
-        <!-- Отображение текущей почты -->
-        <div class="form-group">
-            <label for="email">Current Email: <span class="current-value"
-                    id="current-email">Negr123@example.com</span></label>
-            <input type="email" id="email" name="email" placeholder="Enter your new email">
-        </div>
+            <div class="form-group">
+                <label for="email">Current Email: <span class="current-value"
+                        id="current-email">Negr123@example.com</span></label>
+                <input type="email" id="email" name="email" placeholder="Enter your new email">
+            </div>
 
-        <!-- Изменение аватара -->
-        <div class="form-group">
-            <label for="avatar">Change Avatar</label>
-            <input type="file" id="avatar" name="avatar" accept="image/*">
-        </div>
+            <!-- Изменение аватара -->
+            <div class="form-group">
+                <label for="avatar">Change Avatar</label>
+                <input type="file" id="avatar" name="avatar" accept="image/*">
+            </div>
 
+            <!-- Кнопка сохранения изменений профиля -->
+            <div class="form-group">
+                <button type="submit" class="save-btn" id="saveChanges">Save Changes</button>
+            </div>
+        </form>
+
+        <hr><br>
         <!-- Кнопка для изменения пароля -->
-        <div class="form-group">
-            <button type="button" class="change-password-btn" id="open-password-modal">Change Password</button>
-        </div>
-
-        <!-- Кнопка сохранения изменений профиля -->
-        <div class="form-group">
-            <button type="submit" class="save-btn" id="saveChanges">Save Changes</button>
-        </div>
+        <!-- <div class="form-group"> -->
+        <button type="button" class="change-password-btn" id="open-password-modal">Change Password</button>
+        <!-- </div> -->
     </div>
+
+
 
     <!-- Модальное окно для изменения пароля -->
     <div class="modal-overlay" id="modal-overlay"></div>
@@ -74,23 +77,65 @@
     </div>
 
     <script>
-        document.getElementById("saveChanges").addEventListener("click", async (event) => {
+        window.addEventListener('DOMContentLoaded', (event) => {
+            const message = localStorage.getItem('editInfo');
+            if (message) {
+                const infoMessageDiv = document.getElementById('infoMessage');
+                infoMessageDiv.textContent = message;
+                infoMessageDiv.style.display = 'block';
+
+                setTimeout(() => {
+                    infoMessageDiv.style.display = 'none';
+                }, 3000);
+
+                localStorage.removeItem('editInfo');
+            }
+        });
+
+        let form = document.getElementById("editForm");
+        form.addEventListener("submit", async (event) => {
             event.preventDefault();
             let newMail = document.getElementById("email").value;
             let newName = document.getElementById("name").value;
+            // let oldname = localStorage.getItem('userName');
+            // console.log(oldname);
+            if (newMail !== '' || newName !== '') {
+                const response = await fetch(`/user/${localStorage.getItem('userId')}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: newName || localStorage.getItem("userName"),
+                        email: newMail || localStorage.getItem("userEmail")
+                    })
+                });
+                if (response.ok) {
+                    form.reset();
+                    if (newMail !== '') {
+                        localStorage.setItem('userEmail', newMail);
+                        document.getElementById("current-email").textContent = localStorage.getItem("userEmail");
+                    }
+                    if (newName !== '') {
+                        localStorage.setItem('userName', newName);
+                        document.getElementById("current-name").textContent = localStorage.getItem("userName");
+                    }
 
-            const response = await fetch(`/user/${localStorage.getItem('userName')}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    name: newName,
-                    email: newMail
-                })
-            });
-            if(response.ok) {
-                console.log("done");
+                    const infoMessageDiv = document.getElementById('infoMessage');
+                    infoMessageDiv.textContent = 'Edit successful!';
+                    infoMessageDiv.style.display = 'block';
+
+                    setTimeout(() => {
+                        infoMessageDiv.style.display = 'none';
+                    }, 3000);
+
+                    // localStorage.setItem('editInfo', 'Edit successful!');
+                    // window.location.href = "login.html"
+                } else if (response.status === 400) {
+                    alert("User with this email already exists");
+                } else {
+                    alert(result.error);
+                }
             }
 
         });
