@@ -1,0 +1,82 @@
+{
+    "hero_cards": [
+        {
+            "he_name": "Test1",
+            "hp": "10",
+            "atk": "10",
+            "mana": "10",
+            "img": "../assets/cards/heroes/van.png",
+            "desc": "Description",
+            "level": "1",
+            "maxlevel": "15",
+            "abilities": [
+                {
+                    "ab_name": "Test_ability1",
+                    "desc": "Description",
+                    "type": "Type",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "10",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "10"
+                        }
+                    ]
+                }
+            ],
+            "buffs": []
+        },
+        {
+            "he_name": "Test2",
+            "hp": "10",
+            "atk": "10",
+            "mana": "10",
+            "img": "../assets/cards/heroes/foma.png",
+            "desc": "Description",
+            "level": "1",
+            "maxlevel": "15",
+            "abilities": [
+                {
+                    "ab_name": "Test_ability2",
+                    "desc": "Description",
+                    "type": "Type",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "10",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "10"
+                        }
+                    ]
+                }
+            ],
+            "buffs": []
+        }
+    ],
+    "buffs": [
+        {
+            "bf_name": "Test_buff1",
+            "desc": "Description",
+            "img": "../assets/cards/buffs/rolltonman.png",
+            "type": "amplification",
+            "target": "hero",
+            "stackable": "False",
+            "price": "100",
+            "rarity": "Common",
+            "level": "1",
+            "maxlevel": "4",
+            "property": [
+                {
+                    "dmg": "10",
+                    "hp": "0",
+                    "cooldown": "10",
+                    "duration": "0"
+                }
+            ]
+        }
+    ]
+}
