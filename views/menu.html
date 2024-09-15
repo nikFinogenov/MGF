@@ -13,7 +13,7 @@
     <div class="menu-container">
         <!-- Аватар и всплывающее меню -->
         <div class="avatar-container">
-            <img src="123.png" alt="Player Avatar" class="avatar">
+            <img src="123.png" alt="Player Avatar" class="avatar" id="avatarimg">
             <div class="dropdown-menu">
                 <a href="edit.html" class="menu-option">Edit Profile</a>
                 <a href="login.html" class="menu-option" id="logout">Logout</a>
@@ -28,6 +28,7 @@
     </div>
 
     <script>
+        document.getElementById('avatarimg').src = localStorage.getItem('userAvatar');
         document.getElementById("logout").addEventListener('click', (event) => {
             localStorage.clear();
             localStorage.setItem('registrationInfo', 'Logged out successfully!');

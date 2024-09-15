@@ -9,6 +9,7 @@ class User {
         this.name = name || '';
         this.email = email || '';
         this.password = password || '';
+        this.avatar = '123.png';
         // this.full_name = attributes.full_name || '';
         // this.status = '';
         this.id = -1;
@@ -59,12 +60,12 @@ class User {
                     return reject(new Error('Error occurred during registration. Please try again.'));
                 }
 
-                let attributes = { name: this.name, email: this.email, password: hash };
+                let attributes = { name: this.name, email: this.email, password: hash, avatar: this.avatar };
 
                 if (this.id !== -1) {
                     try {
                         if (this.password === '')
-                            attributes = { name: this.name, email: this.email };
+                            attributes = { name: this.name, email: this.email, avatar: this.avatar };
                         const [result] = await db.query(`UPDATE users SET ? WHERE id = ?`, [attributes, this.id]);
 
                         if (result.affectedRows === 0) {
@@ -98,68 +99,58 @@ class User {
     }
 
     async savePass(newPass) {
-        const [rows] = await db.query(`SELECT password FROM users WHERE email = ? LIMIT 1`, [this.email]);
+        try {
+            const [rows] = await db.query(`SELECT password FROM users WHERE email = ? LIMIT 1`, [this.email]);
+    
+            if (!rows.length) {
+                throw new Error('User not found');
+            }
+    
+            // Compare the current password
+            const passwordMatch = await bcrypt.compare(this.password, rows[0].password);
+            if (!passwordMatch) {
+                throw new Error('Password mismatch');
+            }
+    
+            // Hash the new password
+            const hash = await bcrypt.hash(newPass, saltRounds);
+    
+            // Update the user's password
+            const attributes = { password: hash };
+            const [result] = await db.query(`UPDATE users SET ? WHERE id = ?`, [attributes, this.id]);
+    
+            if (result.affectedRows === 0) {
+                throw new Error(`Record with ID ${this.id} not found for update in table users`);
+            }
+    
+            return result; // Success
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    }
 
+    async checkUser() {
+    const [rows] = await db.query(`SELECT id, name, password, avatar FROM users WHERE email = ? LIMIT 1`, [this.email]);
+
+    if (rows.length > 0) {
         const result = await new Promise((resolve, reject) => {
-            bcrypt.compare(this.password, rows[0].password, async (err, result) => {
+            bcrypt.compare(this.password, rows[0].password, (err, result) => {
                 if (err) {
                     return reject(err);
                 }
-                bcrypt.hash(newPass, saltRounds, async (err, hash) => {
-                    if (err) {
-                        return reject(new Error('Error occurred during editing. Please try again.'));
-                    }
-                    try {
-                        attributes = { password: hash };
-                        const [result] = await db.query(`UPDATE users SET ? WHERE id = ?`, [attributes, this.id]);
-
-                        if (result.affectedRows === 0) {
-                            // console.log("qwe");
-                            return reject(new Error(`Record with ID ${this.id} not found for update in table users`));
-                        }
-
-                        resolve(result); // Если всё успешно
-                    } catch (error) {
-                        return reject(new Error(error));
-                    }
-                });
-                // resolve(result);
+                resolve(result);
             });
-        })
-    }
+        });
 
-
-    async getUserByEmail() {
-        const [rows] = await db.query(`SELECT * FROM users WHERE email = ? LIMIT 1`, [this.email]);
-        if (rows.length > 0) {
-            this.attributes = rows[0];
-            this.password = this.attributes.password;
+        if (result) {
+            return rows[0];
         } else {
-            throw new Error(`Not found`);
+            throw new Error("Does not match");
         }
+    } else {
+        throw new Error("Does not match");
     }
-    async checkUser() {
-        const [rows] = await db.query(`SELECT id, name, password FROM users WHERE email = ? LIMIT 1`, [this.email]);
-
-        if (rows.length > 0) {
-            const result = await new Promise((resolve, reject) => {
-                bcrypt.compare(this.password, rows[0].password, (err, result) => {
-                    if (err) {
-                        return reject(err);
-                    }
-                    resolve(result);
-                });
-            });
-
-            if (result) {
-                return rows[0];
-            } else {
-                throw new Error("Incorrect password.");
-            }
-        } else {
-            throw new Error("No user found with the given email.");
-        }
-    }
+}
 
 }
 

@@ -52,6 +52,7 @@ app.put('/user/:userid', async function (req, res) {
     // let newemail = req.body.email;
     try {
         let user = new User(req.body.name, req.body.email, null);
+        user.avatar = req.body.avatar;
         if (req.body.old) user.password = req.body.old;
         user.id = req.params.userid;
         if (req.body.old) await user.savePass(req.body.new);
@@ -61,6 +62,9 @@ app.put('/user/:userid', async function (req, res) {
         if (error.message.includes("Duplicate")) {
             res.status(400).json({ error: 'A user with the same email already exists.' });
             // res.send('A user with the same login or email already exists.');
+        }
+        else if (error.message.includes("Password mismatch")) {
+            res.status(400).json({ error: 'Current password is wrong' });
         }
         else {
             // res.send('An error occurred while registering the user.');
@@ -78,9 +82,15 @@ app.post('/login', async (request, response) => {
     try {
         // const { email, password } = req.body;
         let user = new User('', request.body.email, request.body.password);
+        // try {
         let row = await user.checkUser();
+        // } catch (error) {
+        // throw new Error(error);
+        // }
+
         user.name = row.name;
         user.id = row.id;
+        user.avatar = row.avatar;
         // console.log(user);
         response.status(200).json({ user: user, message: 'Logged in successfully' });
     } catch (error) {
@@ -88,12 +98,9 @@ app.post('/login', async (request, response) => {
         if (error.message.includes("Does not match")) {
             response.status(400).json({ error: "Login or password doesn't match" });
         }
-        else {
-            console.error(error);
-            response.status(500).json({ error: 'An error occurred while logining the user.' });
-        }
     }
 });
+
 
 app.get('/start-game', (req, res) => {
     res.redirect('/arena');
