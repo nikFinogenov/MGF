@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading</title>
+</head>
+    <div id="userEmailDisplay"></div>
+    <div id="userEmails"></div> 
+<body>
+    <script>
+        const ws = new WebSocket('ws://localhost:3000');
+
+        ws.onopen = () => {
+            console.log('WebSocket connection opened');
+            const userEmail = localStorage.getItem('userEmail');
+            ws.send(JSON.stringify({ userEmail: userEmail }));
+        };
+
+            // Получаем сообщения от сервера, где есть список всех userEmail
+            ws.onmessage = (event) => {
+                const emails = JSON.parse(event.data); // Получаем массив email-ов
+                const userEmailsDiv = document.getElementById('userEmails');
+                userEmailsDiv.innerHTML = '';
+
+                emails.forEach(email => {
+                    userEmailsDiv.innerHTML += `<p>User Email: ${email}</p>`;
+                });
+            };
+
+            ws.onclose = () => {
+                console.log('WebSocket connection closed');
+            };
+    </script>
+</body>
+
+</html>

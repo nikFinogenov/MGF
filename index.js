@@ -5,19 +5,13 @@ const User = require('./models/user');
 const app = express();
 const port = 3000;
 
+// Создаем HTTP-сервер
 const server = http.createServer(app);
 
+// Создаем WebSocket-сервер
 const wss = new WebSocket.Server({ server });
-
-wss.on('connection', function connection(ws) {
-  console.log('Новое соединение по WebSocket');
-
-  ws.on('message', function incoming(message) {
-    console.log('Получено сообщение:', message);
-
-    ws.send('Сообщение получено!');
-  });
-});
+// Подключаем WebSocket-логику
+require('./gameSocket')(wss);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('views'));
@@ -30,26 +24,19 @@ app.get('/', (req, res) => {
 
 app.post('/register', async (req, res) => {
   try {
-    // const { name, email, password } = req.body;
     let user = new User(req.body.name, req.body.email, req.body.password);
     await user.save();
     res.status(200).json({ message: 'User created successfully' });
-    // if(result.)
   } catch (error) {
     if (error.message.includes("Duplicate")) {
       res.status(400).json({ error: 'A user with the same email already exists.' });
-      // res.send('A user with the same login or email already exists.');
-    }
-    else {
-      // res.send('An error occurred while registering the user.');
+    } else {
       res.status(500).json({ error: 'An error occurred while registering the user.' });
     }
   }
 });
 
 app.put('/user/:userid', async function (req, res) {
-  // let newname = req.body.name;
-  // let newemail = req.body.email;
   try {
     let user = new User(req.body.name, req.body.email, null);
     user.avatar = req.body.avatar;
@@ -61,52 +48,31 @@ app.put('/user/:userid', async function (req, res) {
   } catch (error) {
     if (error.message.includes("Duplicate")) {
       res.status(400).json({ error: 'A user with the same email already exists.' });
-      // res.send('A user with the same login or email already exists.');
-    }
-    else if(error.message.includes("Password mismatch")) {
+    } else if(error.message.includes("Password mismatch")) {
       res.status(400).json({ error: 'Current password is wrong' });
-    }
-    else {
-      // res.send('An error occurred while registering the user.');
+    } else {
       res.status(500).json({ error: 'An error occurred while updating the user.' });
     }
   }
-  // if(user.password === null) {
-  //   console.log("null");
-  // }
-  // else if (user.password === '') console.log("pusto");
-  // else console.log("dalshe");
 });
 
 app.post('/login', async (request, response) => {
   try {
-    // const { email, password } = req.body;
     let user = new User('', request.body.email, request.body.password);
-    // try {
-      let row = await user.checkUser();
-    // } catch (error) {
-      // throw new Error(error);
-    // }
-
+    let row = await user.checkUser();
     user.name = row.name;
     user.id = row.id;
     user.avatar = row.avatar;
-    // console.log(user);
     response.status(200).json({ user: user, message: 'Logged in successfully' });
   } catch (error) {
-    // console.log(error);
     if (error.message.includes("Does not match")) {
       response.status(400).json({ error: "Login or password doesn't match" });
-    }
-    else {
+    } else {
       console.error(error);
-      response.status(500).json({ error: 'An error occurred while logining the user.' });
+      response.status(500).json({ error: 'An error occurred while logging in the user.' });
     }
   }
 });
-// app.get('/game', (req, res) => {
-//   res.sendFile(__dirname + '/frontend/game.html');
-// });
 
 // Запускаем сервер
 server.listen(port, () => {
