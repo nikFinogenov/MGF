@@ -46,8 +46,8 @@
                 {
                     "ab_name": "Test_ability2",
                     "desc": "Description",
-                    "type": "direct",
-                    "behavior": "active",
+                    "type": "amplification",
+                    "behavior": "passive",
                     "level": "1",
                     "maxlevel": "1",
                     "property": [
@@ -55,7 +55,7 @@
                             "dmg": "10",
                             "cooldown": "2",
                             "duration": "0",
-                            "manacost": "10"
+                            "manacost": ""
                         }
                     ]
                 }
@@ -75,14 +75,13 @@
             "rarity": "Common",
             "level": "1",
             "maxlevel": "4",
-            "property": [
-                {
-                    "dmg": "10",
-                    "hp": "0",
-                    "cooldown": "10",
-                    "duration": "0"
-                }
-            ]
+            "dmg": "3",
+            "hp": "3",
+            "hpregen": "1",
+            "mana": "2",
+            "manaregen": "1",
+            "cooldown": "10",
+            "duration": "0"
         }
     ]
 }

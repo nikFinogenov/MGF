@@ -1,5 +1,5 @@
 class Ability {
-    constructor(ab_name, desc, type, behavior, level, maxlevel, property = []) {
+    constructor(ab_name, desc, type, behavior, level, maxlevel, property = {}) {
         this.ab_name = ab_name; // Имя способности
         this.desc = desc; // Описание способности
         this.type = type; // Тип способности (например, прямой урон)
@@ -8,6 +8,19 @@ class Ability {
         this.maxlevel = maxlevel; // Максимальный уровень способности
         this.property = property; // Свойства способности (например, урон, кулдаун, манакост)
     }
+
+    Cast() {
+
+    }
+
+    isActive() {
+        return this.behavior === "active";
+    }
+    
+    isPassive() {
+        return this.behavior === "passive";
+    }
+    
 }
 
 class Property {

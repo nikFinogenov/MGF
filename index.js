@@ -2,6 +2,7 @@ const express = require('express');
 const http = require('http');
 const WebSocket = require('ws');
 const User = require('./models/user');
+const Game = require('./game')
 const app = express();
 const port = 3000;
 
@@ -113,6 +114,9 @@ app.get('/arena', (req, res) => {
 // app.get('/game', (req, res) => {
 //   res.sendFile(__dirname + '/frontend/game.html');
 // });
+
+const game = new Game(1, 2);
+game.startGame();
 
 // Запускаем сервер
 server.listen(port, () => {

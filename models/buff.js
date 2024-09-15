@@ -1,5 +1,5 @@
 class Buff {
-    constructor(bf_name, desc, img, type, target, stackable, price, rarity, level, maxlevel, property = []) {
+    constructor(bf_name, desc, img, type, target, stackable, price, rarity, level, maxlevel, dmg, hp, hpregen, mana, manaregen, cooldown, duration) {
         this.bf_name = bf_name; // Имя баффа
         this.desc = desc; // Описание баффа
         this.img = img; // Путь к изображению баффа
@@ -10,17 +10,28 @@ class Buff {
         this.rarity = rarity; // Редкость баффа
         this.level = level; // Текущий уровень баффа
         this.maxlevel = maxlevel; // Максимальный уровень баффа
-        this.property = property; // Свойства баффа (например, увеличение урона)
-    }
-}
-
-class BuffProperty {
-    constructor(dmg, hp, cooldown, duration) {
         this.dmg = dmg; // Увеличение урона баффом
         this.hp = hp; // Увеличение здоровья баффом
+        this.hpregen = hpregen; // Регенерация здоровья
+        this.mana = mana; // Мана героя
+        this.manaregen = manaregen; // Регенерация маны
         this.cooldown = cooldown; // Время кулдауна
         this.duration = duration; // Длительность баффа
     }
+
+    applyBuffBonusCard(targetCard) {
+        if (!(targetCard instanceof Card)) {
+            throw new Error("Target must be an instance of Card");
+        }
+        if (this.level < this.maxlevel) {
+            this.level += 1;
+            targetCard.addAtk(this.dmg);
+            targetCard.addHp(this.hp);
+            targetCard.addMana(this.mana);
+            targetCard.addManaRegen(this.manaregen);
+            targetCard.addHpRegen(this.hpregen);
+        }
+    }
 }
 
-module.exports = { Buff, BuffProperty };
+module.exports = { Buff };
