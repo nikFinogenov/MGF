@@ -54,8 +54,8 @@ app.put('/user/:userid', async function (req, res) {
     let user = new User(req.body.name, req.body.email, null);
     if (req.body.old) user.password = req.body.old;
     user.id = req.params.userid;
-    if (req.body.old) await user.save();
-    else await user.savePass(req.body.new);
+    if (req.body.old) await user.savePass(req.body.new);
+    else await user.save();
     res.status(200).json({ message: 'User updated successfully' });
   } catch (error) {
     if (error.message.includes("Duplicate")) {

@@ -121,7 +121,8 @@
                 } else if (response.status === 400) {
                     alert("User with this email already exists");
                 } else {
-                    alert(result.error);
+                    const data = await response.json();
+                    alert(data.error);
                 }
             }
 
