@@ -54,7 +54,7 @@
     <div class="modal-overlay" id="modal-overlay"></div>
     <div class="password-modal" id="password-modal">
         <h2>Change Password</h2>
-        <form class="password-change-form" action="#" method="POST">
+        <form class="password-change-form" id="passwordForm">
             <div class="form-group">
                 <label for="current-password">Current Password</label>
                 <input type="password" id="current-password" name="current-password"
@@ -77,21 +77,10 @@
     </div>
 
     <script>
-        window.addEventListener('DOMContentLoaded', (event) => {
-            const message = localStorage.getItem('editInfo');
-            if (message) {
-                const infoMessageDiv = document.getElementById('infoMessage');
-                infoMessageDiv.textContent = message;
-                infoMessageDiv.style.display = 'block';
-
-                setTimeout(() => {
-                    infoMessageDiv.style.display = 'none';
-                }, 3000);
-
-                localStorage.removeItem('editInfo');
-            }
-        });
-
+        const openPasswordModalBtn = document.getElementById('open-password-modal');
+        const closePasswordModalBtn = document.getElementById('close-password-modal');
+        const passwordModal = document.getElementById('password-modal');
+        const modalOverlay = document.getElementById('modal-overlay');
         let form = document.getElementById("editForm");
         form.addEventListener("submit", async (event) => {
             event.preventDefault();
@@ -129,8 +118,6 @@
                         infoMessageDiv.style.display = 'none';
                     }, 3000);
 
-                    // localStorage.setItem('editInfo', 'Edit successful!');
-                    // window.location.href = "login.html"
                 } else if (response.status === 400) {
                     alert("User with this email already exists");
                 } else {
@@ -140,14 +127,66 @@
 
         });
 
+        let passwordform = document.getElementById("passwordForm");
+        passwordform.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            let oldPass = document.getElementById("current-password").value;
+            let newPass = document.getElementById("new-password").value;
+            let newNameSubmit = document.getElementById("confirm-new-password").value;
+            if (newPass !== newNameSubmit) {
+                alert('Passwords do not match!');
+                return;
+            }
+            try {
+                const response = await fetch(`/user/${localStorage.getItem('userId')}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: localStorage.getItem("userName"),
+                        email: localStorage.getItem("userEmail"),
+                        old: oldPass,
+                        new: newPass
+                    })
+                });
+                if (response.ok) {
+                    passwordform.reset();
+                    modalOverlay.click();
+                    // if (newMail !== '') {
+                    //     localStorage.setItem('userEmail', newMail);
+                    //     document.getElementById("current-email").textContent = localStorage.getItem("userEmail");
+                    // }
+                    // if (newName !== '') {
+                    //     localStorage.setItem('userName', newName);
+                    //     document.getElementById("current-name").textContent = localStorage.getItem("userName");
+                    // }
+
+                    const infoMessageDiv = document.getElementById('infoMessage');
+                    infoMessageDiv.textContent = 'Edit successful!';
+                    infoMessageDiv.style.display = 'block';
+                    setTimeout(() => {
+                        infoMessageDiv.style.display = 'none';
+                    }, 3000);
+
+                } else if (response.status === 400) {
+                    // alert("User with this email already exists");
+                } else {
+                    alert(result.error);
+                }
+            } catch (error) {
+                alert('An error occurred: ' + error.message);
+            }
+
+            // let oldname = localStorage.getItem('userName');
+            // console.log(oldname);
+
+        });
+
         document.getElementById("current-name").textContent = localStorage.getItem("userName");
         document.getElementById("current-email").textContent = localStorage.getItem("userEmail");
 
-        // Открытие и закрытие модального окна для смены пароля
-        const openPasswordModalBtn = document.getElementById('open-password-modal');
-        const closePasswordModalBtn = document.getElementById('close-password-modal');
-        const passwordModal = document.getElementById('password-modal');
-        const modalOverlay = document.getElementById('modal-overlay');
+        // Открытие и закрытие модального окна для смены парол
 
         // Открыть модальное окно
         openPasswordModalBtn.addEventListener('click', () => {

@@ -58,20 +58,20 @@ class User {
                 if (err) {
                     return reject(new Error('Error occurred during registration. Please try again.'));
                 }
-                
+
                 let attributes = { name: this.name, email: this.email, password: hash };
-    
+
                 if (this.id !== -1) {
                     try {
                         if (this.password === '')
                             attributes = { name: this.name, email: this.email };
                         const [result] = await db.query(`UPDATE users SET ? WHERE id = ?`, [attributes, this.id]);
-    
+
                         if (result.affectedRows === 0) {
                             // console.log("qwe");
                             return reject(new Error(`Record with ID ${this.id} not found for update in table users`));
                         }
-    
+
                         resolve(result); // Если всё успешно
                     } catch (error) {
                         if (error.code === 'ER_DUP_ENTRY') {
@@ -96,7 +96,38 @@ class User {
             });
         });
     }
-    
+
+    async savePass(newPass) {
+        const [rows] = await db.query(`SELECT password FROM users WHERE email = ? LIMIT 1`, [this.email]);
+
+        const result = await new Promise((resolve, reject) => {
+            bcrypt.compare(this.password, rows[0].password, async (err, result) => {
+                if (err) {
+                    return reject(err);
+                }
+                bcrypt.hash(newPass, saltRounds, async (err, hash) => {
+                    if (err) {
+                        return reject(new Error('Error occurred during editing. Please try again.'));
+                    }
+                    try {
+                        attributes = { password: hash };
+                        const [result] = await db.query(`UPDATE users SET ? WHERE id = ?`, [attributes, this.id]);
+
+                        if (result.affectedRows === 0) {
+                            // console.log("qwe");
+                            return reject(new Error(`Record with ID ${this.id} not found for update in table users`));
+                        }
+
+                        resolve(result); // Если всё успешно
+                    } catch (error) {
+                        return reject(new Error(error));
+                    }
+                });
+                // resolve(result);
+            });
+        })
+    }
+
 
     async getUserByEmail() {
         const [rows] = await db.query(`SELECT * FROM users WHERE email = ? LIMIT 1`, [this.email]);
@@ -109,7 +140,7 @@ class User {
     }
     async checkUser() {
         const [rows] = await db.query(`SELECT id, name, password FROM users WHERE email = ? LIMIT 1`, [this.email]);
-    
+
         if (rows.length > 0) {
             const result = await new Promise((resolve, reject) => {
                 bcrypt.compare(this.password, rows[0].password, (err, result) => {
@@ -119,7 +150,7 @@ class User {
                     resolve(result);
                 });
             });
-    
+
             if (result) {
                 return rows[0];
             } else {
@@ -129,7 +160,7 @@ class User {
             throw new Error("No user found with the given email.");
         }
     }
-    
+
 }
 
 module.exports = User;

@@ -50,21 +50,23 @@ app.post('/register', async (req, res) => {
 app.put('/user/:userid', async function (req, res) {
   // let newname = req.body.name;
   // let newemail = req.body.email;
-try {
-  let user = new User(req.body.name, req.body.email, null);
-  user.id = req.params.userid;
-  await user.save();
-  res.status(200).json({ message: 'User updated successfully' });
-}  catch (error) {
-  if (error.message.includes("Duplicate")) {
-    res.status(400).json({ error: 'A user with the same email already exists.' });
-    // res.send('A user with the same login or email already exists.');
+  try {
+    let user = new User(req.body.name, req.body.email, null);
+    if (req.body.old) user.password = req.body.old;
+    user.id = req.params.userid;
+    if (req.body.old) await user.save();
+    else await user.savePass(req.body.new);
+    res.status(200).json({ message: 'User updated successfully' });
+  } catch (error) {
+    if (error.message.includes("Duplicate")) {
+      res.status(400).json({ error: 'A user with the same email already exists.' });
+      // res.send('A user with the same login or email already exists.');
+    }
+    else {
+      // res.send('An error occurred while registering the user.');
+      res.status(500).json({ error: 'An error occurred while updating the user.' });
+    }
   }
-  else {
-    // res.send('An error occurred while registering the user.');
-    res.status(500).json({ error: 'An error occurred while updating the user.' });
-  }
-}
   // if(user.password === null) {
   //   console.log("null");
   // }
@@ -75,21 +77,21 @@ try {
 app.post('/login', async (request, response) => {
   try {
     // const { email, password } = req.body;
-      let user = new User('', request.body.email, request.body.password);
-      let row = await user.checkUser();
-      user.name = row.name;
-      user.id = row.id;
-      // console.log(user);
-      response.status(200).json({ user: user, message: 'Logged in successfully' });
+    let user = new User('', request.body.email, request.body.password);
+    let row = await user.checkUser();
+    user.name = row.name;
+    user.id = row.id;
+    // console.log(user);
+    response.status(200).json({ user: user, message: 'Logged in successfully' });
   } catch (error) {
-      // console.log(error);
-      if (error.message.includes("Does not match")) {
-          response.status(400).json({ error: "Login or password doesn't match" });
-      }
-      else {
-        console.error(error);
-          response.status(500).json({ error: 'An error occurred while logining the user.' });
-      }
+    // console.log(error);
+    if (error.message.includes("Does not match")) {
+      response.status(400).json({ error: "Login or password doesn't match" });
+    }
+    else {
+      console.error(error);
+      response.status(500).json({ error: 'An error occurred while logining the user.' });
+    }
   }
 });
 // app.get('/game', (req, res) => {
