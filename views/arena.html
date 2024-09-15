@@ -60,7 +60,7 @@
 
         <!-- Блок для карты противника сверху -->
         <div class="opponent-card">
-            <div class="card-large">Opponent Card</div>
+            <div class="opponentcard-large">Opponent Card</div>
         </div>
 
         <!-- Блок для карт сверху -->
@@ -94,6 +94,32 @@
         </div>
     </div>
     <script>
+        async function loadData() {
+            try {
+                // Получаем данные из JSON файла
+                const response = await fetch('../cards.json');
+                const data = await response.json();
+                console.log(data);
+
+                // Применяем данные к элементам на странице
+                const heroImagePath1 = data.hero_cards[0].img;
+                document.querySelector('.card-large').style.backgroundImage = `url('${heroImagePath1}')`;
+
+                const heroImagePath2 = data.hero_cards[1].img;
+                document.querySelector('.opponentcard-large').style.backgroundImage = `url('${heroImagePath2}')`;
+
+                const buffImagePath = data.buffs[0].img;
+                document.querySelectorAll('.card').forEach((card) => {
+                    card.style.backgroundImage = `url('${buffImagePath}')`;
+                });
+
+            } catch (error) {
+                console.error('Error loading JSON data:', error);
+            }
+        }
+
+
+        window.addEventListener('DOMContentLoaded', loadData);
         const cardSelectionScreen = document.getElementById('cardSelectionScreen');
         const arena = document.querySelector('.all');
 

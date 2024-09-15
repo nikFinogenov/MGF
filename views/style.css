@@ -192,6 +192,7 @@ body {
     width: 100px;
     height: 150px;
     background-color: rgba(0, 0, 0, 0.7);
+    background-size: contain;
     border: 2px solid #d4af37;
     border-radius: 10px;
     display: flex;
@@ -241,8 +242,25 @@ body {
     position: absolute;
     top: 20%;
     left: 50%;
-    transform: translateX(-50%) rotate(180deg);
+    transform: translateX(-50%);
     z-index: 2;
+}
+
+.opponentcard-large {
+    width: 150px;
+    height: 225px;
+    background-color: rgba(0, 0, 0, 0.7);
+    background-size: cover;
+    border: 2px solid #d4af37;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-family: 'Cinzel', serif;
+    font-size: 18px;
+    text-align: center;
+    transition: transform 0.3s ease;
 }
 
 /* Увеличенная карта на поле */
@@ -250,6 +268,7 @@ body {
     width: 150px;
     height: 225px;
     background-color: rgba(0, 0, 0, 0.7);
+    background-size: cover;
     border: 2px solid #d4af37;
     border-radius: 10px;
     display: flex;
