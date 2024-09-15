@@ -2,6 +2,7 @@ const express = require('express');
 const http = require('http');
 const WebSocket = require('ws');
 const User = require('./models/user');
+const Game = require('./game')
 const app = express();
 const port = 3000;
 
@@ -19,7 +20,7 @@ app.use(express.json());
 app.use(express.static('assets'));
 
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/views/login.html');
+    res.sendFile(__dirname + '/views/login.html');
 });
 
 app.post('/register', async (req, res) => {
@@ -74,7 +75,10 @@ app.post('/login', async (request, response) => {
   }
 });
 
+const game = new Game(1, 2);
+game.startGame();
+
 // Запускаем сервер
 server.listen(port, () => {
-  console.log(`Сервер запущен на http://localhost:${port}`);
+    console.log(`Сервер запущен на http://localhost:${port}`);
 });
