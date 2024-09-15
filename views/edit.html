@@ -135,7 +135,15 @@
             let newPass = document.getElementById("new-password").value;
             let newNameSubmit = document.getElementById("confirm-new-password").value;
             if (newPass !== newNameSubmit) {
-                alert('Passwords do not match!');
+                alert('New passwords do not match!');
+                return;
+            }
+            else if(oldPass === '' || newPass === '' || newNameSubmit === '') {
+                alert('Password can not be empty!');
+                return;
+            }
+            else if(oldPass.includes(' ') || newPass.includes(' ') || newNameSubmit.includes(' ')) {
+                alert('Password can not include space!');
                 return;
             }
             try {
@@ -154,15 +162,6 @@
                 if (response.ok) {
                     passwordform.reset();
                     modalOverlay.click();
-                    // if (newMail !== '') {
-                    //     localStorage.setItem('userEmail', newMail);
-                    //     document.getElementById("current-email").textContent = localStorage.getItem("userEmail");
-                    // }
-                    // if (newName !== '') {
-                    //     localStorage.setItem('userName', newName);
-                    //     document.getElementById("current-name").textContent = localStorage.getItem("userName");
-                    // }
-
                     const infoMessageDiv = document.getElementById('infoMessage');
                     infoMessageDiv.textContent = 'Edit successful!';
                     infoMessageDiv.style.display = 'block';
@@ -171,9 +170,9 @@
                     }, 3000);
 
                 } else if (response.status === 400) {
-                    // alert("User with this email already exists");
+                    alert("Current password does not match");
                 } else {
-                    alert(result.error);
+                    alert("Problem with smth");
                 }
             } catch (error) {
                 alert('An error occurred: ' + error.message);

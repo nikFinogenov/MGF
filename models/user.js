@@ -98,68 +98,69 @@ class User {
     }
 
     async savePass(newPass) {
-        const [rows] = await db.query(`SELECT password FROM users WHERE email = ? LIMIT 1`, [this.email]);
-
-        const result = await new Promise((resolve, reject) => {
-            bcrypt.compare(this.password, rows[0].password, async (err, result) => {
-                if (err) {
-                    return reject(err);
-                }
-                bcrypt.hash(newPass, saltRounds, async (err, hash) => {
-                    if (err) {
-                        return reject(new Error('Error occurred during editing. Please try again.'));
-                    }
-                    try {
-                        attributes = { password: hash };
-                        const [result] = await db.query(`UPDATE users SET ? WHERE id = ?`, [attributes, this.id]);
-
-                        if (result.affectedRows === 0) {
-                            // console.log("qwe");
-                            return reject(new Error(`Record with ID ${this.id} not found for update in table users`));
-                        }
-
-                        resolve(result); // Если всё успешно
-                    } catch (error) {
-                        return reject(new Error(error));
-                    }
-                });
-                // resolve(result);
-            });
-        })
+        try {
+            const [rows] = await db.query(`SELECT password FROM users WHERE email = ? LIMIT 1`, [this.email]);
+    
+            if (!rows.length) {
+                throw new Error('User not found');
+            }
+    
+            // Compare the current password
+            const passwordMatch = await bcrypt.compare(this.password, rows[0].password);
+            if (!passwordMatch) {
+                throw new Error('Password mismatch');
+            }
+    
+            // Hash the new password
+            const hash = await bcrypt.hash(newPass, saltRounds);
+    
+            // Update the user's password
+            const attributes = { password: hash };
+            const [result] = await db.query(`UPDATE users SET ? WHERE id = ?`, [attributes, this.id]);
+    
+            if (result.affectedRows === 0) {
+                throw new Error(`Record with ID ${this.id} not found for update in table users`);
+            }
+    
+            return result; // Success
+        } catch (error) {
+            throw new Error(error.message);
+        }
     }
+    
 
 
     async getUserByEmail() {
-        const [rows] = await db.query(`SELECT * FROM users WHERE email = ? LIMIT 1`, [this.email]);
-        if (rows.length > 0) {
-            this.attributes = rows[0];
-            this.password = this.attributes.password;
-        } else {
-            throw new Error(`Not found`);
-        }
+    const [rows] = await db.query(`SELECT * FROM users WHERE email = ? LIMIT 1`, [this.email]);
+    if (rows.length > 0) {
+        this.attributes = rows[0];
+        this.password = this.attributes.password;
+    } else {
+        throw new Error(`Not found`);
     }
+}
     async checkUser() {
-        const [rows] = await db.query(`SELECT id, name, password FROM users WHERE email = ? LIMIT 1`, [this.email]);
+    const [rows] = await db.query(`SELECT id, name, password FROM users WHERE email = ? LIMIT 1`, [this.email]);
 
-        if (rows.length > 0) {
-            const result = await new Promise((resolve, reject) => {
-                bcrypt.compare(this.password, rows[0].password, (err, result) => {
-                    if (err) {
-                        return reject(err);
-                    }
-                    resolve(result);
-                });
+    if (rows.length > 0) {
+        const result = await new Promise((resolve, reject) => {
+            bcrypt.compare(this.password, rows[0].password, (err, result) => {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(result);
             });
+        });
 
-            if (result) {
-                return rows[0];
-            } else {
-                throw new Error("Incorrect password.");
-            }
+        if (result) {
+            return rows[0];
         } else {
-            throw new Error("No user found with the given email.");
+            throw new Error("Does not match");
         }
+    } else {
+        throw new Error("Does not match");
     }
+}
 
 }
 

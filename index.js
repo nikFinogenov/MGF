@@ -62,6 +62,9 @@ app.put('/user/:userid', async function (req, res) {
       res.status(400).json({ error: 'A user with the same email already exists.' });
       // res.send('A user with the same login or email already exists.');
     }
+    else if(error.message.includes("Password mismatch")) {
+      res.status(400).json({ error: 'Current password is wrong' });
+    }
     else {
       // res.send('An error occurred while registering the user.');
       res.status(500).json({ error: 'An error occurred while updating the user.' });
@@ -78,7 +81,12 @@ app.post('/login', async (request, response) => {
   try {
     // const { email, password } = req.body;
     let user = new User('', request.body.email, request.body.password);
-    let row = await user.checkUser();
+    // try {
+      let row = await user.checkUser();
+    // } catch (error) {
+      // throw new Error(error);
+    // }
+
     user.name = row.name;
     user.id = row.id;
     // console.log(user);
