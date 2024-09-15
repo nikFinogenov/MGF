@@ -9,6 +9,7 @@ class User {
         this.name = name || '';
         this.email = email || '';
         this.password = password || '';
+        this.avatar = '123.png';
         // this.full_name = attributes.full_name || '';
         // this.status = '';
         this.id = -1;
@@ -59,12 +60,12 @@ class User {
                     return reject(new Error('Error occurred during registration. Please try again.'));
                 }
 
-                let attributes = { name: this.name, email: this.email, password: hash };
+                let attributes = { name: this.name, email: this.email, password: hash, avatar: this.avatar };
 
                 if (this.id !== -1) {
                     try {
                         if (this.password === '')
-                            attributes = { name: this.name, email: this.email };
+                            attributes = { name: this.name, email: this.email, avatar: this.avatar };
                         const [result] = await db.query(`UPDATE users SET ? WHERE id = ?`, [attributes, this.id]);
 
                         if (result.affectedRows === 0) {
@@ -127,20 +128,9 @@ class User {
             throw new Error(error.message);
         }
     }
-    
 
-
-    async getUserByEmail() {
-    const [rows] = await db.query(`SELECT * FROM users WHERE email = ? LIMIT 1`, [this.email]);
-    if (rows.length > 0) {
-        this.attributes = rows[0];
-        this.password = this.attributes.password;
-    } else {
-        throw new Error(`Not found`);
-    }
-}
     async checkUser() {
-    const [rows] = await db.query(`SELECT id, name, password FROM users WHERE email = ? LIMIT 1`, [this.email]);
+    const [rows] = await db.query(`SELECT id, name, password, avatar FROM users WHERE email = ? LIMIT 1`, [this.email]);
 
     if (rows.length > 0) {
         const result = await new Promise((resolve, reject) => {

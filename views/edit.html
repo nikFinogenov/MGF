@@ -10,16 +10,16 @@
 
 <body>
     <div id="infoMessage" class="info-message"></div>
-    
+
     <div class="profile-edit-container">
         <div class="link-container">
             <a href="menu.html" id="goBackLink">Go back</a>
         </div>
         <form enctype="multipart/form-data" id="editForm">
             <h1>Edit Your Profile</h1>
-            
+
             <div class="current-avatar">
-                <img src="123.png" alt="Current Avatar">
+                <img id="current-ava" src="123.png" alt="Current Avatar">
             </div>
 
             <div class="form-group">
@@ -34,10 +34,29 @@
             </div>
 
             <!-- Изменение аватара -->
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label for="avatar">Change Avatar</label>
                 <input type="file" id="avatar" name="avatar" accept="image/*">
+            </div> -->
+            <div class="form-group">
+                <p id="change-ava">Change Avatar:</p>
+                <div class="avatars">
+                    <label class="avatar-option">
+                        <input type="radio" name="avatar" value="123.png" />
+                        <img src="123.png" alt="Avatar 1">
+                    </label>
+                    <label class="avatar-option">
+                        <input type="radio" name="avatar" value="231.png" />
+                        <img src="231.png" alt="Avatar 2">
+                    </label>
+                    <label class="avatar-option">
+                        <input type="radio" name="avatar" value="213.png" />
+                        <img src="213.png" alt="Avatar 3">
+                    </label>
+                </div>
             </div>
+
+
 
             <!-- Кнопка сохранения изменений профиля -->
             <div class="form-group">
@@ -81,6 +100,22 @@
     </div>
 
     <script>
+        // Функция для выбора радио-кнопки с определенным значением
+        function selectAvatarByValue(value) {
+            const radios = document.querySelectorAll('input[name="avatar"]');
+
+            radios.forEach((radio) => {
+                if (radio.value === value) {
+                    radio.checked = true; // Устанавливаем checked для нужного значения
+                }
+            });
+        }
+
+        // Пример вызова функции
+        selectAvatarByValue(localStorage.getItem('userAvatar'));
+        document.getElementById('current-ava').src = localStorage.getItem('userAvatar');
+
+
         const openPasswordModalBtn = document.getElementById('open-password-modal');
         const closePasswordModalBtn = document.getElementById('close-password-modal');
         const passwordModal = document.getElementById('password-modal');
@@ -90,9 +125,10 @@
             event.preventDefault();
             let newMail = document.getElementById("email").value;
             let newName = document.getElementById("name").value;
+            let newAva = document.querySelector('input[name="avatar"]:checked').value;
             // let oldname = localStorage.getItem('userName');
             // console.log(oldname);
-            if (newMail !== '' || newName !== '') {
+            if (newMail !== '' || newName !== '' || newAva !== localStorage.getItem('userAvatar')) {
                 const response = await fetch(`/user/${localStorage.getItem('userId')}`, {
                     method: 'PUT',
                     headers: {
@@ -100,7 +136,8 @@
                     },
                     body: JSON.stringify({
                         name: newName || localStorage.getItem("userName"),
-                        email: newMail || localStorage.getItem("userEmail")
+                        email: newMail || localStorage.getItem("userEmail"),
+                        avatar: newAva || localStorage.getItem('userAvatar')
                     })
                 });
                 if (response.ok) {
@@ -112,6 +149,10 @@
                     if (newName !== '') {
                         localStorage.setItem('userName', newName);
                         document.getElementById("current-name").textContent = localStorage.getItem("userName");
+                    }
+                    if (newAva !== localStorage.getItem('userAvatar')) {
+                        localStorage.setItem('userAvatar', newAva);
+                        document.getElementById('current-ava').src = localStorage.getItem('userAvatar');
                     }
 
                     const infoMessageDiv = document.getElementById('infoMessage');
@@ -142,11 +183,11 @@
                 alert('New passwords do not match!');
                 return;
             }
-            else if(oldPass === '' || newPass === '' || newNameSubmit === '') {
+            else if (oldPass === '' || newPass === '' || newNameSubmit === '') {
                 alert('Password can not be empty!');
                 return;
             }
-            else if(oldPass.includes(' ') || newPass.includes(' ') || newNameSubmit.includes(' ')) {
+            else if (oldPass.includes(' ') || newPass.includes(' ') || newNameSubmit.includes(' ')) {
                 alert('Password can not include space!');
                 return;
             }
@@ -189,7 +230,7 @@
 
         document.getElementById("current-name").textContent = localStorage.getItem("userName");
         document.getElementById("current-email").textContent = localStorage.getItem("userEmail");
-
+        // document.getElementById('current-ava').src = localStorage.getItem('userAvatar');
         // Открытие и закрытие модального окна для смены парол
 
         // Открыть модальное окно

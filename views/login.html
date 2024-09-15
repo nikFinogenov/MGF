@@ -74,6 +74,7 @@
                     const data = await response.json();
                     localStorage.setItem('userName', data.user.name);
                     localStorage.setItem('userEmail', data.user.email);
+                    localStorage.setItem('userAvatar', data.user.avatar);
                     localStorage.setItem('userId', data.user.id); //here we can hide ID somehow (V)0.o(v)
                     window.location.href = "menu.html";
                     // setTimeout(() => alert('Login successful!'), 0);

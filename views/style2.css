@@ -246,7 +246,7 @@ h1 {
     margin-bottom: 20px;
 }
 
-.current-avatar img {
+.current-avatar img{
     width: 80px;
     height: 80px;
     border-radius: 50%;
@@ -259,12 +259,35 @@ h1 {
     text-align: left;
 }
 
-label {
+label, #change-ava {
     font-size: 16px;
     color: #d4af37;
     margin-bottom: 8px;
     display: block;
 }
+#change-ava {
+    text-align: left;
+}
+/* Hide the radio button */
+input[type="radio"] {
+    display: none;
+}
+
+/* Style for avatar container */
+.avatar-option img {
+    width: 80px;
+    height: 80px;
+    cursor: pointer;
+    border: 2px solid #d4af37;
+    border-radius: 50%;
+    transition: border-color 0.3s ease;
+}
+
+/* Style when the radio button is selected (checked) */
+.avatar-option input[type="radio"]:checked + img {
+    border: 2px solid red; /* Red border when selected */
+}
+
 
 .current-value {
     font-weight: bold;
@@ -385,9 +408,14 @@ input:focus {
 
 #goBackLink {
     color: #000;
-    /* float: left; */
 }
 
 #goBackLink:hover {
     color: gray;
+}
+
+.avatars {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }

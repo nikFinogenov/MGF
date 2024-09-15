@@ -52,6 +52,7 @@ app.put('/user/:userid', async function (req, res) {
   // let newemail = req.body.email;
   try {
     let user = new User(req.body.name, req.body.email, null);
+    user.avatar = req.body.avatar;
     if (req.body.old) user.password = req.body.old;
     user.id = req.params.userid;
     if (req.body.old) await user.savePass(req.body.new);
@@ -89,6 +90,7 @@ app.post('/login', async (request, response) => {
 
     user.name = row.name;
     user.id = row.id;
+    user.avatar = row.avatar;
     // console.log(user);
     response.status(200).json({ user: user, message: 'Logged in successfully' });
   } catch (error) {
