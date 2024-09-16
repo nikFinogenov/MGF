@@ -6,32 +6,70 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Loading</title>
 </head>
-    <div id="userEmailDisplay"></div>
-    <div id="userEmails"></div> 
+<div id="userEmailDisplay"></div>
+<div id="userEmails"></div>
+
 <body>
+    <script src="/socket.io/socket.io.js"></script>
     <script>
-        const ws = new WebSocket('ws://localhost:3000');
+        // const ws = new WebSocket('ws://localhost:3000');
+        // ws.onopen = () => {
+        //     console.log('WebSocket connection opened');
+        //     const userEmail = localStorage.getItem('userEmail');
+        //     ws.send(JSON.stringify({ userEmail: userEmail }));
+        // };
+        //     // Получаем сообщения от сервера, где есть список всех userEmail
+        //     ws.onmessage = (event) => {
+        //         const emails = JSON.parse(event.data); // Получаем массив email-ов
+        //         const userEmailsDiv = document.getElementById('userEmails');
+        //         userEmailsDiv.innerHTML = '';
+        //         emails.forEach(email => {
+        //             userEmailsDiv.innerHTML += `<p>User Email: ${email}</p>`;
+        //         });
+        //     };
+        //     ws.onclose = () => {
+        //         console.log('WebSocket connection closed');
+        //     };
+        const socket = io('http://localhost:3000');  // Инициализация сокета
 
-        ws.onopen = () => {
-            console.log('WebSocket connection opened');
+        // const form = document.getElementById('form');
+        // const input = document.getElementById('input');
+        // form.addEventListener('submit', function (e) {
+        //     e.preventDefault();
+        //     if (input.value) {
+        //         socket.emit('chatMessage', input.value);  // Отправляем сообщение
+        //         input.value = '';
+        //     }
+        // });
+        // socket.emit('gameFind', localStorage.getItem('userEmail'));  // Отправляем сообщение
+        // socket.on('gameFind', function (msg) {
+        //     // const item = document.createElement('li');
+        //     // item.textContent = msg;
+        //     // document.getElementById('messages').appendChild(item);  // Добавляем сообщение в чат
+        //     const emails = JSON.parse(msg); // Получаем массив email-ов
+        //     const userEmailsDiv = document.getElementById('userEmails');
+        //     userEmailsDiv.innerHTML = '';
+        //     emails.forEach(email => {
+        //         userEmailsDiv.innerHTML += `<p>User Email: ${email}</p>`;
+        //     });
+        // });
+        document.getElementById('startGame').addEventListener('click', (event) => {
+            event.preventDefault();
             const userEmail = localStorage.getItem('userEmail');
-            ws.send(JSON.stringify({ userEmail: userEmail }));
-        };
+            
+            // Отправляем userEmail на сервер
+            socket.emit('sendEmail', userEmail);
+        });
 
-            // Получаем сообщения от сервера, где есть список всех userEmail
-            ws.onmessage = (event) => {
-                const emails = JSON.parse(event.data); // Получаем массив email-ов
-                const userEmailsDiv = document.getElementById('userEmails');
-                userEmailsDiv.innerHTML = '';
+        // Обработка получения списка всех email-ов
+        socket.on('usersList', (users) => {
+            const userEmailsDiv = document.getElementById('userEmails');
+            userEmailsDiv.innerHTML = ''; // Очищаем блок перед обновлением списка
 
-                emails.forEach(email => {
-                    userEmailsDiv.innerHTML += `<p>User Email: ${email}</p>`;
-                });
-            };
-
-            ws.onclose = () => {
-                console.log('WebSocket connection closed');
-            };
+            users.forEach(userEmail => {
+                userEmailsDiv.innerHTML += `<p>User Email: ${userEmail}</p>`;
+            });
+        });
     </script>
 </body>
 

@@ -1,6 +1,7 @@
 const express = require('express');
 const http = require('http');
-const WebSocket = require('ws');
+// const WebSocket = require('ws');
+const { Server } = require('socket.io');
 const User = require('./models/user');
 const Game = require('./game')
 const app = express();
@@ -8,11 +9,59 @@ const port = 3000;
 
 // Создаем HTTP-сервер
 const server = http.createServer(app);
+const io = new Server(server);
 
 // Создаем WebSocket-сервер
-const wss = new WebSocket.Server({ server });
-// Подключаем WebSocket-логику
-require('./gameSocket')(wss);
+// const wss = new WebSocket.Server({ server });
+// io.on('connection', (socket) => {
+//   const users = [];
+//   console.log('A user connected');
+  // const data = JSON.parse(message);
+
+  // // Добавляем userEmail в список, если его ещё там нет
+  // if (data.userEmail && !users.includes(data.userEmail)) {
+  //     users.push(data.userEmail);
+  // }
+
+  // // Отправляем список всех email-ов всем подключённым клиентам
+  // wss.clients.forEach(function each(client) {
+  //     if (client.readyState === WebSocket.OPEN) {
+  //         client.send(JSON.stringify(users));
+  //     }
+  // });
+  
+//   socket.on('gameFind', (msg) => {
+//       console.log('Message: ' + msg);
+//       io.emit('gameFind', msg);  // Отправляем сообщение всем клиентам
+//   });
+
+//   socket.on('disconnect', () => {
+//       console.log('User disconnected');
+//   });
+// });
+const users = []; // Массив для хранения email всех подключённых пользователей
+
+io.on('connection', (socket) => {
+    console.log('New WebSocket connection');
+
+    // Когда клиент отправляет email
+    socket.on('sendEmail', (userEmail) => {
+        // Добавляем email в список, если его там ещё нет
+        if (userEmail && !users.includes(userEmail)) {
+            users.push(userEmail);
+        }
+
+        // Рассылаем обновлённый список всем клиентам
+        io.emit('usersList', users);
+    });
+
+    // Обработка отключения пользователя
+    socket.on('disconnect', () => {
+        console.log('User disconnected');
+    });
+});
+// Подключаем WebSocket-логику //nahui web-socket logiku, mi socket.io chads teper
+// require('./gameSocket')(wss);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('views'));
