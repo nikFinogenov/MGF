@@ -12,63 +12,50 @@
 <body>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        // const ws = new WebSocket('ws://localhost:3000');
-        // ws.onopen = () => {
-        //     console.log('WebSocket connection opened');
-        //     const userEmail = localStorage.getItem('userEmail');
-        //     ws.send(JSON.stringify({ userEmail: userEmail }));
-        // };
-        //     // Получаем сообщения от сервера, где есть список всех userEmail
-        //     ws.onmessage = (event) => {
-        //         const emails = JSON.parse(event.data); // Получаем массив email-ов
-        //         const userEmailsDiv = document.getElementById('userEmails');
-        //         userEmailsDiv.innerHTML = '';
-        //         emails.forEach(email => {
-        //             userEmailsDiv.innerHTML += `<p>User Email: ${email}</p>`;
-        //         });
-        //     };
-        //     ws.onclose = () => {
-        //         console.log('WebSocket connection closed');
-        //     };
         const socket = io('http://localhost:3000');  // Инициализация сокета
-
-        // const form = document.getElementById('form');
-        // const input = document.getElementById('input');
-        // form.addEventListener('submit', function (e) {
-        //     e.preventDefault();
-        //     if (input.value) {
-        //         socket.emit('chatMessage', input.value);  // Отправляем сообщение
-        //         input.value = '';
-        //     }
-        // });
-        // socket.emit('gameFind', localStorage.getItem('userEmail'));  // Отправляем сообщение
-        // socket.on('gameFind', function (msg) {
-        //     // const item = document.createElement('li');
-        //     // item.textContent = msg;
-        //     // document.getElementById('messages').appendChild(item);  // Добавляем сообщение в чат
-        //     const emails = JSON.parse(msg); // Получаем массив email-ов
-        //     const userEmailsDiv = document.getElementById('userEmails');
-        //     userEmailsDiv.innerHTML = '';
-        //     emails.forEach(email => {
-        //         userEmailsDiv.innerHTML += `<p>User Email: ${email}</p>`;
-        //     });
-        // });
+    
+        // Отправляем информацию о себе
+        socket.emit('userEmail', localStorage.getItem('userEmail'));
+        socket.emit('userId', localStorage.getItem('userId'));
+        socket.emit('userName', localStorage.getItem('userName')); // добавь соответствующий обработчик на сервере
+        socket.emit('userAvatar', localStorage.getItem('userAvatar')); // добавь соответствующий обработчик на сервере
+    
+        // Ищем игру
+        function searchGame() {
+            socket.emit('searchGame');
+        }
+    
         document.addEventListener('DOMContentLoaded', (event) => {
             event.preventDefault();
             const userEmail = localStorage.getItem('userEmail');
-            
-            // Отправляем userEmail на сервер
-            socket.emit('sendEmail', userEmail);
+    
+            if (userEmail) {
+                searchGame();  // Ищем комнату для игры
+            } else {
+                console.log("User email not found in localStorage.");
+            }
         });
-
-        // Обработка получения списка всех email-ов
-        socket.on('usersList', (users) => {
-            const userEmailsDiv = document.getElementById('userEmails');
-            userEmailsDiv.innerHTML = ''; // Очищаем блок перед обновлением списка
-
-            users.forEach(userEmail => {
-                userEmailsDiv.innerHTML += `<p>User Email: ${userEmail}</p>`;
-            });
+    
+        // Когда начинается игра
+        socket.on('startGame', ({ roomId, players }) => {
+            console.log(`Game started in room ${roomId}`);
+    
+            // Сохраняем данные об оппоненте
+            const player = players.find(p => p.id !== socket.id);
+            if (player) {
+                localStorage.setItem('opName', player.name);
+                localStorage.setItem('opEmail', player.email);
+                // localStorage.setItem('opId', player.id);
+                localStorage.setItem('opAva', player.avatar);
+            }
+    
+            // Перенаправляем на страницу арены
+            window.location.href = "arena.html";
+        });
+    
+        // Обработка, если комната переполнена
+        socket.on('roomFull', ({ message }) => {
+            console.log(message);
         });
     </script>
 </body>

@@ -25,7 +25,7 @@
     </div>
 
     <!-- Фон арены -->
-    <img class="arena" src="/assets/arena.png" alt="collesium">
+    <img class="arena" src="arena.png" alt="collesium">
     <div class="all">
         <!-- Кнопка для открытия/закрытия панели -->
         <div class="toggle-panel" id="togglePanel">
@@ -39,7 +39,7 @@
 
         <div class="opponent-avatar-block">
             <div class="avatar opponent-avatar">Opponent</div>
-            <div class="enemy-nickname">Opponent Nick</div> <!-- Ник противника -->
+            <div class="enemy-nickname" id="opNick">Opponent Nick</div> <!-- Ник противника -->
         </div>
 
         <!-- Блок для счёта раундов и таймера -->
@@ -55,7 +55,7 @@
         <!-- Блок для аватара и ника игрока -->
         <div class="player-avatar-block">
             <div class="avatar player-avatar">Player</div>
-            <div class="nickname">Player Nick</div> <!-- Ник игрока -->
+            <div class="nickname" id="playerNick">Player Nick</div> <!-- Ник игрока -->
         </div>
 
         <!-- Блок для карты противника сверху -->
@@ -97,7 +97,7 @@
         async function loadData() {
             try {
                 // Получаем данные из JSON файла
-                const response = await fetch('../cards.json');
+                const response = await fetch('cards.json');
                 const data = await response.json();
                 console.log(data);
 
@@ -131,6 +131,11 @@
             const togglePanel = document.getElementById('togglePanel');
             const sidePanel = document.getElementById('sidePanel');
             const arrow = document.querySelector('.toggle-arrow');
+
+
+            document.getElementById('playerNick').textContent = localStorage.getItem('userName');
+            document.getElementById('opNick').textContent = localStorage.getItem('opName');
+            
 
 
             // Открытие и закрытие панели
