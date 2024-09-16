@@ -53,7 +53,7 @@
         //         userEmailsDiv.innerHTML += `<p>User Email: ${email}</p>`;
         //     });
         // });
-        document.getElementById('startGame').addEventListener('click', (event) => {
+        document.addEventListener('DOMContentLoaded', (event) => {
             event.preventDefault();
             const userEmail = localStorage.getItem('userEmail');
             
