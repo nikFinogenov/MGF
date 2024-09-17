@@ -93,40 +93,18 @@
             <p>Side Block</p>
         </div>
     </div>
+    <script src="/socket.io/socket.io.js"></script>
     <script>
-        async function loadData() {
-            try {
-                // Получаем данные из JSON файла
-                const response = await fetch('cards.json');
-                const data = await response.json();
-                console.log(data);
-
-                // Применяем данные к элементам на странице
-                const heroImagePath1 = data.hero_cards[0].img;
-                document.querySelector('.card-large').style.backgroundImage = `url('${heroImagePath1}')`;
-
-                const heroImagePath2 = data.hero_cards[1].img;
-                document.querySelector('.opponentcard-large').style.backgroundImage = `url('${heroImagePath2}')`;
-
-                const buffImagePath = data.buffs[0].img;
-                document.querySelectorAll('.card').forEach((card) => {
-                    card.style.backgroundImage = `url('${buffImagePath}')`;
-                });
-
-            } catch (error) {
-                console.error('Error loading JSON data:', error);
-            }
-        }
-
-
-        window.addEventListener('DOMContentLoaded', loadData);
-        const cardSelectionScreen = document.getElementById('cardSelectionScreen');
+        const socket = io('http://localhost:3000');
         const arena = document.querySelector('.all');
+
+        socket.emit('inArena');
 
         if (localStorage.getItem('cardsSelected') === 'true') {
             cardSelectionScreen.style.display = 'none'; // Скрываем экран выбора карт
             arena.style.display = 'block'; // Показываем арену
         }
+
         document.addEventListener('DOMContentLoaded', function () {
             const togglePanel = document.getElementById('togglePanel');
             const sidePanel = document.getElementById('sidePanel');
@@ -135,7 +113,7 @@
 
             document.getElementById('playerNick').textContent = localStorage.getItem('userName');
             document.getElementById('opNick').textContent = localStorage.getItem('opName');
-            
+
 
 
             // Открытие и закрытие панели
@@ -161,15 +139,61 @@
                 }
             });
 
-            // Показ арены после выбора карты
             const cardOptions = document.querySelectorAll('.card-option');
+            const cardSelectionScreen = document.getElementById('cardSelectionScreen');
+
+            let hasSelectedCard = false; // Track if the player has selected a card
+
+            function hideUnselectedCards(selectedOption) {
+                console.log('Hiding unselected cards');
+                cardOptions.forEach(option => {
+                    if (option !== selectedOption) {
+                        option.style.visibility = 'hidden'; // Hide other cards
+                    }
+                });
+            }
+
+            // Event listener for each card
             cardOptions.forEach(option => {
                 option.addEventListener('click', function () {
-                    cardSelectionScreen.style.display = 'none'; // Скрываем экран выбора карт
-                    arena.style.display = 'block'; // Показываем арену
-                    // Сохраняем состояние выбора карт в localStorage
-                    localStorage.setItem('cardsSelected', 'true');
+                    if (hasSelectedCard) return; // Prevent re-selection
+
+                    // Mark the card as selected
+                    hasSelectedCard = true;
+                    hideUnselectedCards(option);
+
+                    const selectedCard = option.getAttribute('data-card');
+
+                    // Emit event to server with selected card
+                    console.log(`Emitting cardSelected event with card: ${selectedCard}`);
+                    socket.emit('cardSelected', {
+                        playerId: localStorage.getItem('userId'),  // ID игрока из localStorage
+                        card: selectedCard  // Выбранная карта
+                    });
+
+                    // Highlight the selected card
+                    option.classList.add('selected');
                 });
+            });
+
+            // Handle the response from the server when both players have selected cards
+            socket.on('cardsSelected', (data) => {
+                console.log('Received cardsSelected event from server');
+                console.log('Players selected cards:', data.players);
+
+                // Hide card selection screen, show arena
+                cardSelectionScreen.style.display = 'none';
+                arena.style.display = 'block';
+            });
+
+            // Debug log to confirm connection
+            socket.on('connect', () => {
+                console.log('Connected to server with ID:', socket.id);
+            });
+
+            // Debug log for errors
+            socket.on('connect_error', (error) => {
+                console.error('Connection error:', error);
             });
         });
     </script>

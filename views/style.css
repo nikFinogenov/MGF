@@ -68,6 +68,10 @@ body {
     gap: 20px;
 }
 
+.selected {
+    background-color: lightgreen;
+}
+
 /* Стиль для карт на экране выбора */
 .card-option {
     width: 180px;
