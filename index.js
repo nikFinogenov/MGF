@@ -13,7 +13,7 @@ const io = new Server(server);
 const rooms = {}; // Объект для хранения комнат
 
 function joinRoom() {
-    
+    // nado kak to join room sdelat function a to oni pohozhi no komu ne pohui glavnoe cho i tak rabotaet
 }
 
 io.on('connection', (socket) => {
