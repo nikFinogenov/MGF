@@ -417,8 +417,8 @@ body {
 .opponent-avatar-block {
     position: absolute;
     top: 10%;
-    left: 22%;
-    transform: translateX(-50%);
+    left: 19%;
+    transform: translateY(-50%);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -432,9 +432,9 @@ body {
 /* Аватар игрока снизу */
 .player-avatar-block {
     position: absolute;
-    bottom: 10%;
-    left: 22%;
-    transform: translateX(-50%);
+    top: 90%;
+    left: 19%;
+    transform: translateY(-50%);
     display: flex;
     flex-direction: column;
     align-items: center;

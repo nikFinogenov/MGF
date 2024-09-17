@@ -99,7 +99,7 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
         // window.addEventListener('DOMContentLoaded', () => {
-            
+
         // });
 
 
@@ -108,8 +108,20 @@
         const load = document.querySelector('#loading');  // Инициализация сокета
         const cardOptions = document.querySelectorAll('.card-option');
         const cardSelectionScreen = document.getElementById('cardSelectionScreen');
+        let heroCards = null;
 
         let room_Id = null;
+
+
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
         // Отправляем информацию о себе
         socket.emit('userEmail', localStorage.getItem('userEmail'));
         socket.emit('userId', localStorage.getItem('userId'));
@@ -182,7 +194,48 @@
                 }
             });
 
-            let hasSelectedCard = false; // Track if the player has selected a card
+            let hasSelectedCard = false;// Track if the player has selected a card
+
+            fetch('cards.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Ошибка сети');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('JSON данные загружены:', data); // Проверяем, что данные загружены
+
+                    heroCards = data.hero_cards;
+
+                    // Перемешиваем массив героев для случайного выбора
+                    const shuffledHeroes = shuffleArray(heroCards).slice(0, 3); // Берем первые 3 карты
+
+                    // Получаем все элементы с классом card-option
+                    const cardElements = document.querySelectorAll('.card-option');
+
+                    // Присваиваем каждому div данные о героях без повторений
+                    cardElements.forEach((cardElement, index) => {
+                        const hero = shuffledHeroes[index];
+
+                        // Назначаем имя героя в data-card атрибут
+                        cardElement.setAttribute('data-card', hero.he_name);
+
+                        console.log('data-card установлен на:', cardElement.getAttribute('data-card')); // Проверяем data-card
+
+                        // Изменяем текст внутри div на имя героя
+                        cardElement.textContent = hero.he_name;
+
+                        // Присваиваем изображение как фон
+                        cardElement.style.backgroundImage = `url(${hero.img})`;
+                        cardElement.style.backgroundSize = 'cover'; // Устанавливаем изображение на всю область
+                        cardElement.style.backgroundPosition = 'center'; // Центрируем изображение
+                    });
+                })
+                .catch(error => {
+                    console.error('Ошибка загрузки JSON:', error); // Отслеживаем ошибки загрузки JSON
+                });
+
 
             function hideUnselectedCards(selectedOption) {
                 console.log('Hiding unselected cards');
@@ -192,7 +245,6 @@
                     }
                 });
             }
-
             // Event listener for each card
             cardOptions.forEach(option => {
                 option.addEventListener('click', function () {
@@ -221,7 +273,63 @@
                 console.log('Received cardsSelected event from server');
                 console.log('Players selected cards:', data.players);
 
-                // Hide card selection screen, show arena
+                const currentPlayerId = socket.id;
+
+                // Определяем противника и себя
+                const opponent = data.players.find(player => player.id !== currentPlayerId);
+                const currentPlayer = data.players.find(player => player.id === currentPlayerId);
+
+                // Обработка карты противника
+                if (opponent) {
+                    console.log(`Opponent's card: ${opponent.card}`);
+
+                    // Находим изображение карты по имени в загруженных данных
+                    const opponentHeroCard = heroCards.find(card => card.he_name === opponent.card);
+
+                    if (opponentHeroCard) {
+                        const opponentCardImg = opponentHeroCard.img;
+                        console.log(`Opponent's card image: ${opponentCardImg}`);
+
+                        // Добавляем стиль для отображения изображения карты противника
+                        const opponentCardElement = document.querySelector('.opponentcard-large');
+                        if (opponentCardElement) {
+                            opponentCardElement.style.backgroundImage = `url(${opponentCardImg})`;
+                            opponentCardElement.style.backgroundSize = 'cover';
+                            opponentCardElement.style.backgroundPosition = 'center';
+                        }
+                    } else {
+                        console.log('Error: Opponent card not found in heroCards');
+                    }
+                } else {
+                    console.log('Error: Opponent not found in data.players');
+                }
+
+                // Обработка карты текущего игрока
+                if (currentPlayer) {
+                    console.log(`Your card: ${currentPlayer.card}`);
+
+                    // Находим изображение карты по имени в загруженных данных
+                    const currentPlayerHeroCard = heroCards.find(card => card.he_name === currentPlayer.card);
+
+                    if (currentPlayerHeroCard) {
+                        const currentPlayerCardImg = currentPlayerHeroCard.img;
+                        console.log(`Your card image: ${currentPlayerCardImg}`);
+
+                        // Добавляем стиль для отображения изображения карты текущего игрока
+                        const currentPlayerCardElement = document.querySelector('.card-large');
+                        if (currentPlayerCardElement) {
+                            currentPlayerCardElement.style.backgroundImage = `url(${currentPlayerCardImg})`;
+                            currentPlayerCardElement.style.backgroundSize = 'cover';
+                            currentPlayerCardElement.style.backgroundPosition = 'center';
+                        }
+                    } else {
+                        console.log('Error: Your card not found in heroCards');
+                    }
+                } else {
+                    console.log('Error: Current player not found in data.players');
+                }
+
+                // Скрываем экран выбора карт и показываем арену
                 cardSelectionScreen.style.display = 'none';
                 arena.style.display = 'block';
             });

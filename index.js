@@ -81,7 +81,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('inArena', () => {
-        
+
         // let roomId = null;
         // for (let id in rooms) {
         //     if (rooms[id].players.length === 1) {
@@ -105,10 +105,6 @@ io.on('connection', (socket) => {
         console.log(`Player ${data.playerId} selected card: ${data.card}`);
 
         if (roomId) {
-            if (!rooms[roomId].selections) {
-                rooms[roomId].selections = {}; // На всякий случай проверяем и инициализируем selections
-            }
-
             rooms[roomId].selections[socket.id] = data.card;
 
             console.log(`Current selections for room ${roomId}:`, rooms[roomId].selections);
@@ -125,13 +121,10 @@ io.on('connection', (socket) => {
                     }))
                 });
                 console.log(`Both players have selected their cards. Emitting cardsSelected event.`);
-                
-                // Clear selections for the next round or game
-                rooms[roomId].selections = {};
             }
         }
     });
-    
+
 
     // // Обработчик выхода игрока
     socket.on('disconnect', () => {
@@ -159,6 +152,7 @@ io.on('connection', (socket) => {
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('views'));
 app.use(express.json());
+app.use(express.static('json'));
 app.use(express.static('assets'));
 
 app.get('/', (req, res) => {

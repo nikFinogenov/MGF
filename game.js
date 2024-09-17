@@ -22,25 +22,14 @@ class Game {
         this.matchWinner = null;  
     }
 
-    startGame() {
+    startGame(heroName, opHeroName) {
         try {
             // Загрузка данных из JSON
-            const data = JSON.parse(fs.readFileSync(path.join(__dirname, 'cards.json'), 'utf8'));
+            const data = JSON.parse(fs.readFileSync(path.join(__dirname, 'json/cards.json'), 'utf8'));
+            let card = new Card(heroName,);
+            let opCard = new Card(opHeroName,);
 
-            // Создаем объекты Card для всех героев
-            this.playerHero = this.createCard(data.hero_cards[0]); // Первый герой
-            this.oponentHero = this.createCard(data.hero_cards[1]); // Второй герой
 
-            // Проверяем заполнение данных
-            console.log('Player Hero:', this.playerHero);
-            console.log('Opponent Hero:', this.oponentHero);
-
-            // Пример атаки
-            const damageDealt = this.playerHero.useAttack(this.oponentHero);
-            console.log(`Player Hero attacked Opponent Hero for ${damageDealt} damage.`);
-
-            console.log('Player Hero:', this.playerHero);
-            console.log('Opponent Hero:', this.oponentHero);
             
         } catch (error) {
             console.error('Error loading JSON data:', error);
