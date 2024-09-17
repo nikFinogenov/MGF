@@ -98,14 +98,17 @@
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script>
+        // window.addEventListener('DOMContentLoaded', () => {
+            
+        // });
+
+
         const socket = io('http://localhost:3000');
         const arena = document.querySelector('.all');  // Инициализация сокета
         const load = document.querySelector('#loading');  // Инициализация сокета
         const cardOptions = document.querySelectorAll('.card-option');
         const cardSelectionScreen = document.getElementById('cardSelectionScreen');
-        cardSelectionScreen.style.display = 'none';
-        arena.style.display = 'none';
-        load.style.display = 'block';
+
         let room_Id = null;
         // Отправляем информацию о себе
         socket.emit('userEmail', localStorage.getItem('userEmail'));
