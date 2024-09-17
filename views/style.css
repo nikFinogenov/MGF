@@ -16,9 +16,37 @@ body {
     position: relative;
     overflow: hidden;
 }
-#loading{
-    display: block;
+#loading {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    color: black; /* Белый цвет текста */
+    font-size: 24px; /* Размер шрифта */
+    font-family: 'Arial', sans-serif; /* Семейство шрифтов */
+    letter-spacing: 1px; /* Межбуквенное расстояние */
+    text-align: center; /* Текст выровнен по центру */
 }
+#loading p {
+    color: #fff;
+    text-shadow: 2px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;
+}
+/* HTML: <div class="loader"></div> */
+/* HTML: <div class="loader"></div> */
+.loader {
+    width: 50px;
+    aspect-ratio: 1.154;
+    --_g: no-repeat radial-gradient(farthest-side,#000 90%,#0000);
+    background: 
+      var(--_g) 50%  0,
+      var(--_g) 0    100%,
+      var(--_g) 100% 100%;
+    background-size: 35% calc(35%*1.154);
+    animation: l16 1s infinite;
+  }
+  @keyframes l16{ 
+      50%,100% {background-position: 100% 100%,50% 0,0 100%} 
+  }
 /* Затемненный фон */
 .card-selection-screen {
     position: absolute;

@@ -28,6 +28,8 @@
     <img class="arena" src="arena.png" alt="collesium">
     <div id="loading">
         <p>Searching for other player</p>
+        <br>
+        <div class="loader"></div>
     </div>
     <div class="all">
         <!-- Кнопка для открытия/закрытия панели -->
@@ -41,7 +43,7 @@
         </div>
 
         <div class="opponent-avatar-block">
-            <div class="avatar opponent-avatar">Opponent</div>
+            <div class="avatar opponent-avatar"></div>
             <div class="enemy-nickname" id="opNick">Opponent Nick</div> <!-- Ник противника -->
         </div>
 
@@ -57,7 +59,7 @@
 
         <!-- Блок для аватара и ника игрока -->
         <div class="player-avatar-block">
-            <div class="avatar player-avatar">Player</div>
+            <div class="avatar player-avatar"></div>
             <div class="nickname" id="playerNick">Player Nick</div> <!-- Ник игрока -->
         </div>
 
@@ -99,7 +101,7 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
         // window.addEventListener('DOMContentLoaded', () => {
-            
+
         // });
 
 
@@ -124,8 +126,30 @@
             // console.log(`Game started in room ${roomId}`);
 
             // Сохраняем данные об оппоненте
-            const player = players.find(p => p.id !== socket.id);
-            document.getElementById('playerNick').textContent = localStorage.getItem('userName');
+            const player = players.find(p => p.id === socket.id);
+            const opponent = players.find(p => p.id !== socket.id);
+            document.getElementById('playerNick').textContent = player.name;
+            document.getElementById('opNick').textContent = opponent.name;
+
+            document.querySelector('.avatar.player-avatar').style.backgroundImage = `url(${player.avatar})`;
+            document.querySelector('.avatar.player-avatar').style.backgroundSize = 'cover';
+            document.querySelector('.avatar.player-avatar').style.backgroundPosition = 'center';
+
+            document.querySelector('.avatar.opponent-avatar').style.backgroundImage = `url(${opponent.avatar})`;
+            document.querySelector('.avatar.opponent-avatar').style.backgroundSize = 'cover';
+            document.querySelector('.avatar.opponent-avatar').style.backgroundPosition = 'center';
+
+
+            // Проверяем, что элемент найден
+            // if (opponentAvatar && player && player.avatar) {
+                // Устанавливаем картинку как фоновое изображение элемента
+                // opponentAvatar
+                // opponentAvatar.textContent = '';
+
+                // Можно настроить размер фона, чтобы картинка отображалась правильно
+                opponentAvatar.style.backgroundSize = 'cover'; // Заставляем картинку заполнить элемент
+                opponentAvatar.style.backgroundPosition = 'center'; // Центрируем картинку
+            // }
             document.getElementById('opNick').textContent = player.name;
             socket.emit('inArena');
             // if (player) {
