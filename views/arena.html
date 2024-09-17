@@ -26,7 +26,9 @@
 
     <!-- Фон арены -->
     <img class="arena" src="arena.png" alt="collesium">
-    <div id="loading">Loading</div>
+    <div id="loading">
+        <p>Searching for other player</p>
+    </div>
     <div class="all">
         <!-- Кнопка для открытия/закрытия панели -->
         <div class="toggle-panel" id="togglePanel">
@@ -104,14 +106,37 @@
         cardSelectionScreen.style.display = 'none';
         arena.style.display = 'none';
         load.style.display = 'block';
-
+        let room_Id = null;
         // Отправляем информацию о себе
         socket.emit('userEmail', localStorage.getItem('userEmail'));
         socket.emit('userId', localStorage.getItem('userId'));
         socket.emit('userName', localStorage.getItem('userName')); // добавь соответствующий обработчик на сервере
         socket.emit('userAvatar', localStorage.getItem('userAvatar')); // добавь соответствующий обработчик на сервере
         socket.emit('searchGame');
+        socket.on('startGame', ({ roomId, players }) => {
+            cardSelectionScreen.style.display = 'flex'; // Скрываем экран выбора карт
+            arena.style.display = 'none'; // Показываем арену
+            load.style.display = 'none';
+            room_Id = roomId;
+            // console.log(`Game started in room ${roomId}`);
 
+            // Сохраняем данные об оппоненте
+            const player = players.find(p => p.id !== socket.id);
+            document.getElementById('playerNick').textContent = localStorage.getItem('userName');
+            document.getElementById('opNick').textContent = player.name;
+            socket.emit('inArena');
+            // if (player) {
+            // localStorage.setItem('opName', player.name);
+            // localStorage.setItem('opEmail', player.email);
+            // localStorage.setItem('opId', player.id);
+            // localStorage.setItem('opAva', player.avatar);
+            // }
+            // console.log(players);
+            // Перенаправляем на страницу арены
+            // socket.emit('leaveRoom', { roomId });
+            // socket.emit('arenaStart', {roomId, players})
+            // window.location.href = "arena.html";
+        });
         // socket.on('loadingScreen', () => {
         //     // console.log("pidoras x2")
 
@@ -130,12 +155,6 @@
             const togglePanel = document.getElementById('togglePanel');
             const sidePanel = document.getElementById('sidePanel');
             const arrow = document.querySelector('.toggle-arrow');
-
-
-            document.getElementById('playerNick').textContent = localStorage.getItem('userName');
-            document.getElementById('opNick').textContent = localStorage.getItem('opName');
-
-
 
             // Открытие и закрытие панели
             togglePanel.addEventListener('click', function () {
@@ -184,7 +203,7 @@
 
                     // Emit event to server with selected card
                     console.log(`Emitting cardSelected event with card: ${selectedCard}`);
-                    socket.emit('cardSelected', {
+                    socket.emit('cardSelected', room_Id, {
                         playerId: localStorage.getItem('userId'),  // ID игрока из localStorage
                         card: selectedCard  // Выбранная карта
                     });

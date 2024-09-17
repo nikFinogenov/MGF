@@ -50,7 +50,7 @@ io.on('connection', (socket) => {
         // Если нет комнаты, создаем новую
         if (!roomId) {
             roomId = `room_${socket.id}`;
-            rooms[roomId] = { players: [] };
+            rooms[roomId] = { players: [], selections: {} };
         }
 
         // Присоединяем игрока к комнате
@@ -82,57 +82,54 @@ io.on('connection', (socket) => {
 
     socket.on('inArena', () => {
         
-        let roomId = null;
+        // let roomId = null;
+        // for (let id in rooms) {
+        //     if (rooms[id].players.length === 1) {
+        //         roomId = id;
+        //         break;
+        //     }
+        // }
+        // if (!roomId) {
+        //     roomId = `room_${socket.id}`;
+        //     rooms[roomId] = { players: [], selections: {} };
+        // }
+        // rooms[roomId].players.push({
+        //     id: socket.id,
+        // });
+        // socket.join(roomId);
+        // console.log(`Player ${socket.id} joined room ${roomId}`);
 
-        for (let id in rooms) {
-            if (rooms[id].players.length === 1) {
-                roomId = id;
-                break;
+
+    });
+    socket.on('cardSelected', (roomId, data) => {
+        console.log(`Player ${data.playerId} selected card: ${data.card}`);
+
+        if (roomId) {
+            if (!rooms[roomId].selections) {
+                rooms[roomId].selections = {}; // На всякий случай проверяем и инициализируем selections
+            }
+
+            rooms[roomId].selections[socket.id] = data.card;
+
+            console.log(`Current selections for room ${roomId}:`, rooms[roomId].selections);
+
+            // Check if both players have selected their cards
+            const allPlayersSelected = rooms[roomId].players.every(p => rooms[roomId].selections[p.id]);
+
+            if (allPlayersSelected) {
+                // Notify both players that the selection is complete
+                io.to(roomId).emit('cardsSelected', {
+                    players: rooms[roomId].players.map(p => ({
+                        id: p.id,
+                        card: rooms[roomId].selections[p.id]
+                    }))
+                });
+                console.log(`Both players have selected their cards. Emitting cardsSelected event.`);
+                
+                // Clear selections for the next round or game
+                rooms[roomId].selections = {};
             }
         }
-
-        if (!roomId) {
-            roomId = `room_${socket.id}`;
-            rooms[roomId] = { players: [], selections: {} };
-        }
-
-        rooms[roomId].players.push({
-            id: socket.id,
-        });
-
-        socket.join(roomId);
-        console.log(`Player ${socket.id} joined room ${roomId}`);
-
-        socket.on('cardSelected', (data) => {
-            console.log(`Player ${data.playerId} selected card: ${data.card}`);
-    
-            if (roomId) {
-                if (!rooms[roomId].selections) {
-                    rooms[roomId].selections = {}; // На всякий случай проверяем и инициализируем selections
-                }
-
-                rooms[roomId].selections[socket.id] = data.card;
-    
-                console.log(`Current selections for room ${roomId}:`, rooms[roomId].selections);
-    
-                // Check if both players have selected their cards
-                const allPlayersSelected = rooms[roomId].players.every(p => rooms[roomId].selections[p.id]);
-    
-                if (allPlayersSelected) {
-                    // Notify both players that the selection is complete
-                    io.to(roomId).emit('cardsSelected', {
-                        players: rooms[roomId].players.map(p => ({
-                            id: p.id,
-                            card: rooms[roomId].selections[p.id]
-                        }))
-                    });
-                    console.log(`Both players have selected their cards. Emitting cardsSelected event.`);
-                    
-                    // Clear selections for the next round or game
-                    rooms[roomId].selections = {};
-                }
-            }
-        });
     });
     
 
