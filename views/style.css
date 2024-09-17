@@ -16,7 +16,9 @@ body {
     position: relative;
     overflow: hidden;
 }
-
+#loading{
+    display: none;
+}
 /* Затемненный фон */
 .card-selection-screen {
     position: absolute;

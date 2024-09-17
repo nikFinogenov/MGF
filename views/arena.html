@@ -26,6 +26,7 @@
 
     <!-- Фон арены -->
     <img class="arena" src="arena.png" alt="collesium">
+    <div id="loading">Loading</div>
     <div class="all">
         <!-- Кнопка для открытия/закрытия панели -->
         <div class="toggle-panel" id="togglePanel">
@@ -96,13 +97,33 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
         const socket = io('http://localhost:3000');
-        const arena = document.querySelector('.all');
+        const arena = document.querySelector('.all');  // Инициализация сокета
+        const load = document.querySelector('#loading');  // Инициализация сокета
+        const cardOptions = document.querySelectorAll('.card-option');
+        const cardSelectionScreen = document.getElementById('cardSelectionScreen');
+        cardSelectionScreen.style.display = 'none';
+        arena.style.display = 'none';
+        load.style.display = 'block';
 
-        socket.emit('inArena');
+        // Отправляем информацию о себе
+        socket.emit('userEmail', localStorage.getItem('userEmail'));
+        socket.emit('userId', localStorage.getItem('userId'));
+        socket.emit('userName', localStorage.getItem('userName')); // добавь соответствующий обработчик на сервере
+        socket.emit('userAvatar', localStorage.getItem('userAvatar')); // добавь соответствующий обработчик на сервере
+        socket.emit('searchGame');
+
+        // socket.on('loadingScreen', () => {
+        //     // console.log("pidoras x2")
+
+        //     // cardSelectionScreen.style.display = 'none';
+        // });
+
+        // socket.emit('inArena');
 
         if (localStorage.getItem('cardsSelected') === 'true') {
             cardSelectionScreen.style.display = 'none'; // Скрываем экран выбора карт
             arena.style.display = 'block'; // Показываем арену
+            load.style.display = 'none';
         }
 
         document.addEventListener('DOMContentLoaded', function () {
@@ -138,9 +159,6 @@
                     arrow.style.transform = 'rotate(0deg)'; // Возвращаем стрелку вправо
                 }
             });
-
-            const cardOptions = document.querySelectorAll('.card-option');
-            const cardSelectionScreen = document.getElementById('cardSelectionScreen');
 
             let hasSelectedCard = false; // Track if the player has selected a card
 

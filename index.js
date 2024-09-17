@@ -19,7 +19,6 @@ function joinRoom() {
 io.on('connection', (socket) => {
     console.log('New player connected:', socket.id);
 
-    
 
     // Получаем email пользователя
     socket.on('userEmail', (email) => {
@@ -69,10 +68,15 @@ io.on('connection', (socket) => {
             const players = rooms[roomId].players;
 
             // Отправляем обоим игрокам информацию о противнике
+            console.log(`---->${socket.id} started game in ${roomId}`);
             io.to(roomId).emit('startGame', {
                 roomId,
                 players
             });
+        }
+        else {
+            // console.log("pidoras");
+            // socket.emit('loadingScreen');
         }
     });
 
@@ -103,6 +107,10 @@ io.on('connection', (socket) => {
             console.log(`Player ${data.playerId} selected card: ${data.card}`);
     
             if (roomId) {
+                if (!rooms[roomId].selections) {
+                    rooms[roomId].selections = {}; // На всякий случай проверяем и инициализируем selections
+                }
+
                 rooms[roomId].selections[socket.id] = data.card;
     
                 console.log(`Current selections for room ${roomId}:`, rooms[roomId].selections);
@@ -126,7 +134,7 @@ io.on('connection', (socket) => {
             }
         });
     });
-
+    
 
     // // Обработчик выхода игрока
     socket.on('disconnect', () => {
