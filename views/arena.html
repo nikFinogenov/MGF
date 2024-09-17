@@ -186,6 +186,14 @@
                 arena.style.display = 'block';
             });
 
+            socket.on('startRound', (Timer) => {
+
+            });
+
+            socket.on('startTurn', (Timer) => {
+
+            });
+
             // Debug log to confirm connection
             socket.on('connect', () => {
                 console.log('Connected to server with ID:', socket.id);
