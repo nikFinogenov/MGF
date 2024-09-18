@@ -185,6 +185,10 @@
         socket.emit('userName', localStorage.getItem('userName')); // добавь соответствующий обработчик на сервере
         socket.emit('userAvatar', localStorage.getItem('userAvatar')); // добавь соответствующий обработчик на сервере
         socket.emit('searchGame');
+        socket.on('pause', () => {
+            localStorage.setItem('loginInfo', 'Game ended! Second player quit the session.');
+            window.location.href = "menu.html";
+        });
         socket.on('startGame', ({ roomId, players }) => {
                     // Запуск таймера
             timerInterval = setInterval(updateTimer, 1000);

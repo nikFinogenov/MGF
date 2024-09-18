@@ -141,6 +141,9 @@ io.on('connection', (socket) => {
                     delete rooms[roomId];
                     console.log(`Room ${roomId} deleted`);
                 }
+                else if(room.players.length === 1) {
+                    io.to(roomId).emit('pause');
+                }
             }
         }
     });
