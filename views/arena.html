@@ -65,7 +65,14 @@
 
         <!-- Блок для карты противника сверху -->
         <div class="opponent-card">
-            <div class="opponentcard-large">Opponent Card</div>
+            <div class="opponentcard-large">
+                <div class="card-stats-hp" id="op-hp-box">
+                    <span id="op-card-number-hp">5</span>
+                </div>
+                <div class="card-stats-attk" id="op-attk-box">
+                    <span id="op-card-number-attk">5</span>
+                </div>
+            </div>
         </div>
 
         <!-- Блок для карт сверху -->
@@ -77,7 +84,14 @@
 
         <!-- Блок для карты на поле -->
         <div class="field-card">
-            <div class="card-large">Field Card</div>
+            <div class="card-large">
+                <div class="card-stats-hp" id="hp-box">
+                    <span id="card-number-hp">5</span>
+                </div>
+                <div class="card-stats-attk" id="attk-box">
+                    <span id="card-number-attk">5</span>
+                </div>
+            </div>
         </div>
 
         <!-- Блок для карт снизу -->
@@ -129,8 +143,26 @@
                 }
             }
         }
+        function updateCardNumber(newNumber) {
+            document.getElementById('card-number-hp').textContent = newNumber;
+            document.getElementById('card-number-attk').textContent = newNumber;
+            if (newNumber > 10) {
+                document.getElementById('attk-box').style.marginRight = "13px";
+                document.getElementById('hp-box').style.marginLeft = "13px";
+            }
+        }
+        function updateOpCardNumber(newNumber) {
+            document.getElementById('op-card-number-hp').textContent = newNumber;
+            document.getElementById('op-card-number-attk').textContent = newNumber;
+            if (newNumber > 10) {
+                document.getElementById('op-attk-box').style.marginRight = "13px";
+                document.getElementById('op-hp-box').style.marginLeft = "13px";
+            }
+        }
 
-        // Функция для выбора случайной карты
+        // updateCardNumber(11);
+        // updateOpCardNumber(11);
+
         function selectRandomCard() {
             const randomIndex = Math.floor(Math.random() * cardOptions.length);
             const randomCard = cardOptions[randomIndex];
@@ -190,7 +222,7 @@
             window.location.href = "menu.html";
         });
         socket.on('startGame', ({ roomId, players }) => {
-                    // Запуск таймера
+            // Запуск таймера
             timerInterval = setInterval(updateTimer, 1000);
             cardSelectionScreen.style.display = 'flex'; // Скрываем экран выбора карт
             arena.style.display = 'none'; // Показываем арену
@@ -215,13 +247,13 @@
 
             // Проверяем, что элемент найден
             // if (opponentAvatar && player && player.avatar) {
-                // Устанавливаем картинку как фоновое изображение элемента
-                // opponentAvatar
-                // opponentAvatar.textContent = '';
+            // Устанавливаем картинку как фоновое изображение элемента
+            // opponentAvatar
+            // opponentAvatar.textContent = '';
 
-                // Можно настроить размер фона, чтобы картинка отображалась правильно
-                // opponentAvatar.style.backgroundSize = 'cover'; // Заставляем картинку заполнить элемент
-                // opponentAvatar.style.backgroundPosition = 'center'; // Центрируем картинку
+            // Можно настроить размер фона, чтобы картинка отображалась правильно
+            // opponentAvatar.style.backgroundSize = 'cover'; // Заставляем картинку заполнить элемент
+            // opponentAvatar.style.backgroundPosition = 'center'; // Центрируем картинку
             // }
             // document.getElementById('opNick').textContent = player.name;
             socket.emit('inArena');

@@ -279,7 +279,14 @@ body {
     transform: translateX(-50%);
     z-index: 2;
 }
-
+.card-stats-hp {
+    margin-left: 18px;
+    margin-bottom: 18px;
+}
+.card-stats-attk {
+    margin-right: 18px;
+    margin-bottom: 18px;
+}
 .opponentcard-large {
     width: 150px;
     height: 225px;
@@ -288,8 +295,8 @@ body {
     border: 2px solid #d4af37;
     border-radius: 10px;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: space-between;
+    align-items: end;
     color: #fff;
     font-family: 'Cinzel', serif;
     font-size: 18px;
@@ -306,8 +313,8 @@ body {
     border: 2px solid #d4af37;
     border-radius: 10px;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: space-between;
+    align-items: end;
     color: #fff;
     font-family: 'Cinzel', serif;
     font-size: 18px;
