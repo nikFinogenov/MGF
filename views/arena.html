@@ -17,9 +17,30 @@
             <div class="choose-hero">Choose Your Hero</div>
         </div>
         <div class="card-options">
-            <div class="card-option" data-card="card1">Card 1</div>
-            <div class="card-option" data-card="card2">Card 2</div>
-            <div class="card-option" data-card="card3">Card 3</div>
+            <div class="card-option" data-card="card1">
+                <div class="card-opt-hp">
+                    <span class="card-opt-hp-text">5</span>
+                </div>
+                <div class="card-opt-attk">
+                    <span class="card-opt-attk-text">5</span>
+                </div>
+            </div>
+            <div class="card-option" data-card="card2">
+                <div class="card-opt-hp">
+                    <span class="card-opt-hp-text">5</span>
+                </div>
+                <div class="card-opt-attk">
+                    <span class="card-opt-attk-text">5</span>
+                </div>
+            </div>
+            <div class="card-option" data-card="card3">
+                <div class="card-opt-hp">
+                    <span class="card-opt-hp-text">5</span>
+                </div>
+                <div class="card-opt-attk">
+                    <span class="card-opt-attk-text">5</span>
+                </div>
+            </div>
         </div>
         <button class="random-button" id="randomButton">Random</button>
     </div>
@@ -65,7 +86,14 @@
 
         <!-- Блок для карты противника сверху -->
         <div class="opponent-card">
-            <div class="opponentcard-large">Opponent Card</div>
+            <div class="opponentcard-large">
+                <div class="card-stats-hp" id="op-hp-box">
+                    <span id="op-card-number-hp">5</span>
+                </div>
+                <div class="card-stats-attk" id="op-attk-box">
+                    <span id="op-card-number-attk">5</span>
+                </div>
+            </div>
         </div>
 
         <!-- Блок для карт сверху -->
@@ -77,7 +105,14 @@
 
         <!-- Блок для карты на поле -->
         <div class="field-card">
-            <div class="card-large">Field Card</div>
+            <div class="card-large">
+                <div class="card-stats-hp" id="hp-box">
+                    <span id="card-number-hp">5</span>
+                </div>
+                <div class="card-stats-attk" id="attk-box">
+                    <span id="card-number-attk">5</span>
+                </div>
+            </div>
         </div>
 
         <!-- Блок для карт снизу -->
@@ -134,6 +169,25 @@
                 }
             }
         }
+        function updateCardNumber(newNumber) {
+            document.getElementById('card-number-hp').textContent = newNumber;
+            document.getElementById('card-number-attk').textContent = newNumber;
+            if (newNumber > 10) {
+                document.getElementById('attk-box').style.marginRight = "13px";
+                document.getElementById('hp-box').style.marginLeft = "13px";
+            }
+        }
+        function updateOpCardNumber(newNumber) {
+            document.getElementById('op-card-number-hp').textContent = newNumber;
+            document.getElementById('op-card-number-attk').textContent = newNumber;
+            if (newNumber > 10) {
+                document.getElementById('op-attk-box').style.marginRight = "13px";
+                document.getElementById('op-hp-box').style.marginLeft = "13px";
+            }
+        }
+
+        // updateCardNumber(11);
+        // updateOpCardNumber(11);
 
         RollActionButton.addEventListener('click', function () {
             RandomCard();
@@ -232,6 +286,10 @@
         socket.emit('userName', localStorage.getItem('userName')); // добавь соответствующий обработчик на сервере
         socket.emit('userAvatar', localStorage.getItem('userAvatar')); // добавь соответствующий обработчик на сервере
         socket.emit('searchGame');
+        socket.on('pause', () => {
+            localStorage.setItem('loginInfo', 'Game ended! Second player quit the session.');
+            window.location.href = "menu.html";
+        });
         socket.on('startGame', ({ roomId, players }) => {
             // Запуск таймера
             timerInterval = setInterval(updateTimer, 1000);
@@ -352,7 +410,9 @@
                         console.log('data-card установлен на:', cardElement.getAttribute('data-card')); // Проверяем data-card
 
                         // Изменяем текст внутри div на имя героя
-                        cardElement.textContent = hero.he_name;
+                        // cardElement.textContent = hero.he_name;
+                        //WHEN SETTING HP AND ATTACK 
+                        // if  HP and ATTACK is > 10 adjust MarginLeft MarginRight MarginRignt
 
                         // Присваиваем изображение как фон
                         cardElement.style.backgroundImage = `url(${hero.img})`;

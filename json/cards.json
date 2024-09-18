@@ -69,7 +69,7 @@
             "mana": "5",
             "manaregen": "1",
             "hpregen": "1",
-            "img": "../cards/heroes/mrpenis.png",
+            "img": "../cards/heroes/card.png",
             "desc": "Description",
             "level": "1",
             "maxlevel": "15",
