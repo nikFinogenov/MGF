@@ -125,9 +125,12 @@
         <div class="button-block">
             <button class="button" id="actionButtonRoll">
                 <img src="dice.png" alt="Dice Roll" class="dice-image">
+                20
             </button>
-            <button class="button">Action 2</button>
-            <div class="gold-display">Gold: 1000</div>
+            <div class="gold-display">
+                <img src="free-icon-hryvnia-9382219.png" alt="Dice Roll" class="gold">
+                <div class="gold-text">1000</div>
+            </div>
         </div>
 
         <!-- Вертикальный блок справа -->
@@ -169,20 +172,26 @@
                 }
             }
         }
-        function updateCardNumber(newNumber) {
-            document.getElementById('card-number-hp').textContent = newNumber;
-            document.getElementById('card-number-attk').textContent = newNumber;
-            if (newNumber > 10) {
-                document.getElementById('attk-box').style.marginRight = "13px";
+
+        function updateCardNumber(newHPNumber, newATKNumber) {
+            document.getElementById('card-number-hp').textContent = newHPNumber;
+            document.getElementById('card-number-attk').textContent = newATKNumber;
+            if (newHPNumber > 10) {
                 document.getElementById('hp-box').style.marginLeft = "13px";
             }
+            if (newATKNumber > 10) {
+                document.getElementById('attk-box').style.marginRight = "13px";
+            }
         }
-        function updateOpCardNumber(newNumber) {
-            document.getElementById('op-card-number-hp').textContent = newNumber;
-            document.getElementById('op-card-number-attk').textContent = newNumber;
-            if (newNumber > 10) {
-                document.getElementById('op-attk-box').style.marginRight = "13px";
+
+        function updateOpCardNumber(newHPNumber, newATKNumber) {
+            document.getElementById('op-card-number-hp').textContent = newHPNumber;
+            document.getElementById('op-card-number-attk').textContent = newATKNumber;
+            if (newHPNumber > 10) {
                 document.getElementById('op-hp-box').style.marginLeft = "13px";
+            }
+            if (newATKNumber > 10) {
+                document.getElementById('op-attk-box').style.marginRight = "13px";
             }
         }
 
@@ -409,15 +418,29 @@
 
                         console.log('data-card установлен на:', cardElement.getAttribute('data-card')); // Проверяем data-card
 
-                        // Изменяем текст внутри div на имя героя
-                        // cardElement.textContent = hero.he_name;
-                        //WHEN SETTING HP AND ATTACK 
-                        // if  HP and ATTACK is > 10 adjust MarginLeft MarginRight MarginRignt
-
                         // Присваиваем изображение как фон
+                        updateCardNumber()
                         cardElement.style.backgroundImage = `url(${hero.img})`;
                         cardElement.style.backgroundSize = 'cover'; // Устанавливаем изображение на всю область
                         cardElement.style.backgroundPosition = 'center'; // Центрируем изображение
+
+                        const hpElement = cardElement.querySelector('.card-opt-hp-text');
+                        const attackElement = cardElement.querySelector('.card-opt-attk-text');
+
+                        hpElement.textContent = hero.hp; // Заполняем HP
+                        attackElement.textContent = hero.atk; // Заполняем атаку
+
+                        const hpBox = cardElement.querySelector('.card-opt-hp');
+                        const attkBox = cardElement.querySelector('.card-opt-attk');
+
+                        if (hero.hp > 10) {
+                            hpBox.style.marginLeft = "23px";
+                        }
+
+                        // Проверка атаки > 10 и установка отступов
+                        if (hero.attack > 10) {
+                            attkBox.style.marginRight = "23px";
+                        }
                     });
                 })
                 .catch(error => {
@@ -484,6 +507,7 @@
                             opponentCardElement.style.backgroundImage = `url(${opponentCardImg})`;
                             opponentCardElement.style.backgroundSize = 'cover';
                             opponentCardElement.style.backgroundPosition = 'center';
+                            updateOpCardNumber(opponentHeroCard.hp, opponentHeroCard.atk)
                         }
                     } else {
                         console.log('Error: Opponent card not found in heroCards');
@@ -509,6 +533,7 @@
                             currentPlayerCardElement.style.backgroundImage = `url(${currentPlayerCardImg})`;
                             currentPlayerCardElement.style.backgroundSize = 'cover';
                             currentPlayerCardElement.style.backgroundPosition = 'center';
+                            updateCardNumber(currentPlayerHeroCard.hp, currentPlayerHeroCard.atk);
                         }
                     } else {
                         console.log('Error: Your card not found in heroCards');

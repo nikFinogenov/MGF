@@ -356,8 +356,14 @@ body {
     color: #000;
     font-family: 'Cinzel', serif;
     font-size: 14px;
+    font-weight: bold;
+    padding: 30px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    display: flex;
+    justify-content: center;  /* Центрирование по горизонтали */
+    align-items: center;      /* Центрирование по вертикали */
+    text-align: center;
 }
 
 .button:hover {
@@ -380,14 +386,33 @@ body {
 /* Золото */
 .gold-display {
     margin-top: 10px;
-    color: #fff;
-    font-family: 'Cinzel', serif;
-    font-size: 16px;
     background-color: rgba(0, 0, 0, 0.7);
     border: 2px solid #d4af37;
     padding: 10px 20px;
     border-radius: 10px;
+    display: flex;
+    justify-content: center;  /* Центрирование по горизонтали */
+    align-items: center;      /* Центрирование по вертикали */
     text-align: center;
+
+    /* Устанавливаем фиксированную высоту для контейнера */
+    height: 50px;  /* Например, фиксируем высоту контейнера */
+    box-sizing: border-box; /* Чтобы padding и border не увеличивали размеры */
+    overflow: hidden;  /* Скрываем выходящее за пределы содержимое */
+}
+
+img.gold {
+    max-width: 100%; /* Чтобы изображение не превышало ширину контейнера */
+    height: auto; /* Сохраняем пропорции */
+    max-height: 100%; /* Ограничиваем максимальную высоту */
+    object-fit: contain; /* Чтобы изображение вписывалось в размеры */
+}
+
+.gold-text{
+    color: #ffd700;
+    font-family: 'Cinzel', serif;
+    font-size: 16px;
+    font-weight: bold;
 }
 
 /* Блок для счёта раундов и таймера */
