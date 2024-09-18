@@ -13,7 +13,7 @@
     <!-- Начальный экран выбора карт -->
     <div class="card-selection-screen" id="cardSelectionScreen">
         <div class="screen-header">
-            <div class="timer">00:30</div>
+            <div class="timer" id="timer">00:30</div>
             <div class="choose-hero">Choose Your Hero</div>
         </div>
         <div class="card-options">
@@ -21,7 +21,7 @@
             <div class="card-option" data-card="card2">Card 2</div>
             <div class="card-option" data-card="card3">Card 3</div>
         </div>
-        <button class="random-button">Random</button>
+        <button class="random-button" id="randomButton">Random</button>
     </div>
 
     <!-- Фон арены -->
@@ -100,18 +100,77 @@
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        // window.addEventListener('DOMContentLoaded', () => {
-
-        // });
-
-
         const socket = io('http://localhost:3000');
         const arena = document.querySelector('.all');  // Инициализация сокета
         const load = document.querySelector('#loading');  // Инициализация сокета
         const cardOptions = document.querySelectorAll('.card-option');
         const cardSelectionScreen = document.getElementById('cardSelectionScreen');
 
+        const randomButton = document.getElementById('randomButton');
+        const timerElement = document.getElementById('timer');
+
         let room_Id = null;
+        let timeLeft = 30;  // Время в секундах
+        let hasSelectedCard = false;  // Отслеживает, выбрал ли игрок карту
+
+        // Функция для обновления таймера
+        function updateTimer() {
+            if (timeLeft > 0) {
+                timeLeft--;
+                const minutes = String(Math.floor(timeLeft / 60)).padStart(2, '0');
+                const seconds = String(timeLeft % 60).padStart(2, '0');
+                timerElement.textContent = `${minutes}:${seconds}`;
+            } else {
+                clearInterval(timerInterval);
+                if (!hasSelectedCard) {
+                    selectRandomCard();
+                }
+            }
+        }
+
+        // Запуск таймера
+        const timerInterval = setInterval(updateTimer, 1000);
+
+        // Функция для выбора случайной карты
+        function selectRandomCard() {
+            const randomIndex = Math.floor(Math.random() * cardOptions.length);
+            const randomCard = cardOptions[randomIndex];
+            randomCard.click();  // Симуляция клика на случайную карту
+        }
+
+        // Добавляем обработчик на кнопку Random
+        randomButton.addEventListener('click', function () {
+            selectRandomCard();
+        });
+
+        // Обработчик клика на карты
+        cardOptions.forEach(option => {
+            option.addEventListener('click', function () {
+                if (hasSelectedCard) return;  // Предотвращаем повторный выбор
+                hasSelectedCard = true;  // Отмечаем, что карта выбрана
+
+                const selectedCard = option.getAttribute('data-card');
+                hideUnselectedCards(option);
+
+                // Отправляем выбранную карту на сервер
+                socket.emit('cardSelected', room_Id, {
+                    playerId: localStorage.getItem('userId'),
+                    card: selectedCard
+                });
+
+                // Останавливаем таймер
+                clearInterval(timerInterval);
+            });
+        });
+
+        function hideUnselectedCards(selectedOption) {
+            cardOptions.forEach(option => {
+                if (option !== selectedOption) {
+                    option.style.visibility = 'hidden';  // Скрываем остальные карты
+                }
+            });
+        }
+
         // Отправляем информацию о себе
         socket.emit('userEmail', localStorage.getItem('userEmail'));
         socket.emit('userId', localStorage.getItem('userId'));
@@ -218,27 +277,27 @@
             }
 
             // Event listener for each card
-            cardOptions.forEach(option => {
-                option.addEventListener('click', function () {
-                    if (hasSelectedCard) return; // Prevent re-selection
+            // cardOptions.forEach(option => {
+            //     option.addEventListener('click', function () {
+            //         if (hasSelectedCard) return; // Prevent re-selection
 
-                    // Mark the card as selected
-                    hasSelectedCard = true;
-                    hideUnselectedCards(option);
+            //         // Mark the card as selected
+            //         hasSelectedCard = true;
+            //         hideUnselectedCards(option);
 
-                    const selectedCard = option.getAttribute('data-card');
+            //         const selectedCard = option.getAttribute('data-card');
 
-                    // Emit event to server with selected card
-                    console.log(`Emitting cardSelected event with card: ${selectedCard}`);
-                    socket.emit('cardSelected', room_Id, {
-                        playerId: localStorage.getItem('userId'),  // ID игрока из localStorage
-                        card: selectedCard  // Выбранная карта
-                    });
+            //         // Emit event to server with selected card
+            //         console.log(`Emitting cardSelected event with card: ${selectedCard}`);
+            //         socket.emit('cardSelected', room_Id, {
+            //             playerId: localStorage.getItem('userId'),  // ID игрока из localStorage
+            //             card: selectedCard  // Выбранная карта
+            //         });
 
-                    // Highlight the selected card
-                    option.classList.add('selected');
-                });
-            });
+            //         // Highlight the selected card
+            //         option.classList.add('selected');
+            //     });
+            // });
 
             // Handle the response from the server when both players have selected cards
             socket.on('cardsSelected', (data) => {
