@@ -134,9 +134,7 @@
         function selectRandomCard() {
             const randomIndex = Math.floor(Math.random() * cardOptions.length);
             const randomCard = cardOptions[randomIndex];
-            console.log("random activated");
             randomCard.click();  // Симуляция клика на случайную карту
-            console.log("clicked");
         }
 
         // Добавляем обработчик на кнопку Random
@@ -218,10 +216,10 @@
                 // opponentAvatar.textContent = '';
 
                 // Можно настроить размер фона, чтобы картинка отображалась правильно
-                opponentAvatar.style.backgroundSize = 'cover'; // Заставляем картинку заполнить элемент
-                opponentAvatar.style.backgroundPosition = 'center'; // Центрируем картинку
+                // opponentAvatar.style.backgroundSize = 'cover'; // Заставляем картинку заполнить элемент
+                // opponentAvatar.style.backgroundPosition = 'center'; // Центрируем картинку
             // }
-            document.getElementById('opNick').textContent = player.name;
+            // document.getElementById('opNick').textContent = player.name;
             socket.emit('inArena');
             // if (player) {
             // localStorage.setItem('opName', player.name);

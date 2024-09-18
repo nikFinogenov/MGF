@@ -63,13 +63,75 @@
             "buffs": []
         },
         {
-        "he_name": "Test3",
+            "he_name": "Test3",
             "hp": "50",
             "atk": "2",
             "mana": "5",
             "manaregen": "1",
             "hpregen": "1",
             "img": "../cards/heroes/mrpenis.png",
+            "desc": "Description",
+            "level": "1",
+            "maxlevel": "15",
+            "abilities": [
+                {
+                    "ab_name": "Test_ability3",
+                    "desc": "Description",
+                    "type": "direct",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "10",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "3"
+                        }
+                    ]
+                }
+            ],
+            "buffs": []
+        },
+        {
+            "he_name": "Test4",
+            "hp": "50",
+            "atk": "2",
+            "mana": "5",
+            "manaregen": "1",
+            "hpregen": "1",
+            "img": "../cards/heroes/Herp.png",
+            "desc": "Description",
+            "level": "1",
+            "maxlevel": "15",
+            "abilities": [
+                {
+                    "ab_name": "Test_ability3",
+                    "desc": "Description",
+                    "type": "direct",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "10",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "3"
+                        }
+                    ]
+                }
+            ],
+            "buffs": []
+        },
+        {
+            "he_name": "Test5",
+            "hp": "50",
+            "atk": "2",
+            "mana": "5",
+            "manaregen": "1",
+            "hpregen": "1",
+            "img": "../cards/heroes/gay.jpg",
             "desc": "Description",
             "level": "1",
             "maxlevel": "15",
@@ -99,6 +161,25 @@
             "bf_name": "Test_buff1",
             "desc": "Description",
             "img": "../cards/buffs/rolltonman.png",
+            "type": "amplification",
+            "target": "hero",
+            "stackable": "False",
+            "price": "100",
+            "rarity": "Common",
+            "level": "1",
+            "maxlevel": "4",
+            "dmg": "3",
+            "hp": "3",
+            "hpregen": "1",
+            "mana": "2",
+            "manaregen": "1",
+            "cooldown": "10",
+            "duration": "0"
+        },
+        {
+            "bf_name": "Test_buff2",
+            "desc": "Description",
+            "img": "../cards/buffs/holy.webp",
             "type": "amplification",
             "target": "hero",
             "stackable": "False",
