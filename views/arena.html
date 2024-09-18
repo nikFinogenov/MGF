@@ -106,6 +106,7 @@
         const cardOptions = document.querySelectorAll('.card-option');
         const cardSelectionScreen = document.getElementById('cardSelectionScreen');
         let heroCards = null;
+        let timerInterval = null;
 
         const randomButton = document.getElementById('randomButton');
         const timerElement = document.getElementById('timer');
@@ -129,14 +130,13 @@
             }
         }
 
-        // Запуск таймера
-        const timerInterval = setInterval(updateTimer, 1000);
-
         // Функция для выбора случайной карты
         function selectRandomCard() {
             const randomIndex = Math.floor(Math.random() * cardOptions.length);
             const randomCard = cardOptions[randomIndex];
+            console.log("random activated");
             randomCard.click();  // Симуляция клика на случайную карту
+            console.log("clicked");
         }
 
         // Добавляем обработчик на кнопку Random
@@ -188,6 +188,8 @@
         socket.emit('userAvatar', localStorage.getItem('userAvatar')); // добавь соответствующий обработчик на сервере
         socket.emit('searchGame');
         socket.on('startGame', ({ roomId, players }) => {
+                    // Запуск таймера
+            timerInterval = setInterval(updateTimer, 1000);
             cardSelectionScreen.style.display = 'flex'; // Скрываем экран выбора карт
             arena.style.display = 'none'; // Показываем арену
             load.style.display = 'none';
