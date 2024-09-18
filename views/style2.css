@@ -44,6 +44,21 @@ body.menu::before {
     z-index: -1; /* Помещает наложение позади контента */
 }
 
+body.edit::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('hell-gate-open.jpg');
+    background-size: cover;
+    background-position: center;
+    filter: blur(0px); /* Регулируйте значение для изменения степени размытия */
+    opacity: 1; /* Устанавливает прозрачность наложения */
+    z-index: -1; /* Помещает наложение позади контента */
+}
+
 .info-message {
     display: none;
     background-color: #d4edda;
@@ -129,7 +144,7 @@ body.menu::before {
 
 .registration-container::before {
     content: '';
-    background: url('colosseum-arch.png') no-repeat center center;
+    /* background: url('colosseum-arch.png') no-repeat center center; */
     background-size: 100px;
     position: absolute;
     top: -60px;
@@ -236,7 +251,8 @@ body.menu::before {
     font-family: 'Cinzel', serif;
     font-size: 48px;
     margin: 0; /* Уберите отступы по умолчанию */
-    background: linear-gradient(to right, #ffc107,#ffc107, #e9410e,#ffc107, #ffc107);
+    background: linear-gradient(to right, #ffc107,#ffc107,#e9410e, #e9410e,#e9410e,#ffc107, #ffc107);
+    /* background-color: #e9410e; */
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -340,7 +356,7 @@ input[type="radio"] {
 
 /* Style when the radio button is selected (checked) */
 .avatar-option input[type="radio"]:checked + img {
-    border: 2px solid red; /* Red border when selected */
+    border: 2px solid white; /* Red border when selected */
 }
 
 
