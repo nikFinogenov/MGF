@@ -17,9 +17,30 @@
             <div class="choose-hero">Choose Your Hero</div>
         </div>
         <div class="card-options">
-            <div class="card-option" data-card="card1">Card 1</div>
-            <div class="card-option" data-card="card2">Card 2</div>
-            <div class="card-option" data-card="card3">Card 3</div>
+            <div class="card-option" data-card="card1">
+                <div class="card-opt-hp">
+                    <span class="card-opt-hp-text">5</span>
+                </div>
+                <div class="card-opt-attk">
+                    <span class="card-opt-attk-text">5</span>
+                </div>
+            </div>
+            <div class="card-option" data-card="card2">
+                <div class="card-opt-hp">
+                    <span class="card-opt-hp-text">5</span>
+                </div>
+                <div class="card-opt-attk">
+                    <span class="card-opt-attk-text">5</span>
+                </div>
+            </div>
+            <div class="card-option" data-card="card3">
+                <div class="card-opt-hp">
+                    <span class="card-opt-hp-text">5</span>
+                </div>
+                <div class="card-opt-attk">
+                    <span class="card-opt-attk-text">5</span>
+                </div>
+            </div>
         </div>
         <button class="random-button" id="randomButton">Random</button>
     </div>
@@ -341,7 +362,9 @@
                         console.log('data-card установлен на:', cardElement.getAttribute('data-card')); // Проверяем data-card
 
                         // Изменяем текст внутри div на имя героя
-                        cardElement.textContent = hero.he_name;
+                        // cardElement.textContent = hero.he_name;
+                        //WHEN SETTING HP AND ATTACK 
+                        // if  HP and ATTACK is > 10 adjust MarginLeft MarginRight MarginRignt
 
                         // Присваиваем изображение как фон
                         cardElement.style.backgroundImage = `url(${hero.img})`;
