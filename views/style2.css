@@ -471,18 +471,29 @@ input:focus {
 }
 
 .link-container {
-    display: flex;
-    justify-content: start;
-    margin-bottom: 15px;
+    text-align: left; /* Центрирование ссылки */
     margin-top: 10px;
 }
 
 #goBackLink {
-    color: #000;
+    font-family: 'Cinzel', serif; /* Шрифт, чтобы сочетался с заголовком */
+    font-size: 30px; /* Размер текста для заметности */
+    color: #ff5252; /* Ярко-красный цвет текста */
+    text-decoration: none; /* Убираем подчеркивание ссылки */
+    padding: 3px 3px;
+    border-radius: 8px; /* Закругленные углы */
+    transition: all 0.3s ease; /* Плавный переход для эффектов */
+    display: inline-block;
 }
 
 #goBackLink:hover {
-    color: gray;
+    background-color: #ff5252; /* Красный фон при наведении */
+    color: #fff; /* Белый текст при наведении */
+    box-shadow: 0 0 10px rgba(255, 82, 82, 0.6), 0 0 20px rgba(255, 82, 82, 0.8); /* Эффект сияния */
+}
+
+#goBackLink:active {
+    transform: scale(0.95); /* Легкое уменьшение размера при клике */
 }
 
 .avatars {

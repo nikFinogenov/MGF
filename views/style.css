@@ -349,6 +349,19 @@ body {
     background-color: #b9922e;
 }
 
+.button img.dice-image {
+    width: 40px; /* Размер изображения */
+    height: 40px;
+}
+
+.button img.dice-image:hover {
+    filter: brightness(1.2); /* Подсветка при наведении */
+}
+
+.button:focus {
+    outline: none; /* Убираем стандартное выделение */
+}
+
 /* Золото */
 .gold-display {
     margin-top: 10px;

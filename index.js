@@ -50,7 +50,7 @@ io.on('connection', (socket) => {
         // Если нет комнаты, создаем новую
         if (!roomId) {
             roomId = `room_${socket.id}`;
-            rooms[roomId] = { players: [], selections: {} };
+            rooms[roomId] = { players: [], selections: {}, pickedBuffs: {} };
         }
 
         // Присоединяем игрока к комнате
@@ -80,27 +80,6 @@ io.on('connection', (socket) => {
         }
     });
 
-    socket.on('inArena', () => {
-
-        // let roomId = null;
-        // for (let id in rooms) {
-        //     if (rooms[id].players.length === 1) {
-        //         roomId = id;
-        //         break;
-        //     }
-        // }
-        // if (!roomId) {
-        //     roomId = `room_${socket.id}`;
-        //     rooms[roomId] = { players: [], selections: {} };
-        // }
-        // rooms[roomId].players.push({
-        //     id: socket.id,
-        // });
-        // socket.join(roomId);
-        // console.log(`Player ${socket.id} joined room ${roomId}`);
-
-
-    });
     socket.on('cardSelected', (roomId, data) => {
         console.log(`Player ${data.playerId} selected card: ${data.card}`);
 
@@ -125,6 +104,32 @@ io.on('connection', (socket) => {
         }
     });
 
+    socket.on('buffSelected', (roomId, data) => {
+        console.log(`Player ${data.playerId} selected buff: ${data.buff}`);
+        
+        // Инициализация pickedBuffs, если не существует
+        rooms[roomId].pickedBuffs = rooms[roomId].pickedBuffs || {};
+    
+        // Инициализация массива баффов для конкретного игрока, если не существует
+        if (!rooms[roomId].pickedBuffs[socket.id]) {
+            rooms[roomId].pickedBuffs[socket.id] = [];
+        }
+    
+        // Добавляем новый бафф в массив баффов игрока
+        rooms[roomId].pickedBuffs[socket.id].push({
+            buffname: data.buff
+        });
+    
+        console.log(`Picked buffs for room ${roomId}:`, rooms[roomId].pickedBuffs);
+    
+        // Отправляем событие с выбранными баффами всем игрокам в комнате
+        io.to(roomId).emit('buffsSelected', {
+            players: rooms[roomId].players.map(p => ({
+                id: p.id,
+                buffs: rooms[roomId].pickedBuffs[p.id] // Передаём массив баффов для каждого игрока
+            }))
+        });
+    });
 
     // // Обработчик выхода игрока
     socket.on('disconnect', () => {
