@@ -55,7 +55,7 @@
     <div class="all">
         <!-- Кнопка для открытия/закрытия панели -->
         <div class="toggle-panel" id="togglePanel">
-            <div class="toggle-arrow">></div>
+            <div class="toggle-arrow">→</div>
         </div>
 
         <!-- Выезжающая панель -->
@@ -117,15 +117,33 @@
 
         <!-- Блок для карт снизу -->
         <div class="bottom-cards">
-            <div class="card">Card 4</div>
-            <div class="card">Card 5</div>
-            <div class="card">Card 6</div>
+            <div class="card" data-card="buff1">Card 4</div>
+            <div class="card" data-card="buff2">Card 5</div>
+            <div class="card" data-card="buff3">Card 6</div>
         </div>
 
+        <div class="bottom-ability-cards">
+            <div class="ability-card" data-card="skill1">Card 4</div>
+            <div class="ability-card" data-card="skill2">Card 5</div>
+            <div class="ability-card" data-card="skill3">Card 6</div>
+
+        </div>
+        <div class="attack-button-block">
+            <button class="button" id="attackButton">
+                <img src="sword.png" alt="Attack" class="attack-image">
+            </button>
+        </div>
+
+
         <div class="button-block">
-            <button class="button">Action 1</button>
-            <button class="button">Action 2</button>
-            <div class="gold-display">Gold: 1000</div>
+            <button class="button" id="actionButtonRoll">
+                <img src="dice.png" alt="Dice Roll" class="dice-image">
+                20
+            </button>
+            <div class="gold-display">
+                <img src="free-icon-hryvnia-9382219.png" alt="Dice Roll" class="gold">
+                <div class="gold-text">1000</div>
+            </div>
         </div>
 
         <!-- Вертикальный блок справа -->
@@ -139,9 +157,15 @@
         const arena = document.querySelector('.all');  // Инициализация сокета
         const load = document.querySelector('#loading');  // Инициализация сокета
         const cardOptions = document.querySelectorAll('.card-option');
+        const cardBuffs = document.querySelectorAll('.card');
         const cardSelectionScreen = document.getElementById('cardSelectionScreen');
+        const RollActionButton = document.getElementById('actionButtonRoll');
+        const buffBlock = document.querySelector('.bottom-cards');
+        const buttonGoldBlock = document.querySelector('.button-block');
         let heroCards = null;
+        let buffCards = null;
         let timerInterval = null;
+        let hiddenCardsCount = 0;
 
         const randomButton = document.getElementById('randomButton');
         const timerElement = document.getElementById('timer');
@@ -149,6 +173,9 @@
         let room_Id = null;
         let timeLeft = 30;  // Время в секундах
         let hasSelectedCard = false;  // Отслеживает, выбрал ли игрок карту
+
+        buffBlock.style.display = 'none';
+        buttonGoldBlock.style.display = 'none';
 
         // Функция для обновления таймера
         function updateTimer() {
@@ -160,39 +187,81 @@
             } else {
                 clearInterval(timerInterval);
                 if (!hasSelectedCard) {
-                    selectRandomCard();
+                    selectRandomCard(cardOptions);
                 }
             }
         }
-        function updateCardNumber(newNumber) {
-            document.getElementById('card-number-hp').textContent = newNumber;
-            document.getElementById('card-number-attk').textContent = newNumber;
-            if (newNumber > 10) {
-                document.getElementById('attk-box').style.marginRight = "13px";
+
+        function updateCardNumber(newHPNumber, newATKNumber) {
+            document.getElementById('card-number-hp').textContent = newHPNumber;
+            document.getElementById('card-number-attk').textContent = newATKNumber;
+            if (newHPNumber > 10) {
                 document.getElementById('hp-box').style.marginLeft = "13px";
             }
+            if (newATKNumber > 10) {
+                document.getElementById('attk-box').style.marginRight = "13px";
+            }
         }
-        function updateOpCardNumber(newNumber) {
-            document.getElementById('op-card-number-hp').textContent = newNumber;
-            document.getElementById('op-card-number-attk').textContent = newNumber;
-            if (newNumber > 10) {
-                document.getElementById('op-attk-box').style.marginRight = "13px";
+
+        function updateOpCardNumber(newHPNumber, newATKNumber) {
+            document.getElementById('op-card-number-hp').textContent = newHPNumber;
+            document.getElementById('op-card-number-attk').textContent = newATKNumber;
+            if (newHPNumber > 10) {
                 document.getElementById('op-hp-box').style.marginLeft = "13px";
+            }
+            if (newATKNumber > 10) {
+                document.getElementById('op-attk-box').style.marginRight = "13px";
             }
         }
 
         // updateCardNumber(11);
         // updateOpCardNumber(11);
 
-        function selectRandomCard() {
-            const randomIndex = Math.floor(Math.random() * cardOptions.length);
-            const randomCard = cardOptions[randomIndex];
+        RollActionButton.addEventListener('click', function () {
+            RandomCard();
+            // selectRandomCard(cardBuffs);
+        });
+
+        function RandomCard() {
+            // Перемешиваем массив баффов
+            const shuffledBuffs = shuffleArray(buffCards).slice(0, 3); // Берем 3 случайные карты
+
+            // Получаем все элементы с классом card
+            const cardBuffs = document.querySelectorAll('.card');
+
+            // Присваиваем каждому div новые данные о баффах
+            cardBuffs.forEach((cardBuff, index) => {
+                const buff = shuffledBuffs[index];
+
+                // Назначаем имя баффа в data-card атрибут
+                cardBuff.setAttribute('data-card', buff.bf_name);
+
+                console.log('data-card установлен на:', cardBuff.getAttribute('data-card')); // Проверяем data-card
+
+                // Изменяем текст внутри div на имя баффа
+                cardBuff.textContent = buff.buff_name;
+
+                // Присваиваем изображение как фон
+                cardBuff.style.backgroundImage = `url(${buff.img})`;
+                cardBuff.style.backgroundSize = 'cover'; // Устанавливаем изображение на всю область
+                cardBuff.style.backgroundPosition = 'center'; // Центрируем изображение
+            });
+            cardBuffs.forEach(option => {
+                option.style.display = 'block'; // Восстанавливаем видимость карт
+            });
+            hiddenCardsCount = 0;
+        }
+
+        // Функция для выбора случайной карты
+        function selectRandomCard(cards) {
+            const randomIndex = Math.floor(Math.random() * cards.length);
+            const randomCard = cards[randomIndex];
             randomCard.click();  // Симуляция клика на случайную карту
         }
 
         // Добавляем обработчик на кнопку Random
         randomButton.addEventListener('click', function () {
-            selectRandomCard();
+            selectRandomCard(cardOptions);
         });
 
         // Обработчик клика на карты
@@ -212,6 +281,27 @@
 
                 // Останавливаем таймер
                 clearInterval(timerInterval);
+            });
+        });
+
+        cardBuffs.forEach(option => {
+            option.addEventListener('click', function () {
+                const selectedCard = option.getAttribute('data-card');
+                console.log(selectedCard);
+
+                socket.emit('buffSelected', room_Id, {
+                    playerId: localStorage.getItem('userId'),
+                    buff: selectedCard
+                });
+                option.style.display = 'none';
+                hiddenCardsCount++;
+                if (hiddenCardsCount === 3) {
+                    cardBuffs.forEach(option => {
+                        option.style.display = 'block'; // Восстанавливаем видимость карт
+                    });
+                    hiddenCardsCount = 0;
+                    RandomCard();
+                }
             });
         });
 
@@ -277,7 +367,6 @@
             // opponentAvatar.style.backgroundPosition = 'center'; // Центрируем картинку
             // }
             // document.getElementById('opNick').textContent = player.name;
-            socket.emit('inArena');
             // if (player) {
             // localStorage.setItem('opName', player.name);
             // localStorage.setItem('opEmail', player.email);
@@ -345,15 +434,16 @@
                     console.log('JSON данные загружены:', data); // Проверяем, что данные загружены
 
                     heroCards = data.hero_cards;
+                    buffCards = data.buffs;
 
                     // Перемешиваем массив героев для случайного выбора
                     const shuffledHeroes = shuffleArray(heroCards).slice(0, 3); // Берем первые 3 карты
+                    const shuffledBuffs = shuffleArray(buffCards).slice(0, 3); // Берем первые 3 баффа
 
-                    // Получаем все элементы с классом card-option
-                    const cardElements = document.querySelectorAll('.card-option');
+                    RandomCard();
 
                     // Присваиваем каждому div данные о героях без повторений
-                    cardElements.forEach((cardElement, index) => {
+                    cardOptions.forEach((cardElement, index) => {
                         const hero = shuffledHeroes[index];
 
                         // Назначаем имя героя в data-card атрибут
@@ -361,15 +451,29 @@
 
                         console.log('data-card установлен на:', cardElement.getAttribute('data-card')); // Проверяем data-card
 
-                        // Изменяем текст внутри div на имя героя
-                        // cardElement.textContent = hero.he_name;
-                        //WHEN SETTING HP AND ATTACK 
-                        // if  HP and ATTACK is > 10 adjust MarginLeft MarginRight MarginRignt
-
                         // Присваиваем изображение как фон
+                        updateCardNumber()
                         cardElement.style.backgroundImage = `url(${hero.img})`;
                         cardElement.style.backgroundSize = 'cover'; // Устанавливаем изображение на всю область
                         cardElement.style.backgroundPosition = 'center'; // Центрируем изображение
+
+                        const hpElement = cardElement.querySelector('.card-opt-hp-text');
+                        const attackElement = cardElement.querySelector('.card-opt-attk-text');
+
+                        hpElement.textContent = hero.hp; // Заполняем HP
+                        attackElement.textContent = hero.atk; // Заполняем атаку
+
+                        const hpBox = cardElement.querySelector('.card-opt-hp');
+                        const attkBox = cardElement.querySelector('.card-opt-attk');
+
+                        if (hero.hp > 10) {
+                            hpBox.style.marginLeft = "23px";
+                        }
+
+                        // Проверка атаки > 10 и установка отступов
+                        if (hero.attack > 10) {
+                            attkBox.style.marginRight = "23px";
+                        }
                     });
                 })
                 .catch(error => {
@@ -436,6 +540,7 @@
                             opponentCardElement.style.backgroundImage = `url(${opponentCardImg})`;
                             opponentCardElement.style.backgroundSize = 'cover';
                             opponentCardElement.style.backgroundPosition = 'center';
+                            updateOpCardNumber(opponentHeroCard.hp, opponentHeroCard.atk)
                         }
                     } else {
                         console.log('Error: Opponent card not found in heroCards');
@@ -461,6 +566,7 @@
                             currentPlayerCardElement.style.backgroundImage = `url(${currentPlayerCardImg})`;
                             currentPlayerCardElement.style.backgroundSize = 'cover';
                             currentPlayerCardElement.style.backgroundPosition = 'center';
+                            updateCardNumber(currentPlayerHeroCard.hp, currentPlayerHeroCard.atk);
                         }
                     } else {
                         console.log('Error: Your card not found in heroCards');
