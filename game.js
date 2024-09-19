@@ -42,6 +42,7 @@ class Game {
             parseInt(heroData.hp),
             parseInt(heroData.atk),
             parseInt(heroData.mana),
+            parseInt(heroData.money),
             parseInt(heroData.manaregen),
             parseInt(heroData.hpregen),
             heroData.img,
@@ -50,6 +51,7 @@ class Game {
             parseInt(heroData.maxlevel),
             heroData.abilities.map(ab => new Ability(
                 ab.ab_name,
+                ab.img,
                 ab.desc,
                 ab.type,
                 ab.behavior,

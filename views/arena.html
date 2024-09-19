@@ -11,6 +11,11 @@
 
 <body>
     <!-- Начальный экран выбора карт -->
+    <div id="custom-alert" class="alert hidden">
+        <span id="alert-message">Not enough money</span>
+        <!-- <br> -->
+        <!-- <button id="close-alert">OK</button> -->
+    </div>
     <div class="card-selection-screen" id="cardSelectionScreen">
         <div class="screen-header">
             <div class="timer" id="timer">00:30</div>
@@ -117,16 +122,15 @@
 
         <!-- Блок для карт снизу -->
         <div class="bottom-cards">
-            <div class="card" data-card="buff1">Card 4</div>
-            <div class="card" data-card="buff2">Card 5</div>
-            <div class="card" data-card="buff3">Card 6</div>
+            <div class="card" data-card="buff1">Card 1</div>
+            <div class="card" data-card="buff2">Card 2</div>
+            <div class="card" data-card="buff3">Card 3</div>
         </div>
 
         <div class="bottom-ability-cards">
             <div class="ability-card" data-card="skill1">Card 4</div>
             <div class="ability-card" data-card="skill2">Card 5</div>
             <div class="ability-card" data-card="skill3">Card 6</div>
-
         </div>
         <div class="attack-button-block">
             <button class="button" id="attackButton">
@@ -142,7 +146,7 @@
             </button>
             <div class="gold-display">
                 <img src="free-icon-hryvnia-9382219.png" alt="Dice Roll" class="gold">
-                <div class="gold-text">1000</div>
+                <div class="gold-text" id="goldValue">1</div>
             </div>
         </div>
 
@@ -161,11 +165,15 @@
         const cardSelectionScreen = document.getElementById('cardSelectionScreen');
         const RollActionButton = document.getElementById('actionButtonRoll');
         const buffBlock = document.querySelector('.bottom-cards');
+        const AbilityBlock = document.querySelector('.bottom-ability-cards');
         const buttonGoldBlock = document.querySelector('.button-block');
+        const AttackbuttonBlock = document.querySelector('.attack-button-block');
         let heroCards = null;
         let buffCards = null;
+        let shuffledBuffs = null;
         let timerInterval = null;
         let hiddenCardsCount = 0;
+        let alertTimeout;
 
         const randomButton = document.getElementById('randomButton');
         const timerElement = document.getElementById('timer');
@@ -174,8 +182,11 @@
         let timeLeft = 30;  // Время в секундах
         let hasSelectedCard = false;  // Отслеживает, выбрал ли игрок карту
 
-        buffBlock.style.display = 'none';
-        buttonGoldBlock.style.display = 'none';
+        // buffBlock.style.display = 'none';
+        // buttonGoldBlock.style.display = 'none';
+        AbilityBlock.style.display = 'none';
+        AttackbuttonBlock.style.display = 'none';
+
 
         // Функция для обновления таймера
         function updateTimer() {
@@ -191,6 +202,28 @@
                 }
             }
         }
+
+        function showAlert(message) {
+            const alertBox = document.getElementById('custom-alert');
+            const alertMessage = document.getElementById('alert-message');
+
+            // Set the message
+            alertMessage.textContent = message;
+
+            // Display the alert
+            alertBox.classList.remove('hidden');
+
+            // Automatically hide the alert after 5 seconds
+            alertTimeout = setTimeout(function () {
+                alertBox.classList.add('hidden');
+            }, 500); // 5000 milliseconds = 5 seconds
+        }
+
+        // Hide the alert when clicking "OK"
+        // document.getElementById('close-alert').addEventListener('click', function () {
+        //     document.getElementById('custom-alert').classList.add('hidden');
+        //     clearTimeout(alertTimeout);
+        // });
 
         function updateCardNumber(newHPNumber, newATKNumber) {
             document.getElementById('card-number-hp').textContent = newHPNumber;
@@ -218,13 +251,19 @@
         // updateOpCardNumber(11);
 
         RollActionButton.addEventListener('click', function () {
-            RandomCard();
+            if (Number(document.getElementById("goldValue").textContent) > 20) {
+                RandomCard();
+                document.getElementById("goldValue").textContent = Number(document.getElementById("goldValue").textContent) - 20;
+            }
+            else {
+                showAlert('Not enough money');
+            }
             // selectRandomCard(cardBuffs);
         });
 
         function RandomCard() {
             // Перемешиваем массив баффов
-            const shuffledBuffs = shuffleArray(buffCards).slice(0, 3); // Берем 3 случайные карты
+            shuffledBuffs = shuffleArray(buffCards).slice(0, 3); // Берем 3 случайные карты
 
             // Получаем все элементы с классом card
             const cardBuffs = document.querySelectorAll('.card');
@@ -284,17 +323,25 @@
             });
         });
 
-        cardBuffs.forEach(option => {
+        cardBuffs.forEach((option, index) => {
             option.addEventListener('click', function () {
                 const selectedCard = option.getAttribute('data-card');
-                console.log(selectedCard);
-
-                socket.emit('buffSelected', room_Id, {
-                    playerId: localStorage.getItem('userId'),
-                    buff: selectedCard
-                });
-                option.style.display = 'none';
-                hiddenCardsCount++;
+                // let selectdPrice = option.get
+                // console.log(selectedCard);
+                if (Number(document.getElementById("goldValue").textContent >= Number(shuffledBuffs[index].price))) {
+                    socket.emit('buffSelected', room_Id, {
+                        playerId: localStorage.getItem('userId'),
+                        buff: selectedCard,
+                        // price: selectdPrice
+                    });
+                    option.style.display = 'none';
+                    hiddenCardsCount++;
+                    document.getElementById("goldValue").textContent = Number(document.getElementById("goldValue").textContent) - Number(shuffledBuffs[index].price);
+                }
+                else {
+                    showAlert('Not enough money');
+                }
+                // console.log(shuffledBuffs[index]);
                 if (hiddenCardsCount === 3) {
                     cardBuffs.forEach(option => {
                         option.style.display = 'block'; // Восстанавливаем видимость карт
@@ -354,44 +401,13 @@
             document.querySelector('.avatar.opponent-avatar').style.backgroundImage = `url(${opponent.avatar})`;
             document.querySelector('.avatar.opponent-avatar').style.backgroundSize = 'cover';
             document.querySelector('.avatar.opponent-avatar').style.backgroundPosition = 'center';
-
-
-            // Проверяем, что элемент найден
-            // if (opponentAvatar && player && player.avatar) {
-            // Устанавливаем картинку как фоновое изображение элемента
-            // opponentAvatar
-            // opponentAvatar.textContent = '';
-
-            // Можно настроить размер фона, чтобы картинка отображалась правильно
-            // opponentAvatar.style.backgroundSize = 'cover'; // Заставляем картинку заполнить элемент
-            // opponentAvatar.style.backgroundPosition = 'center'; // Центрируем картинку
-            // }
-            // document.getElementById('opNick').textContent = player.name;
-            // if (player) {
-            // localStorage.setItem('opName', player.name);
-            // localStorage.setItem('opEmail', player.email);
-            // localStorage.setItem('opId', player.id);
-            // localStorage.setItem('opAva', player.avatar);
-            // }
-            // console.log(players);
-            // Перенаправляем на страницу арены
-            // socket.emit('leaveRoom', { roomId });
-            // socket.emit('arenaStart', {roomId, players})
-            // window.location.href = "arena.html";
         });
-        // socket.on('loadingScreen', () => {
-        //     // console.log("pidoras x2")
 
-        //     // cardSelectionScreen.style.display = 'none';
-        // });
-
-        // socket.emit('inArena');
-
-        if (localStorage.getItem('cardsSelected') === 'true') {
-            cardSelectionScreen.style.display = 'none'; // Скрываем экран выбора карт
-            arena.style.display = 'block'; // Показываем арену
-            load.style.display = 'none';
-        }
+        // if (localStorage.getItem('cardsSelected') === 'true') {
+        //     cardSelectionScreen.style.display = 'none'; // Скрываем экран выбора карт
+        //     arena.style.display = 'block'; // Показываем арену
+        //     load.style.display = 'none';
+        // }
 
         document.addEventListener('DOMContentLoaded', function () {
             const togglePanel = document.getElementById('togglePanel');
@@ -438,7 +454,7 @@
 
                     // Перемешиваем массив героев для случайного выбора
                     const shuffledHeroes = shuffleArray(heroCards).slice(0, 3); // Берем первые 3 карты
-                    const shuffledBuffs = shuffleArray(buffCards).slice(0, 3); // Берем первые 3 баффа
+                    shuffledBuffs = shuffleArray(buffCards).slice(0, 3); // Берем первые 3 баффа
 
                     RandomCard();
 
@@ -489,31 +505,9 @@
                     }
                 });
             }
-            // Event listener for each card
-            // cardOptions.forEach(option => {
-            //     option.addEventListener('click', function () {
-            //         if (hasSelectedCard) return; // Prevent re-selection
-
-            //         // Mark the card as selected
-            //         hasSelectedCard = true;
-            //         hideUnselectedCards(option);
-
-            //         const selectedCard = option.getAttribute('data-card');
-
-            //         // Emit event to server with selected card
-            //         console.log(`Emitting cardSelected event with card: ${selectedCard}`);
-            //         socket.emit('cardSelected', room_Id, {
-            //             playerId: localStorage.getItem('userId'),  // ID игрока из localStorage
-            //             card: selectedCard  // Выбранная карта
-            //         });
-
-            //         // Highlight the selected card
-            //         option.classList.add('selected');
-            //     });
-            // });
 
             // Handle the response from the server when both players have selected cards
-            socket.on('cardsSelected', (data) => {
+            socket.on('startRound', (data) => {
                 console.log('Received cardsSelected event from server');
                 console.log('Players selected cards:', data.players);
 
@@ -560,6 +554,8 @@
                         const currentPlayerCardImg = currentPlayerHeroCard.img;
                         console.log(`Your card image: ${currentPlayerCardImg}`);
 
+                        document.getElementById("goldValue").textContent = currentPlayerHeroCard.money;
+
                         // Добавляем стиль для отображения изображения карты текущего игрока
                         const currentPlayerCardElement = document.querySelector('.card-large');
                         if (currentPlayerCardElement) {
@@ -580,12 +576,21 @@
                 arena.style.display = 'block';
             });
 
-            socket.on('startRound', (Timer) => {
+            // socket.on('startRound', (Timer) => {
 
-            });
+            // });
 
-            socket.on('startTurn', (Timer) => {
+            socket.on('startTurn', (data) => {
+                console.log("turn started")
+                // const cardAbilities = document.querySelectorAll('.ability-card');
 
+                // // Присваиваем каждому div новые данные о баффах
+                // cardAbilities.forEach((cardAb, index) => {
+                //     // Присваиваем изображение как фон
+                //     cardAb.style.backgroundImage = `url(${heroCards.abilities[index].img})`;
+                //     cardAb.style.backgroundSize = 'cover'; // Устанавливаем изображение на всю область
+                //     cardAb.style.backgroundPosition = 'center'; // Центрируем изображение
+                // });
             });
 
             // Debug log to confirm connection

@@ -93,7 +93,7 @@ io.on('connection', (socket) => {
 
             if (allPlayersSelected) {
                 // Notify both players that the selection is complete
-                io.to(roomId).emit('cardsSelected', {
+                io.to(roomId).emit('startRound', {
                     players: rooms[roomId].players.map(p => ({
                         id: p.id,
                         card: rooms[roomId].selections[p.id]
@@ -117,13 +117,14 @@ io.on('connection', (socket) => {
     
         // Добавляем новый бафф в массив баффов игрока
         rooms[roomId].pickedBuffs[socket.id].push({
-            buffname: data.buff
+            buffname: data.buff, 
+            // buffprice: data.price
         });
     
         console.log(`Picked buffs for room ${roomId}:`, rooms[roomId].pickedBuffs);
     
         // Отправляем событие с выбранными баффами всем игрокам в комнате
-        io.to(roomId).emit('buffsSelected', {
+        io.to(roomId).emit('startTurn', {
             players: rooms[roomId].players.map(p => ({
                 id: p.id,
                 buffs: rooms[roomId].pickedBuffs[p.id] // Передаём массив баффов для каждого игрока

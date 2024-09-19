@@ -5,6 +5,7 @@
             "hp": "50",
             "atk": "2",
             "mana": "5",
+            "money": "300",
             "manaregen": "1",
             "hpregen": "1",
             "img": "../cards/heroes/van.png",
@@ -14,6 +15,39 @@
             "abilities": [
                 {
                     "ab_name": "Test_ability1",
+                    "img": "../cards/abilities/nagieva.jpg",
+                    "desc": "Description",
+                    "type": "direct",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "10",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "3"
+                        }
+                    ]
+                },                {
+                    "ab_name": "Test_ability1",
+                    "img": "../cards/abilities/nagieva.jpg",
+                    "desc": "Description",
+                    "type": "direct",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "10",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "3"
+                        }
+                    ]
+                },                {
+                    "ab_name": "Test_ability1",
+                    "img": "../cards/abilities/nagieva.jpg",
                     "desc": "Description",
                     "type": "direct",
                     "behavior": "active",
@@ -36,6 +70,7 @@
             "hp": "50",
             "atk": "2",
             "mana": "5",
+            "money": "300",
             "manaregen": "1",
             "hpregen": "1",
             "img": "cards/heroes/foma.png",
@@ -44,10 +79,11 @@
             "maxlevel": "15",
             "abilities": [
                 {
-                    "ab_name": "Test_ability2",
+                    "ab_name": "Test_ability1",
+                    "img": "../cards/abilities/nagieva.jpg",
                     "desc": "Description",
-                    "type": "amplification",
-                    "behavior": "passive",
+                    "type": "direct",
+                    "behavior": "active",
                     "level": "1",
                     "maxlevel": "1",
                     "property": [
@@ -55,7 +91,39 @@
                             "dmg": "10",
                             "cooldown": "2",
                             "duration": "0",
-                            "manacost": ""
+                            "manacost": "3"
+                        }
+                    ]
+                },                {
+                    "ab_name": "Test_ability1",
+                    "img": "../cards/abilities/nagieva.jpg",
+                    "desc": "Description",
+                    "type": "direct",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "10",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "3"
+                        }
+                    ]
+                },                {
+                    "ab_name": "Test_ability1",
+                    "img": "../cards/abilities/nagieva.jpg",
+                    "desc": "Description",
+                    "type": "direct",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "10",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "3"
                         }
                     ]
                 }
@@ -67,6 +135,7 @@
             "hp": "50",
             "atk": "2",
             "mana": "5",
+            "money": "300",
             "manaregen": "1",
             "hpregen": "1",
             "img": "../cards/heroes/card.png",
@@ -75,7 +144,40 @@
             "maxlevel": "15",
             "abilities": [
                 {
-                    "ab_name": "Test_ability3",
+                    "ab_name": "Test_ability1",
+                    "img": "../cards/abilities/nagieva.jpg",
+                    "desc": "Description",
+                    "type": "direct",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "10",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "3"
+                        }
+                    ]
+                },                {
+                    "ab_name": "Test_ability1",
+                    "img": "../cards/abilities/nagieva.jpg",
+                    "desc": "Description",
+                    "type": "direct",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "10",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "3"
+                        }
+                    ]
+                },                {
+                    "ab_name": "Test_ability1",
+                    "img": "../cards/abilities/nagieva.jpg",
                     "desc": "Description",
                     "type": "direct",
                     "behavior": "active",
@@ -98,6 +200,7 @@
             "hp": "50",
             "atk": "2",
             "mana": "5",
+            "money": "300",
             "manaregen": "1",
             "hpregen": "1",
             "img": "../cards/heroes/Herp.png",
@@ -106,7 +209,40 @@
             "maxlevel": "15",
             "abilities": [
                 {
-                    "ab_name": "Test_ability3",
+                    "ab_name": "Test_ability1",
+                    "img": "../cards/abilities/nagieva.jpg",
+                    "desc": "Description",
+                    "type": "direct",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "10",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "3"
+                        }
+                    ]
+                },                {
+                    "ab_name": "Test_ability1",
+                    "img": "../cards/abilities/nagieva.jpg",
+                    "desc": "Description",
+                    "type": "direct",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "10",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "3"
+                        }
+                    ]
+                },                {
+                    "ab_name": "Test_ability1",
+                    "img": "../cards/abilities/nagieva.jpg",
                     "desc": "Description",
                     "type": "direct",
                     "behavior": "active",
@@ -129,6 +265,7 @@
             "hp": "50",
             "atk": "2",
             "mana": "5",
+            "money": "300",
             "manaregen": "1",
             "hpregen": "1",
             "img": "../cards/heroes/gay.jpg",
@@ -137,7 +274,373 @@
             "maxlevel": "15",
             "abilities": [
                 {
-                    "ab_name": "Test_ability3",
+                    "ab_name": "Test_ability1",
+                    "img": "../cards/abilities/nagieva.jpg",
+                    "desc": "Description",
+                    "type": "direct",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "10",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "3"
+                        }
+                    ]
+                },                {
+                    "ab_name": "Test_ability1",
+                    "img": "../cards/abilities/nagieva.jpg",
+                    "desc": "Description",
+                    "type": "direct",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "10",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "3"
+                        }
+                    ]
+                },                {
+                    "ab_name": "Test_ability1",
+                    "img": "../cards/abilities/nagieva.jpg",
+                    "desc": "Description",
+                    "type": "direct",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "10",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "3"
+                        }
+                    ]
+                }
+            ],
+            "buffs": []
+        },
+        {
+            "he_name": "Death",
+            "hp": "50",
+            "atk": "2",
+            "mana": "5",
+            "money": "300",
+            "manaregen": "1",
+            "hpregen": "1",
+            "img": "../cards/heroes/death.png",
+            "desc": "Description",
+            "level": "1",
+            "maxlevel": "15",
+            "abilities": [
+                {
+                    "ab_name": "death_atk",
+                    "img": "../cards/abilities/death_atk.png",
+                    "desc": "Description",
+                    "type": "direct",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "10",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "3"
+                        }
+                    ]
+                }, 
+                {
+                    "ab_name": "death_heal",
+                    "img": "../cards/abilities/death_heal.png",
+                    "desc": "Description",
+                    "type": "direct",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "10",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "3"
+                        }
+                    ]
+                }, 
+                {
+                    "ab_name": "death_def",
+                    "img": "../cards/abilities/death_def.png",
+                    "desc": "Description",
+                    "type": "direct",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "10",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "3"
+                        }
+                    ]
+                }
+            ],
+            "buffs": []
+        },
+        {
+            "he_name": "Geralt",
+            "hp": "50",
+            "atk": "2",
+            "mana": "5",
+            "money": "300",
+            "manaregen": "1",
+            "hpregen": "1",
+            "img": "cards/heroes/geraldina.png",
+            "desc": "Description",
+            "level": "1",
+            "maxlevel": "15",
+            "abilities": [
+                {
+                    "ab_name": "ger_atk",
+                    "img": "../cards/abilities/ger_atk.png",
+                    "desc": "Description",
+                    "type": "direct",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "10",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "3"
+                        }
+                    ]
+                }, 
+                {
+                    "ab_name": "ger_atk2",
+                    "img": "../cards/abilities/ger_atk2.png",
+                    "desc": "Description",
+                    "type": "direct",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "10",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "3"
+                        }
+                    ]
+                }, 
+                {
+                    "ab_name": "ger_heal",
+                    "img": "../cards/abilities/ger_heal.png",
+                    "desc": "Description",
+                    "type": "direct",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "10",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "3"
+                        }
+                    ]
+                }
+            ],
+            "buffs": []
+        },
+        {
+            "he_name": "Sauron",
+            "hp": "50",
+            "atk": "2",
+            "mana": "5",
+            "money": "300",
+            "manaregen": "1",
+            "hpregen": "1",
+            "img": "../cards/heroes/sau.png",
+            "desc": "Description",
+            "level": "1",
+            "maxlevel": "15",
+            "abilities": [
+                {
+                    "ab_name": "sau_atk",
+                    "img": "../cards/abilities/sau_atk.png",
+                    "desc": "Description",
+                    "type": "direct",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "10",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "3"
+                        }
+                    ]
+                }, 
+                {
+                    "ab_name": "sau_atk2",
+                    "img": "../cards/abilities/sau_atk2.png",
+                    "desc": "Description",
+                    "type": "direct",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "10",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "3"
+                        }
+                    ]
+                }, 
+                {
+                    "ab_name": "sau_atk",
+                    "img": "../cards/abilities/sau_atk3.png",
+                    "desc": "Description",
+                    "type": "direct",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "10",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "3"
+                        }
+                    ]
+                }
+            ],
+            "buffs": []
+        },
+        {
+            "he_name": "Varian",
+            "hp": "50",
+            "atk": "2",
+            "mana": "5",
+            "money": "300",
+            "manaregen": "1",
+            "hpregen": "1",
+            "img": "../cards/heroes/var.png",
+            "desc": "Description",
+            "level": "1",
+            "maxlevel": "15",
+            "abilities": [
+                {
+                    "ab_name": "var_atk",
+                    "img": "../cards/abilities/var_atk.png",
+                    "desc": "Description",
+                    "type": "direct",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "10",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "3"
+                        }
+                    ]
+                },                {
+                    "ab_name": "var_atk2",
+                    "img": "../cards/abilities/var_atk2.png",
+                    "desc": "Description",
+                    "type": "direct",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "10",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "3"
+                        }
+                    ]
+                },                {
+                    "ab_name": "var_def",
+                    "img": "../cards/abilities/var_def.png",
+                    "desc": "Description",
+                    "type": "direct",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "10",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "3"
+                        }
+                    ]
+                }
+            ],
+            "buffs": []
+        },
+        {
+            "he_name": "Ron",
+            "hp": "50",
+            "atk": "2",
+            "mana": "5",
+            "money": "300",
+            "manaregen": "1",
+            "hpregen": "1",
+            "img": "../cards/heroes/ron.png",
+            "desc": "Description",
+            "level": "1",
+            "maxlevel": "15",
+            "abilities": [
+                {
+                    "ab_name": "ron_atk",
+                    "img": "../cards/abilities/ron_atk.png",
+                    "desc": "Description",
+                    "type": "direct",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "10",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "3"
+                        }
+                    ]
+                },
+                {
+                    "ab_name": "ron_heal",
+                    "img": "../cards/abilities/ron_heal.png",
+                    "desc": "Description",
+                    "type": "direct",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "10",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "3"
+                        }
+                    ]
+                },
+                {
+                    "ab_name": "ron_def",
+                    "img": "../cards/abilities/ron_def.png",
                     "desc": "Description",
                     "type": "direct",
                     "behavior": "active",
@@ -218,6 +721,81 @@
             "bf_name": "Test_buff4",
             "desc": "Description",
             "img": "../cards/buffs/buff2.png",
+            "type": "amplification",
+            "target": "hero",
+            "stackable": "False",
+            "price": "100",
+            "rarity": "Common",
+            "level": "1",
+            "maxlevel": "4",
+            "dmg": "3",
+            "hp": "3",
+            "hpregen": "1",
+            "mana": "2",
+            "manaregen": "1",
+            "cooldown": "10",
+            "duration": "0"
+        },
+        {
+            "bf_name": "mojo",
+            "desc": "Description",
+            "img": "../cards/buffs/1.png",
+            "type": "amplification",
+            "target": "hero",
+            "stackable": "False",
+            "price": "100",
+            "rarity": "Common",
+            "level": "1",
+            "maxlevel": "4",
+            "dmg": "3",
+            "hp": "3",
+            "hpregen": "1",
+            "mana": "2",
+            "manaregen": "1",
+            "cooldown": "10",
+            "duration": "0"
+        },
+        {
+            "bf_name": "mojo2",
+            "desc": "Description",
+            "img": "../cards/buffs/2.png",
+            "type": "amplification",
+            "target": "hero",
+            "stackable": "False",
+            "price": "100",
+            "rarity": "Common",
+            "level": "1",
+            "maxlevel": "4",
+            "dmg": "3",
+            "hp": "3",
+            "hpregen": "1",
+            "mana": "2",
+            "manaregen": "1",
+            "cooldown": "10",
+            "duration": "0"
+        },
+        {
+            "bf_name": "Mojo3",
+            "desc": "Description",
+            "img": "../cards/buffs/3.png",
+            "type": "amplification",
+            "target": "hero",
+            "stackable": "False",
+            "price": "100",
+            "rarity": "Common",
+            "level": "1",
+            "maxlevel": "4",
+            "dmg": "3",
+            "hp": "3",
+            "hpregen": "1",
+            "mana": "2",
+            "manaregen": "1",
+            "cooldown": "10",
+            "duration": "0"
+        },        {
+            "bf_name": "Mojo4",
+            "desc": "Description",
+            "img": "../cards/buffs/4.png",
             "type": "amplification",
             "target": "hero",
             "stackable": "False",
