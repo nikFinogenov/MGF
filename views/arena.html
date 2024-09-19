@@ -80,7 +80,7 @@
             <div class="round-display">Round: 1</div>
 
             <!-- Таймер под счётом раундов -->
-            <div class="timer-display">00:30</div>
+            <div class="timer-display" id="round-time">00:30</div>
         </div>
 
         <!-- Блок для аватара и ника игрока -->
@@ -103,9 +103,9 @@
 
         <!-- Блок для карт сверху -->
         <div class="top-cards">
-            <div class="enemycard card-left">Card left</div>
-            <div class="enemycard card-center">Card Center</div>
-            <div class="enemycard card-right">Card Right</div>
+            <div class="enemycard card-left"></div>
+            <div class="enemycard card-center"></div>
+            <div class="enemycard card-right"></div>
         </div>
 
         <!-- Блок для карты на поле -->
@@ -317,7 +317,7 @@
                     playerId: localStorage.getItem('userId'),
                     card: selectedCard
                 });
-
+                randomButton.style.display = 'none';
                 // Останавливаем таймер
                 clearInterval(timerInterval);
             });

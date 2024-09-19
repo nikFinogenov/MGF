@@ -175,6 +175,9 @@ body {
 }
 
 .enemycard {
+    background-image: url("back.png");
+    background-position: center;
+    background-size: cover;
     width: 100px;
     height: 150px;
     background-color: rgba(0, 0, 0, 0.7);
@@ -297,7 +300,6 @@ body {
 .ability-card:hover {
     transform: scale(1.1);
 }
-
 .alert {
     position: fixed;
     border: 2px solid red;
