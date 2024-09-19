@@ -80,8 +80,8 @@
 
         <!-- Блок для аватара и ника игрока -->
         <div class="player-avatar-block">
+            <div class="nickname" id="playerNick">Player Nick</div>
             <div class="avatar player-avatar"></div>
-            <div class="nickname" id="playerNick">Player Nick</div> <!-- Ник игрока -->
         </div>
 
         <!-- Блок для карты противника сверху -->
@@ -120,6 +120,14 @@
             <div class="card" data-card="buff1">Card 4</div>
             <div class="card" data-card="buff2">Card 5</div>
             <div class="card" data-card="buff3">Card 6</div>
+        </div>
+
+        <div class="manapool">
+            <div class="mana"></div>
+            <div class="progress">
+                <div class="track">
+                </div>
+            </div>
         </div>
 
         <div class="bottom-ability-cards">
@@ -322,6 +330,36 @@
             return array;
         }
 
+        function createBars(count,manaCount) {
+            // Находим элемент с классом 'track'
+            const track = document.querySelector('.track');
+            const progress = document.querySelector('.progress');
+            const mana = document.querySelector('.mana');
+
+            mana.textContent = manaCount;
+
+            // Очищаем track перед добавлением новых bar
+            track.innerHTML = '';
+
+            // Ширина одного бара и отступов
+            const barWidth = 6;  // ширина одной полоски .bar
+            const margin = 2;    // отступ между полосками
+            
+
+            // Вычисляем общую ширину progress
+            const totalWidth = count * (barWidth + margin * 2);
+
+            // Устанавливаем динамическую ширину прогресс-бара
+            progress.style.width = `${totalWidth + 4}px`; // +4px для небольшого запаса на границы
+
+            // Создаем нужное количество div с классом 'bar'
+            for (let i = 0; i < count; i++) {
+                const bar = document.createElement('div');
+                bar.classList.add('bar');
+                track.appendChild(bar);
+            }
+        }
+
         // Отправляем информацию о себе
         socket.emit('userEmail', localStorage.getItem('userEmail'));
         socket.emit('userId', localStorage.getItem('userId'));
@@ -445,7 +483,6 @@
                     // Присваиваем каждому div данные о героях без повторений
                     cardOptions.forEach((cardElement, index) => {
                         const hero = shuffledHeroes[index];
-
                         // Назначаем имя героя в data-card атрибут
                         cardElement.setAttribute('data-card', hero.he_name);
 
@@ -559,7 +596,7 @@
                     if (currentPlayerHeroCard) {
                         const currentPlayerCardImg = currentPlayerHeroCard.img;
                         console.log(`Your card image: ${currentPlayerCardImg}`);
-
+                        createBars(parseInt(currentPlayerHeroCard.mana), currentPlayerHeroCard.mana);
                         // Добавляем стиль для отображения изображения карты текущего игрока
                         const currentPlayerCardElement = document.querySelector('.card-large');
                         if (currentPlayerCardElement) {

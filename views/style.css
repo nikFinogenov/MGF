@@ -4,7 +4,8 @@
     box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
     height: 100%;
     width: 100%;
 }
@@ -16,37 +17,51 @@ body {
     position: relative;
     overflow: hidden;
 }
+
 #loading {
     display: flex;
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    color: black; /* Белый цвет текста */
-    font-size: 24px; /* Размер шрифта */
-    font-family: 'Arial', sans-serif; /* Семейство шрифтов */
-    letter-spacing: 1px; /* Межбуквенное расстояние */
-    text-align: center; /* Текст выровнен по центру */
+    color: black;
+    /* Белый цвет текста */
+    font-size: 24px;
+    /* Размер шрифта */
+    font-family: 'Arial', sans-serif;
+    /* Семейство шрифтов */
+    letter-spacing: 1px;
+    /* Межбуквенное расстояние */
+    text-align: center;
+    /* Текст выровнен по центру */
 }
+
 #loading p {
     color: #fff;
     text-shadow: 2px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;
 }
+
 /* HTML: <div class="loader"></div> */
 /* HTML: <div class="loader"></div> */
 .loader {
     width: 50px;
     aspect-ratio: 1.154;
-    --_g: no-repeat radial-gradient(farthest-side,#000 90%,#0000);
-    background: 
-      var(--_g) 50%  0,
-      var(--_g) 0    100%,
-      var(--_g) 100% 100%;
+    --_g: no-repeat radial-gradient(farthest-side, #000 90%, #0000);
+    background:
+        var(--_g) 50% 0,
+        var(--_g) 0 100%,
+        var(--_g) 100% 100%;
     background-size: 35% calc(35%*1.154);
     animation: l16 1s infinite;
-  }
-  @keyframes l16{ 
-      50%,100% {background-position: 100% 100%,50% 0,0 100%} 
-  }
+}
+
+@keyframes l16 {
+
+    50%,
+    100% {
+        background-position: 100% 100%, 50% 0, 0 100%
+    }
+}
+
 /* Затемненный фон */
 .card-selection-screen {
     position: absolute;
@@ -172,7 +187,8 @@ body {
     font-family: 'Cinzel', serif;
     font-size: 16px;
     text-align: center;
-    position: absolute; /* Make the cards absolutely positioned */
+    position: absolute;
+    /* Make the cards absolutely positioned */
     transition: transform 0.3s ease;
 }
 
@@ -186,30 +202,37 @@ body {
     justify-content: center;
     align-items: center;
     width: 50px;
-    height: 200px; /* Ensures proper space for the fan layout */
+    height: 200px;
+    /* Ensures proper space for the fan layout */
 }
 
 /* Центр карты */
 .card-center {
     transform: rotate(0deg);
-    transform-origin: bottom center; /* Use bottom center as origin for rotation */
+    transform-origin: bottom center;
+    /* Use bottom center as origin for rotation */
     z-index: 3;
 }
 
 /* Левые и правые карты */
 .card-left {
     transform: rotate(-45deg);
-    transform-origin: bottom center; /* Bottom center as origin */
-    left: -50px; /* Adjust the left position */
+    transform-origin: bottom center;
+    /* Bottom center as origin */
+    left: -50px;
+    /* Adjust the left position */
     z-index: 2;
 }
 
 .card-right {
     transform: rotate(45deg);
-    transform-origin: bottom center; /* Bottom center as origin */
-    right: -50px; /* Adjust the right position */
+    transform-origin: bottom center;
+    /* Bottom center as origin */
+    right: -50px;
+    /* Adjust the right position */
     z-index: 2;
 }
+
 /* Блок для карт снизу */
 .bottom-cards {
     position: absolute;
@@ -311,22 +334,27 @@ body {
     transform: translateX(-50%);
     z-index: 2;
 }
+
 .card-stats-hp {
     margin-left: 17px;
     margin-bottom: 18px;
 }
+
 .card-stats-attk {
     margin-right: 17px;
     margin-bottom: 18px;
 }
+
 .card-opt-hp {
     margin-left: 27px;
     margin-bottom: 22px;
 }
+
 .card-opt-attk {
     margin-right: 27px;
     margin-bottom: 22px;
 }
+
 .opponentcard-large {
     width: 150px;
     height: 225px;
@@ -369,8 +397,10 @@ body {
 
 .button-block {
     position: absolute;
-    bottom: 2%; /* Блок на одном уровне с нижними картами */
-    right: 34%;  /* Смещаем блок кнопок ближе к правому краю экрана */
+    bottom: 2%;
+    /* Блок на одном уровне с нижними картами */
+    right: 34%;
+    /* Смещаем блок кнопок ближе к правому краю экрана */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -380,10 +410,13 @@ body {
 
 .attack-button-block {
     position: absolute;
-    bottom: 6%; /* Блок на одном уровне с нижними картами */
-    right: 34%;  /* Смещаем блок ближе к правому краю */
+    bottom: 6%;
+    /* Блок на одном уровне с нижними картами */
+    right: 34%;
+    /* Смещаем блок ближе к правому краю */
     display: flex;
-    align-items: center; /* Центрируем контент по вертикали */
+    align-items: center;
+    /* Центрируем контент по вертикали */
     gap: 10px;
     z-index: 1;
 }
@@ -403,8 +436,10 @@ body {
     cursor: pointer;
     transition: background-color 0.3s ease;
     display: flex;
-    justify-content: center;  /* Центрирование по горизонтали */
-    align-items: center;      /* Центрирование по вертикали */
+    justify-content: center;
+    /* Центрирование по горизонтали */
+    align-items: center;
+    /* Центрирование по вертикали */
     text-align: center;
 }
 
@@ -413,25 +448,30 @@ body {
 }
 
 .button img.dice-image {
-    width: 40px; /* Размер изображения */
+    width: 40px;
+    /* Размер изображения */
     height: 40px;
 }
 
 .button img.dice-image:hover {
-    filter: brightness(1.2); /* Подсветка при наведении */
+    filter: brightness(1.2);
+    /* Подсветка при наведении */
 }
 
 .button img.attack-image {
-    width: 40px; /* Размер изображения */
+    width: 40px;
+    /* Размер изображения */
     height: 40px;
 }
 
 .button img.attack-image:hover {
-    filter: brightness(1.2); /* Подсветка при наведении */
+    filter: brightness(1.2);
+    /* Подсветка при наведении */
 }
 
 .button:focus {
-    outline: none; /* Убираем стандартное выделение */
+    outline: none;
+    /* Убираем стандартное выделение */
 }
 
 /* Золото */
@@ -442,24 +482,33 @@ body {
     padding: 10px 20px;
     border-radius: 10px;
     display: flex;
-    justify-content: center;  /* Центрирование по горизонтали */
-    align-items: center;      /* Центрирование по вертикали */
+    justify-content: center;
+    /* Центрирование по горизонтали */
+    align-items: center;
+    /* Центрирование по вертикали */
     text-align: center;
 
     /* Устанавливаем фиксированную высоту для контейнера */
-    height: 50px;  /* Например, фиксируем высоту контейнера */
-    box-sizing: border-box; /* Чтобы padding и border не увеличивали размеры */
-    overflow: hidden;  /* Скрываем выходящее за пределы содержимое */
+    height: 50px;
+    /* Например, фиксируем высоту контейнера */
+    box-sizing: border-box;
+    /* Чтобы padding и border не увеличивали размеры */
+    overflow: hidden;
+    /* Скрываем выходящее за пределы содержимое */
 }
 
 img.gold {
-    max-width: 100%; /* Чтобы изображение не превышало ширину контейнера */
-    height: auto; /* Сохраняем пропорции */
-    max-height: 100%; /* Ограничиваем максимальную высоту */
-    object-fit: contain; /* Чтобы изображение вписывалось в размеры */
+    max-width: 100%;
+    /* Чтобы изображение не превышало ширину контейнера */
+    height: auto;
+    /* Сохраняем пропорции */
+    max-height: 100%;
+    /* Ограничиваем максимальную высоту */
+    object-fit: contain;
+    /* Чтобы изображение вписывалось в размеры */
 }
 
-.gold-text{
+.gold-text {
     color: #ffd700;
     font-family: 'Cinzel', serif;
     font-size: 16px;
@@ -470,7 +519,8 @@ img.gold {
 .round-timer {
     position: absolute;
     top: 50%;
-    left: 19%; /* Зеркально смещаем блок влево */
+    left: 19%;
+    /* Зеркально смещаем блок влево */
     transform: translateY(-50%);
     display: flex;
     flex-direction: column;
@@ -536,7 +586,7 @@ img.gold {
     text-align: center;
 }
 
-.enemy-nickname{
+.enemy-nickname {
     background-color: rgba(0, 0, 0, 0.411);
     color: #e9cd70;
     font-family: 'Cinzel', serif;
@@ -558,7 +608,8 @@ img.gold {
 }
 
 .opponent-avatar {
-    margin-bottom: 5px; /* Между аватаром и ником */
+    margin-bottom: 5px;
+    /* Между аватаром и ником */
 }
 
 /* Аватар игрока снизу */
@@ -574,19 +625,22 @@ img.gold {
 }
 
 .player-avatar {
-    margin-top: 5px; /* Между аватаром и ником */
+    margin-top: 5px;
+    /* Между аватаром и ником */
 }
 
 /* Базовый стиль для панели */
 .side-panel {
     position: absolute;
     top: 0;
-    left: -250px; /* Панель скрыта за пределами экрана */
+    left: -250px;
+    /* Панель скрыта за пределами экрана */
     width: 250px;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.9);
     border-right: 2px solid #d4af37;
-    transition: left 0.3s ease; /* Анимация выезда панели */
+    transition: left 0.3s ease;
+    /* Анимация выезда панели */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -635,5 +689,122 @@ img.gold {
     font-size: 24px;
     font-weight: bolder;
     color: #d4af37;
-    transition: transform 0.3s ease; /* Плавная анимация для стрелки */
+    transition: transform 0.3s ease;
+    /* Плавная анимация для стрелки */
+}
+
+.manapool {
+    position: absolute;
+    bottom: 6%;
+    right: 19%;
+    z-index: 1;
+    text-align: center; /* Центрируем контент */
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap'); /* Подключаем красивый шрифт */
+
+/* Манапул с текстом */
+.mana {
+    display: inline-block; /* Чтобы текст не растягивал ширину блока */
+    padding: 5px 8px; /* Добавляем отступы для текста */
+    font-family: 'Cinzel', serif; /* Применяем шрифт */
+    font-size: 18px; /* Размер текста */
+    font-weight: 700; /* Жирный текст */
+    color: #00ffff; /* Цвет текста */
+    background-color: rgba(0, 0, 0, 0.7); /* Полупрозрачный черный фон */
+    border-radius: 5px; /* Скругляем углы */
+    margin-bottom: 2px; /* Отступ между маной и прогресс-баром */
+    box-shadow: 0px 0px 5px #00ffff; /* Подсветка */
+    animation: pulseText 1.5s infinite alternate; /* Анимация текста */
+    text-align: center; /* Центрируем текст */
+    width: auto; /* Ширина подгоняется под текст */
+}
+
+/* Анимация пульсации текста */
+@keyframes pulseText {
+    0% {
+        color: #00ffff;
+        text-shadow: 0px 0px 5px #00ffff;
+    }
+    100% {
+        color: #00ccff;
+        text-shadow: 0px 0px 10px #00ccff;
+    }
+}
+
+/* Прогресс-бар, как и раньше */
+div.progress {
+    width: 100px;
+    padding-left: 2px;
+    padding-right: 2px;
+    height: 21px;
+    border-radius: 5px;
+    background-color: #1e1e1e;
+    position: relative;
+    margin-top: 5px; /* Отступ сверху для разделения с маной */
+}
+
+div.track {
+    display: flex;
+    height: 100%;
+    overflow: hidden;
+}
+
+div.bar {
+    height: 15px;
+    width: 6px;
+    background-color: #00ffff;
+    border-radius: 2px;
+    box-shadow: 0px 0px 5px #00ffff;
+    margin: 3px 2px 0 2px;
+    animation: pulseMana 1.5s infinite alternate;
+}
+
+/* Анимация пульсации для маны */
+@keyframes pulseMana {
+    0% {
+        background-color: #00ffff;
+        box-shadow: 0px 0px 5px #00ffff;
+    }
+    100% {
+        background-color: #00ccff;
+        box-shadow: 0px 0px 10px #00ccff;
+    }
+}
+
+/* Прогресс-бар анимация */
+@-webkit-keyframes prgBar {
+    0% {
+        width: 100%;
+    }
+
+    10% {
+        width: 90%;
+    }
+
+    95% {
+        width: 0%;
+    }
+
+    100% {
+        width: 0%;
+    }
+}
+
+@keyframes prgBar {
+    0% {
+        width: 100%;
+    }
+
+    10% {
+        width: 90%;
+    }
+
+    95% {
+        width: 0%;
+    }
+
+    100% {
+        width: 0%;
+    }
 }
