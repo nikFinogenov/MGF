@@ -122,6 +122,19 @@
             <div class="card" data-card="buff3">Card 6</div>
         </div>
 
+        <div class="bottom-ability-cards">
+            <div class="ability-card" data-card="skill1">Card 4</div>
+            <div class="ability-card" data-card="skill2">Card 5</div>
+            <div class="ability-card" data-card="skill3">Card 6</div>
+
+        </div>
+        <div class="attack-button-block">
+            <button class="button" id="attackButton">
+                <img src="sword.png" alt="Attack" class="attack-image">
+            </button>
+        </div>
+
+
         <div class="button-block">
             <button class="button" id="actionButtonRoll">
                 <img src="dice.png" alt="Dice Roll" class="dice-image">
@@ -147,6 +160,8 @@
         const cardBuffs = document.querySelectorAll('.card');
         const cardSelectionScreen = document.getElementById('cardSelectionScreen');
         const RollActionButton = document.getElementById('actionButtonRoll');
+        const buffBlock = document.querySelector('.bottom-cards');
+        const buttonGoldBlock = document.querySelector('.button-block');
         let heroCards = null;
         let buffCards = null;
         let timerInterval = null;
@@ -158,6 +173,9 @@
         let room_Id = null;
         let timeLeft = 30;  // Время в секундах
         let hasSelectedCard = false;  // Отслеживает, выбрал ли игрок карту
+
+        buffBlock.style.display = 'none';
+        buttonGoldBlock.style.display = 'none';
 
         // Функция для обновления таймера
         function updateTimer() {

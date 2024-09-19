@@ -243,6 +243,38 @@ body {
     transform: scale(1.1);
 }
 
+.bottom-ability-cards {
+    position: absolute;
+    bottom: 2%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 20px;
+    z-index: 1;
+}
+
+/* Стиль для карт */
+.ability-card {
+    width: 100px;
+    height: 150px;
+    background-color: rgba(0, 0, 0, 0.7);
+    background-size: contain;
+    border: 2px solid #d4af37;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-family: 'Cinzel', serif;
+    font-size: 16px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.ability-card:hover {
+    transform: scale(1.1);
+}
+
 /* Вертикальный блок справа */
 .side-rect {
     position: absolute;
@@ -346,6 +378,16 @@ body {
     z-index: 1;
 }
 
+.attack-button-block {
+    position: absolute;
+    bottom: 6%; /* Блок на одном уровне с нижними картами */
+    right: 34%;  /* Смещаем блок ближе к правому краю */
+    display: flex;
+    align-items: center; /* Центрируем контент по вертикали */
+    gap: 10px;
+    z-index: 1;
+}
+
 /* Кнопки */
 .button {
     width: 100px;
@@ -376,6 +418,15 @@ body {
 }
 
 .button img.dice-image:hover {
+    filter: brightness(1.2); /* Подсветка при наведении */
+}
+
+.button img.attack-image {
+    width: 40px; /* Размер изображения */
+    height: 40px;
+}
+
+.button img.attack-image:hover {
     filter: brightness(1.2); /* Подсветка при наведении */
 }
 
