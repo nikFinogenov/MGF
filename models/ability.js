@@ -1,6 +1,7 @@
 class Ability {
-    constructor(ab_name, desc, type, behavior, level, maxlevel, property = {}) {
+    constructor(ab_name, img, desc, type, behavior, level, maxlevel, property = {}) {
         this.ab_name = ab_name; // Имя способности
+        this.img = img;
         this.desc = desc; // Описание способности
         this.type = type; // Тип способности (например, прямой урон)
         this.behavior = behavior; // Поведение способности (активная, пассивная)
