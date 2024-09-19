@@ -61,11 +61,30 @@
         <!-- Выезжающая панель -->
         <div class="side-panel" id="sidePanel">
             <button class="surrender-button">Сдаться</button>
+
+            <!-- Добавляем чекбоксы -->
+            <div class="checkbox-container">
+                <label class="styled-checkbox">
+                    <input type="checkbox" id="checkbox1">
+                    <span>Show Mana in Numbers</span>
+                </label>
+                <label class="styled-checkbox2">
+                    <input type="checkbox" id="checkbox2">
+                    <span>Show Hp in Numbers</span>
+                </label>
+            </div>
         </div>
 
         <div class="opponent-avatar-block">
             <div class="avatar opponent-avatar"></div>
             <div class="enemy-nickname" id="opNick">Opponent Nick</div> <!-- Ник противника -->
+            <div class="opponent-hp">
+                <div class="opponent-hp-progress">
+                    <div class="opponent-hp-track">
+                    </div>
+                </div>
+                <div class="opponenthp"></div>
+            </div>
         </div>
 
         <!-- Блок для счёта раундов и таймера -->
@@ -80,6 +99,13 @@
 
         <!-- Блок для аватара и ника игрока -->
         <div class="player-avatar-block">
+            <div class="player-hp">
+                <div class="hp"></div>
+                <div class="hp-progress">
+                    <div class="hp-track">
+                    </div>
+                </div>
+            </div>
             <div class="nickname" id="playerNick">Player Nick</div>
             <div class="avatar player-avatar"></div>
         </div>
@@ -330,7 +356,7 @@
             return array;
         }
 
-        function createBars(count,manaCount) {
+        function createBars(count, manaCount) {
             // Находим элемент с классом 'track'
             const track = document.querySelector('.track');
             const progress = document.querySelector('.progress');
@@ -344,7 +370,7 @@
             // Ширина одного бара и отступов
             const barWidth = 6;  // ширина одной полоски .bar
             const margin = 2;    // отступ между полосками
-            
+
 
             // Вычисляем общую ширину progress
             const totalWidth = count * (barWidth + margin * 2);
@@ -357,6 +383,44 @@
                 const bar = document.createElement('div');
                 bar.classList.add('bar');
                 track.appendChild(bar);
+            }
+        }
+
+        function createHpBars(count, hpCountOwn, hpCountOpp) {
+            // Находим элемент с классом 'track'
+            const track = document.querySelector('.hp-track');
+            const trackOpp = document.querySelector('.opponent-hp-track');
+            const progress = document.querySelector('.hp-progress');
+            const progressOpp = document.querySelector('.opponent-hp-progress');
+            const hp = document.querySelector('.hp');
+            const hpOpp = document.querySelector('.opponenthp');
+
+            hp.textContent = hpCountOwn;
+            hpOpp.textContent = hpCountOpp;
+
+            // Очищаем track перед добавлением новых bar
+            track.innerHTML = '';
+            trackOpp.innerHTML = '';
+
+            // Ширина одного бара и отступов
+            const barWidth = 6;  // ширина одной полоски .bar
+            const margin = 2;    // отступ между полосками
+
+
+            // Вычисляем общую ширину progress
+            const totalWidth = count * (barWidth + margin * 2);
+
+            // Устанавливаем динамическую ширину прогресс-бара
+            progress.style.width = `${totalWidth + 4}px`; // +4px для небольшого запаса на границы
+            progressOpp.style.width = `${totalWidth + 4}px`;
+            // Создаем нужное количество div с классом 'bar'
+            for (let i = 0; i < count; i++) {
+                const bar = document.createElement('div');
+                const barOpp = document.createElement('div');
+                bar.classList.add('hpbar');
+                barOpp.classList.add('hpoppbar');
+                track.appendChild(bar);
+                trackOpp.appendChild(barOpp);
             }
         }
 
@@ -456,6 +520,32 @@
                     // Закрываем панель, если клик вне её области и вне кнопки
                     sidePanel.style.left = '-250px';
                     arrow.style.transform = 'rotate(0deg)'; // Возвращаем стрелку вправо
+                }
+            });
+
+            const checkbox1 = document.getElementById('checkbox1');
+            const checkbox2 = document.getElementById('checkbox2');
+            const hp = document.querySelector('.hp');
+            const hpOpp = document.querySelector('.opponenthp');
+            const mana = document.querySelector('.mana');
+
+            // Обработчик для первого чекбокса
+            checkbox1.addEventListener('change', function () {
+                if (checkbox1.checked) {
+                    mana.style.visibility = 'hidden'; 
+                } else {
+                    mana.style.visibility = 'visible';
+                }
+            });
+
+            // Обработчик для второго чекбокса
+            checkbox2.addEventListener('change', function () {
+                if (checkbox2.checked) {
+                    hp.style.visibility = 'hidden';
+                    hpOpp.style.visibility = 'hidden';
+                } else {    
+                    hp.style.visibility = 'visible';
+                    hpOpp.style.visibility = 'visible';
                 }
             });
 
@@ -559,7 +649,7 @@
                 // Определяем противника и себя
                 const opponent = data.players.find(player => player.id !== currentPlayerId);
                 const currentPlayer = data.players.find(player => player.id === currentPlayerId);
-
+                createHpBars(30, 30, 30);
                 // Обработка карты противника
                 if (opponent) {
                     console.log(`Opponent's card: ${opponent.card}`);
