@@ -150,6 +150,7 @@
         let heroCards = null;
         let buffCards = null;
         let timerInterval = null;
+        let hiddenCardsCount = 0;
 
         const randomButton = document.getElementById('randomButton');
         const timerElement = document.getElementById('timer');
@@ -227,6 +228,10 @@
                 cardBuff.style.backgroundSize = 'cover'; // Устанавливаем изображение на всю область
                 cardBuff.style.backgroundPosition = 'center'; // Центрируем изображение
             });
+            cardBuffs.forEach(option => {
+                option.style.display = 'block'; // Восстанавливаем видимость карт
+            });
+            hiddenCardsCount = 0;
         }
 
         // Функция для выбора случайной карты
@@ -265,10 +270,20 @@
             option.addEventListener('click', function () {
                 const selectedCard = option.getAttribute('data-card');
                 console.log(selectedCard);
+
                 socket.emit('buffSelected', room_Id, {
                     playerId: localStorage.getItem('userId'),
                     buff: selectedCard
                 });
+                option.style.display = 'none';
+                hiddenCardsCount++;
+                if (hiddenCardsCount === 3) {
+                    cardBuffs.forEach(option => {
+                        option.style.display = 'block'; // Восстанавливаем видимость карт
+                    });
+                    hiddenCardsCount = 0;
+                    RandomCard();
+                }
             });
         });
 
