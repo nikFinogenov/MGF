@@ -19,7 +19,7 @@
     <div class="card-selection-screen" id="cardSelectionScreen">
         <div class="screen-header">
             <div class="timer" id="timer">00:30</div>
-            <div class="choose-hero">Choose Your Hero</div>
+            <div class="choose-hero" id="info-text">Choose Your Hero</div>
         </div>
         <div class="card-options">
             <div class="card-option" data-card="card1">
@@ -76,8 +76,8 @@
         <!-- Блок для счёта раундов и таймера -->
         <div class="round-timer">
             <!-- Круглый счётчик раундов -->
-            <button class="button">Ready</button>
-            <div class="round-display">Round: 1</div>
+            <button class="button" id="readyBuffs">Ready</button>
+            <div class="round-display" id="round-counter">Round: 1</div>
 
             <!-- Таймер под счётом раундов -->
             <div class="timer-display" id="round-time">00:30</div>
@@ -172,14 +172,17 @@
         let buffCards = null;
         let shuffledBuffs = null;
         let timerInterval = null;
+        let roundTimerInterval = null;
         let hiddenCardsCount = 0;
         let alertTimeout;
 
         const randomButton = document.getElementById('randomButton');
         const timerElement = document.getElementById('timer');
+        const roundTimeElement = document.getElementById('round-time');
 
         let room_Id = null;
         let timeLeft = 30;  // Время в секундах
+        let roundTimeLeft = 30;  // Время в секундах
         let hasSelectedCard = false;  // Отслеживает, выбрал ли игрок карту
 
         // buffBlock.style.display = 'none';
@@ -202,6 +205,20 @@
                 }
             }
         }
+        function updateRoundTimer() {
+            if (roundTimeLeft > 0) {
+                roundTimeLeft--;
+                const minutes = String(Math.floor(roundTimeLeft / 60)).padStart(2, '0');
+                const seconds = String(roundTimeLeft % 60).padStart(2, '0');
+                roundTimeElement.textContent = `${minutes}:${seconds}`;
+            } else {
+                clearInterval(roundTimerInterval);
+
+                // if (!hasSelectedCard) {
+                //     selectRandomCard(cardOptions);
+                // }
+            }
+        }
 
         function showAlert(message) {
             const alertBox = document.getElementById('custom-alert');
@@ -218,12 +235,6 @@
                 alertBox.classList.add('hidden');
             }, 500); // 5000 milliseconds = 5 seconds
         }
-
-        // Hide the alert when clicking "OK"
-        // document.getElementById('close-alert').addEventListener('click', function () {
-        //     document.getElementById('custom-alert').classList.add('hidden');
-        //     clearTimeout(alertTimeout);
-        // });
 
         function updateCardNumber(newHPNumber, newATKNumber) {
             document.getElementById('card-number-hp').textContent = newHPNumber;
@@ -246,9 +257,6 @@
                 document.getElementById('op-attk-box').style.marginRight = "13px";
             }
         }
-
-        // updateCardNumber(11);
-        // updateOpCardNumber(11);
 
         RollActionButton.addEventListener('click', function () {
             if (Number(document.getElementById("goldValue").textContent) > 20) {
@@ -312,6 +320,8 @@
                 const selectedCard = option.getAttribute('data-card');
                 hideUnselectedCards(option);
 
+                document.getElementById('info-text').textContent = "Waiting for second player";
+
                 // Отправляем выбранную карту на сервер
                 socket.emit('cardSelected', room_Id, {
                     playerId: localStorage.getItem('userId'),
@@ -319,7 +329,7 @@
                 });
                 randomButton.style.display = 'none';
                 // Останавливаем таймер
-                clearInterval(timerInterval);
+                // clearInterval(timerInterval);
             });
         });
 
@@ -386,7 +396,6 @@
             arena.style.display = 'none'; // Показываем арену
             load.style.display = 'none';
             room_Id = roomId;
-            // console.log(`Game started in room ${roomId}`);
 
             // Сохраняем данные об оппоненте
             const player = players.find(p => p.id === socket.id);
@@ -402,12 +411,6 @@
             document.querySelector('.avatar.opponent-avatar').style.backgroundSize = 'cover';
             document.querySelector('.avatar.opponent-avatar').style.backgroundPosition = 'center';
         });
-
-        // if (localStorage.getItem('cardsSelected') === 'true') {
-        //     cardSelectionScreen.style.display = 'none'; // Скрываем экран выбора карт
-        //     arena.style.display = 'block'; // Показываем арену
-        //     load.style.display = 'none';
-        // }
 
         document.addEventListener('DOMContentLoaded', function () {
             const togglePanel = document.getElementById('togglePanel');
@@ -497,17 +500,19 @@
                 });
 
 
-            function hideUnselectedCards(selectedOption) {
-                console.log('Hiding unselected cards');
-                cardOptions.forEach(option => {
-                    if (option !== selectedOption) {
-                        option.style.visibility = 'hidden'; // Hide other cards
-                    }
-                });
-            }
+            // function hideUnselectedCards(selectedOption) {
+            //     cardOptions.forEach(option => {
+            //         if (option !== selectedOption) {
+            //             option.style.visibility = 'hidden'; // Hide other cards
+            //         }
+            //     });
+            // }
 
             // Handle the response from the server when both players have selected cards
             socket.on('startRound', (data) => {
+                roundTimerInterval = setInterval(updateRoundTimer, 1000);
+                document.getElementById('round-counter').textContent = "Buff phase";
+
                 console.log('Received cardsSelected event from server');
                 console.log('Players selected cards:', data.players);
 
