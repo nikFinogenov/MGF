@@ -824,12 +824,14 @@
 
             });
             socket.on('firstTurn', (turnId, roundNum) => {
-                readyButton.textContent = `Round: ${roundNum}`
+                document.getElementById('round-counter').textContent = `Round: ${roundNum}`
                 if(turnId === socket.id) {
+                    stopAlert();
                     showAlert("Your turn", 2000);
                     readyButton.disabled = false;
                 }
                 else {
+                    stopAlert();
                     showAlert("Opponent turn", 30000);
                     readyButton.disabled = true;
                 }

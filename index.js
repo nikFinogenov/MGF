@@ -20,8 +20,8 @@ function joinRoom() {
 io.on('connection', (socket) => {
     console.log('New player connected:', socket.id);
     socket.on('firstRound', (roomId) => {
-        rooms[roomId].actions[socket.id] = 1;
-        io.to(roomId).emit('firstTurn', rooms[roomId].players[0].id, rooms[roomId].actions[socket.id]);
+        rooms[roomId].actions['turn'] = 1;
+        io.to(roomId).emit('firstTurn', rooms[roomId].players[0].id, rooms[roomId].actions['turn']);
             // console.log(rooms[roomId].players[randomNumber]);
             // console.log(randomNumber)
     });
@@ -132,9 +132,12 @@ io.on('connection', (socket) => {
         }
     });
     socket.on('nextRound', (roomId, data) => {
-        let turn = rooms[roomId].actions[socket.id] % 2;
-        rooms[roomId].actions[socket.id]++;
-        io.to(roomId).emit('firstTurn', rooms[roomId].players[turn].id, rooms[roomId].actions[socket.id] )
+        let turn = rooms[roomId].actions['turn'] % 2;
+        // if(rooms[roomId].actions['turn'] === 1) turn--;
+        rooms[roomId].actions['turn']++;
+
+        console.log(rooms[roomId].actions['turn'] + " - " + turn);
+        io.to(roomId).emit('firstTurn', rooms[roomId].players[turn].id, rooms[roomId].actions['turn'] )
         // console.log("next");
     });
     const rarityRanking = {
