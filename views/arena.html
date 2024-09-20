@@ -389,21 +389,18 @@
                     socket.emit('buffSelected', room_Id, {
                         playerId: localStorage.getItem('userId'),
                         buff: selectedCard,
-                        // price: selectdPrice
+                        price: shuffledBuffs[index].price,
+                        level: shuffledBuffs[index].level
                     });
                     option.style.display = 'none';
                     hiddenCardsCount++;
                     document.getElementById("goldValue").textContent = Number(document.getElementById("goldValue").textContent) - Number(shuffledBuffs[index].price);
-                            // Example: Add strings dynamically
-                    // const strings = ["First line", "Second line", "Third line", "Another line"];
-                    // strings.forEach((str, index) => {
-                        addStringToBlock(selectedCard); // Adds one string per second
-                    // });
+                    // Example: Add strings dynamically
+                    addStringToBlock(`${selectedCard}: ${shuffledBuffs[index].level}`); // Adds one string per second
                 }
                 else {
                     showAlert('Not enough money');
                 }
-                // console.log(shuffledBuffs[index]);
                 if (hiddenCardsCount === 3) {
                     cardBuffs.forEach(option => {
                         option.style.display = 'block'; // Восстанавливаем видимость карт
@@ -511,7 +508,7 @@
         });
         socket.on('startGame', ({ roomId, players }) => {
             // Запуск таймера
-            timerInterval = setInterval(updateTimer, 1000);
+            // timerInterval = setInterval(updateTimer, 1000);
             cardSelectionScreen.style.display = 'flex'; // Скрываем экран выбора карт
             arena.style.display = 'none'; // Показываем арену
             load.style.display = 'none';
@@ -616,7 +613,7 @@
                         console.log('data-card установлен на:', cardElement.getAttribute('data-card')); // Проверяем data-card
 
                         // Присваиваем изображение как фон
-                        updateCardNumber()
+                        // updateCardNumber()
                         cardElement.style.backgroundImage = `url(${hero.img})`;
                         cardElement.style.backgroundSize = 'cover'; // Устанавливаем изображение на всю область
                         cardElement.style.backgroundPosition = 'center'; // Центрируем изображение
@@ -632,11 +629,15 @@
 
                         if (hero.hp > 10) {
                             hpBox.style.marginLeft = "23px";
+                        } else {
+                            hpBox.style.marginLeft = ""; // Возвращаем стиль по умолчанию
                         }
 
-                        // Проверка атаки > 10 и установка отступов
-                        if (hero.attack > 10) {
+                        // Обновляем только для той карты, у которой атака > 10
+                        if (hero.atk > 10) {
                             attkBox.style.marginRight = "23px";
+                        } else {
+                            attkBox.style.marginRight = ""; // Возвращаем стиль по умолчанию
                         }
                     });
                 })

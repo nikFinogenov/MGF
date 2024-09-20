@@ -115,7 +115,8 @@ io.on('connection', (socket) => {
         // Добавляем новый бафф в массив баффов игрока
         rooms[roomId].pickedBuffs[socket.id].push({
             buffname: data.buff, 
-            // buffprice: data.price
+            buffprice: data.price,
+            bufflevel: data.level
         });
     
         console.log(`Picked buffs for room ${roomId}:`, rooms[roomId].pickedBuffs);

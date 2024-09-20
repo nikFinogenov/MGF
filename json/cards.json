@@ -29,7 +29,8 @@
                             "manacost": "3"
                         }
                     ]
-                },                {
+                },
+                {
                     "ab_name": "Test_ability1",
                     "img": "../cards/abilities/nagieva.jpg",
                     "desc": "Description",
@@ -45,7 +46,8 @@
                             "manacost": "3"
                         }
                     ]
-                },                {
+                },
+                {
                     "ab_name": "Test_ability1",
                     "img": "../cards/abilities/nagieva.jpg",
                     "desc": "Description",
@@ -94,7 +96,8 @@
                             "manacost": "3"
                         }
                     ]
-                },                {
+                },
+                {
                     "ab_name": "Test_ability1",
                     "img": "../cards/abilities/nagieva.jpg",
                     "desc": "Description",
@@ -110,7 +113,8 @@
                             "manacost": "3"
                         }
                     ]
-                },                {
+                },
+                {
                     "ab_name": "Test_ability1",
                     "img": "../cards/abilities/nagieva.jpg",
                     "desc": "Description",
@@ -159,7 +163,8 @@
                             "manacost": "3"
                         }
                     ]
-                },                {
+                },
+                {
                     "ab_name": "Test_ability1",
                     "img": "../cards/abilities/nagieva.jpg",
                     "desc": "Description",
@@ -175,7 +180,8 @@
                             "manacost": "3"
                         }
                     ]
-                },                {
+                },
+                {
                     "ab_name": "Test_ability1",
                     "img": "../cards/abilities/nagieva.jpg",
                     "desc": "Description",
@@ -224,7 +230,8 @@
                             "manacost": "3"
                         }
                     ]
-                },                {
+                },
+                {
                     "ab_name": "Test_ability1",
                     "img": "../cards/abilities/nagieva.jpg",
                     "desc": "Description",
@@ -240,7 +247,8 @@
                             "manacost": "3"
                         }
                     ]
-                },                {
+                },
+                {
                     "ab_name": "Test_ability1",
                     "img": "../cards/abilities/nagieva.jpg",
                     "desc": "Description",
@@ -289,7 +297,8 @@
                             "manacost": "3"
                         }
                     ]
-                },                {
+                },
+                {
                     "ab_name": "Test_ability1",
                     "img": "../cards/abilities/nagieva.jpg",
                     "desc": "Description",
@@ -305,7 +314,8 @@
                             "manacost": "3"
                         }
                     ]
-                },                {
+                },
+                {
                     "ab_name": "Test_ability1",
                     "img": "../cards/abilities/nagieva.jpg",
                     "desc": "Description",
@@ -354,7 +364,7 @@
                             "manacost": "3"
                         }
                     ]
-                }, 
+                },
                 {
                     "ab_name": "death_heal",
                     "img": "../cards/abilities/death_heal.png",
@@ -371,7 +381,7 @@
                             "manacost": "3"
                         }
                     ]
-                }, 
+                },
                 {
                     "ab_name": "death_def",
                     "img": "../cards/abilities/death_def.png",
@@ -394,8 +404,8 @@
         },
         {
             "he_name": "Geralt",
-            "hp": "50",
-            "atk": "2",
+            "hp": "5",
+            "atk": "20",
             "mana": "5",
             "money": "300",
             "manaregen": "1",
@@ -421,7 +431,7 @@
                             "manacost": "3"
                         }
                     ]
-                }, 
+                },
                 {
                     "ab_name": "ger_atk2",
                     "img": "../cards/abilities/ger_atk2.png",
@@ -438,7 +448,7 @@
                             "manacost": "3"
                         }
                     ]
-                }, 
+                },
                 {
                     "ab_name": "ger_heal",
                     "img": "../cards/abilities/ger_heal.png",
@@ -488,7 +498,7 @@
                             "manacost": "3"
                         }
                     ]
-                }, 
+                },
                 {
                     "ab_name": "sau_atk2",
                     "img": "../cards/abilities/sau_atk2.png",
@@ -505,7 +515,7 @@
                             "manacost": "3"
                         }
                     ]
-                }, 
+                },
                 {
                     "ab_name": "sau_atk",
                     "img": "../cards/abilities/sau_atk3.png",
@@ -528,7 +538,7 @@
         },
         {
             "he_name": "Varian",
-            "hp": "50",
+            "hp": "5",
             "atk": "2",
             "mana": "5",
             "money": "300",
@@ -555,7 +565,8 @@
                             "manacost": "3"
                         }
                     ]
-                },                {
+                },
+                {
                     "ab_name": "var_atk2",
                     "img": "../cards/abilities/var_atk2.png",
                     "desc": "Description",
@@ -571,7 +582,8 @@
                             "manacost": "3"
                         }
                     ]
-                },                {
+                },
+                {
                     "ab_name": "var_def",
                     "img": "../cards/abilities/var_def.png",
                     "desc": "Description",
@@ -594,7 +606,7 @@
         {
             "he_name": "Ron",
             "hp": "50",
-            "atk": "2",
+            "atk": "20",
             "mana": "5",
             "money": "300",
             "manaregen": "1",
@@ -737,7 +749,7 @@
             "duration": "0"
         },
         {
-            "bf_name": "mojo",
+            "bf_name": "Mojo",
             "desc": "Description",
             "img": "../cards/buffs/1.png",
             "type": "amplification",
@@ -756,15 +768,15 @@
             "duration": "0"
         },
         {
-            "bf_name": "mojo2",
+            "bf_name": "Mojo",
             "desc": "Description",
             "img": "../cards/buffs/2.png",
             "type": "amplification",
             "target": "hero",
             "stackable": "False",
             "price": "100",
-            "rarity": "Common",
-            "level": "1",
+            "rarity": "Rare",
+            "level": "2",
             "maxlevel": "4",
             "dmg": "3",
             "hp": "3",
@@ -775,15 +787,15 @@
             "duration": "0"
         },
         {
-            "bf_name": "Mojo3",
+            "bf_name": "Mojo",
             "desc": "Description",
             "img": "../cards/buffs/3.png",
             "type": "amplification",
             "target": "hero",
             "stackable": "False",
             "price": "100",
-            "rarity": "Common",
-            "level": "1",
+            "rarity": "Epic",
+            "level": "3",
             "maxlevel": "4",
             "dmg": "3",
             "hp": "3",
@@ -792,16 +804,17 @@
             "manaregen": "1",
             "cooldown": "10",
             "duration": "0"
-        },        {
-            "bf_name": "Mojo4",
+        },
+        {
+            "bf_name": "Mojo",
             "desc": "Description",
             "img": "../cards/buffs/4.png",
             "type": "amplification",
             "target": "hero",
             "stackable": "False",
             "price": "100",
-            "rarity": "Common",
-            "level": "1",
+            "rarity": "Legendary",
+            "level": "4",
             "maxlevel": "4",
             "dmg": "3",
             "hp": "3",
