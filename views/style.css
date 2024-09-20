@@ -622,7 +622,7 @@ img.gold {
 /* Аватар противника сверху */
 .opponent-avatar-block {
     position: absolute;
-    top: 10%;
+    top: 20%;
     left: 19%;
     transform: translateY(-50%);
     display: flex;
@@ -639,7 +639,7 @@ img.gold {
 /* Аватар игрока снизу */
 .player-avatar-block {
     position: absolute;
-    top: 90%;
+    top: 80%;
     left: 19%;
     transform: translateY(-50%);
     display: flex;
@@ -658,13 +658,11 @@ img.gold {
     position: absolute;
     top: 0;
     left: -250px;
-    /* Панель скрыта за пределами экрана */
     width: 250px;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.9);
     border-right: 2px solid #d4af37;
     transition: left 0.3s ease;
-    /* Анимация выезда панели */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -672,7 +670,6 @@ img.gold {
     z-index: 2;
 }
 
-/* Кнопка для сдачи */
 .surrender-button {
     width: 150px;
     height: 40px;
@@ -690,7 +687,6 @@ img.gold {
     background-color: #b9922e;
 }
 
-/* Стиль для кнопки-стрелки */
 .toggle-panel {
     position: absolute;
     top: 50%;
@@ -708,11 +704,301 @@ img.gold {
     z-index: 3;
 }
 
-/* Стрелка для открытия/закрытия */
 .toggle-arrow {
     font-size: 24px;
     font-weight: bolder;
     color: #d4af37;
     transition: transform 0.3s ease;
+}
+
+.checkbox-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.styled-checkbox,
+.styled-checkbox2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #d4af37;
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+}
+
+.styled-checkbox input[type="checkbox"],
+.styled-checkbox2 input[type="checkbox"] {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background-color: #1e1e1e;
+    border: 2px solid #d4af37;
+    border-radius: 5px;
+    cursor: pointer;
+    position: relative;
+}
+
+.styled-checkbox input[type="checkbox"]:checked,
+.styled-checkbox2 input[type="checkbox"]:checked {
+    background-color: #d4af37;
+}
+
+.styled-checkbox input[type="checkbox"]::before,
+.styled-checkbox2 input[type="checkbox"]::before {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: transparent;
+    transition: background-color 0.3s ease;
+}
+
+.styled-checkbox input[type="checkbox"]:checked::before {
+    background-color: #00ffff;
+}
+
+.styled-checkbox2 input[type="checkbox"]:checked::before {
+    background-color: #ff0000;
+}
+
+.styled-checkbox,
+.styled-checkbox2 span {
+    cursor: pointer;
+}
+
+.manapool {
+    position: absolute;
+    bottom: 6%;
+    right: 19%;
+    z-index: 1;
+    text-align: center;
+    /* Центрируем контент */
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap');
+/* Подключаем красивый шрифт */
+
+/* Манапул с текстом */
+.mana {
+    display: inline-block;
+    /* Чтобы текст не растягивал ширину блока */
+    padding: 5px 8px;
+    /* Добавляем отступы для текста */
+    font-family: 'Cinzel', serif;
+    /* Применяем шрифт */
+    font-size: 18px;
+    /* Размер текста */
+    font-weight: 700;
+    /* Жирный текст */
+    color: #00ffff;
+    /* Цвет текста */
+    background-color: rgba(0, 0, 0, 0.7);
+    /* Полупрозрачный черный фон */
+    border-radius: 5px;
+    /* Скругляем углы */
+    margin-bottom: 2px;
+    /* Отступ между маной и прогресс-баром */
+    box-shadow: 0px 0px 5px #00ffff;
+    /* Подсветка */
+    animation: pulseText 1.5s infinite alternate;
+    /* Анимация текста */
+    text-align: center;
+    /* Центрируем текст */
+    width: auto;
+    /* Ширина подгоняется под текст */
+}
+
+.hp {
+    display: inline-block;
+    /* Чтобы текст не растягивал ширину блока */
+    padding: 5px 8px;
+    /* Добавляем отступы для текста */
+    font-family: 'Cinzel', serif;
+    /* Применяем шрифт */
+    font-size: 18px;
+    /* Размер текста */
+    font-weight: 700;
+    /* Жирный текст */
+    color: #ff0000;
+    /* Цвет текста */
+    background-color: rgba(0, 0, 0, 0.7);
+    /* Полупрозрачный черный фон */
+    border-radius: 5px;
+    /* Скругляем углы */
+    margin-bottom: 2px;
+    /* Отступ между маной и прогресс-баром */
+    box-shadow: 0px 0px 5px #ff0000;
+    /* Подсветка */
+    animation: pulseHpText 1.5s infinite alternate;
+    /* Анимация текста */
+    text-align: center;
+    /* Центрируем текст */
+    width: auto;
+}
+
+.opponenthp {
+    display: inline-block;
+    /* Чтобы текст не растягивал ширину блока */
+    padding: 5px 8px;
+    /* Добавляем отступы для текста */
+    font-family: 'Cinzel', serif;
+    /* Применяем шрифт */
+    font-size: 18px;
+    /* Размер текста */
+    font-weight: 700;
+    /* Жирный текст */
+    color: #ff0000;
+    /* Цвет текста */
+    background-color: rgba(0, 0, 0, 0.7);
+    /* Полупрозрачный черный фон */
+    border-radius: 5px;
+    /* Скругляем углы */
+    margin-top: 2px;
+    /* Отступ между маной и прогресс-баром */
+    box-shadow: 0px 0px 5px #ff0000;
+    /* Подсветка */
+    animation: pulseHpText 1.5s infinite alternate;
+    /* Анимация текста */
+    text-align: center;
+    /* Центрируем текст */
+    width: auto;
+}
+
+/* Анимация пульсации текста */
+@keyframes pulseText {
+    0% {
+        color: #00ffff;
+        text-shadow: 0px 0px 5px #00ffff;
+    }
+
+    100% {
+        color: #00ccff;
+        text-shadow: 0px 0px 10px #00ccff;
+    }
+}
+
+@keyframes pulseHpText {
+    0% {
+        color: #ff0000;
+        text-shadow: 0px 0px 5px #ff0000;
+    }
+
+    100% {
+        color: #8a0000;
+        text-shadow: 0px 0px 10px #8a0000;
+    }
+}
+
+/* Прогресс-бар, как и раньше */
+div.progress,
+div.hp-progress,
+div.opponent-hp-progress {
+    width: 100px;
+    padding-left: 2px;
+    padding-right: 2px;
+    height: 21px;
+    border-radius: 5px;
+    background-color: #1e1e1e;
+    position: relative;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    /* Отступ сверху для разделения с маной */
+}
+
+div.track,
+div.hp-track,
+div.opponent-hp-track {
+    display: flex;
+    height: 100%;
+    overflow: hidden;
+}
+
+div.bar {
+    height: 15px;
+    width: 6px;
+    background-color: #00ffff;
+    border-radius: 2px;
+    box-shadow: 0px 0px 5px #00ffff;
+    margin: 3px 2px 0 2px;
+    animation: pulseMana 1.5s infinite alternate;
+}
+
+div.hpbar,
+div.hpoppbar {
+    height: 15px;
+    width: 6px;
+    background-color: #ff0000;
+    border-radius: 2px;
+    box-shadow: 0px 0px 5px #ff0000;
+    margin: 3px 2px 0 2px;
+    animation: pulseHp 1.5s infinite alternate;
+}
+
+/* Анимация пульсации для маны */
+@keyframes pulseMana {
+    0% {
+        background-color: #00ffff;
+        box-shadow: 0px 0px 5px #00ffff;
+    }
+
+    100% {
+        background-color: #00ccff;
+        box-shadow: 0px 0px 10px #00ccff;
+    }
+}
+
+@keyframes pulseHp {
+    0% {
+        background-color: #ff0000;
+        box-shadow: 0px 0px 5px #ff0000;
+    }
+
+    100% {
+        background-color: #8a0000;
+        box-shadow: 0px 0px 10px #8a0000;
+    }
+}
+
+
+/* Прогресс-бар анимация */
+@-webkit-keyframes prgBar {
+    0% {
+        width: 100%;
+    }
+
+    10% {
+        width: 90%;
+    }
+
+    95% {
+        width: 0%;
+    }
+
+    100% {
+        width: 0%;
+    }
+}
+
+@keyframes prgBar {
+    0% {
+        width: 100%;
+    }
+
+    10% {
+        width: 90%;
+    }
+
+    95% {
+        width: 0%;
+    }
+
+    100% {
+        width: 0%;
+    }
     /* Плавная анимация для стрелки */
 }
