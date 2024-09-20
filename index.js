@@ -12,13 +12,19 @@ const server = http.createServer(app);
 const io = new Server(server);
 const rooms = {}; // Объект для хранения комнат
 
+
 function joinRoom() {
     // nado kak to join room sdelat function a to oni pohozhi no komu ne pohui glavnoe cho i tak rabotaet
 }
 
 io.on('connection', (socket) => {
     console.log('New player connected:', socket.id);
-
+    socket.on('firstRound', (roomId) => {
+        rooms[roomId].actions[socket.id] = 1;
+        io.to(roomId).emit('firstTurn', rooms[roomId].players[0].id, rooms[roomId].actions[socket.id]);
+            // console.log(rooms[roomId].players[randomNumber]);
+            // console.log(randomNumber)
+    });
 
     // Получаем email пользователя
     socket.on('userEmail', (email) => {
@@ -125,6 +131,12 @@ io.on('connection', (socket) => {
             }
         }
     });
+    socket.on('nextRound', (roomId, data) => {
+        let turn = rooms[roomId].actions[socket.id] % 2;
+        rooms[roomId].actions[socket.id]++;
+        io.to(roomId).emit('firstTurn', rooms[roomId].players[turn].id, rooms[roomId].actions[socket.id] )
+        // console.log("next");
+    });
     const rarityRanking = {
         'Common': 1,
         'Rare': 2,
@@ -146,10 +158,10 @@ io.on('connection', (socket) => {
                 }
 
                 // Update rarity if the new buff has a higher rarity
-                if (rarityRanking[data.rarity] > rarityRanking[buff.buffRarity]) {
-                    buff.buffRarity = data.rarity;
-                    buff.buffprice = data.price; // Optionally update other fields
-                }
+                // if (rarityRanking[data.rarity] > rarityRanking[buff.buffRarity]) {
+                //     buff.buffRarity = data.rarity;
+                //     buff.buffprice = data.price; // Optionally update other fields
+                // }
 
                 break;
             }

@@ -100,6 +100,7 @@
 
             <!-- Таймер под счётом раундов -->
             <div class="timer-display" id="round-time">00:30</div>
+            <!-- <p class="choose-hero" id="additional-info"></p> -->
         </div>
 
         <!-- Блок для аватара и ника игрока -->
@@ -210,6 +211,7 @@
         let roundTimerInterval = null;
         let hiddenCardsCount = 0;
         let alertTimeout;
+        let roundCounter = 0;
 
         const randomButton = document.getElementById('randomButton');
         const timerElement = document.getElementById('timer');
@@ -252,7 +254,7 @@
             }
         }
 
-        function showAlert(message) {
+        function showAlert(message, duration) {
             const alertBox = document.getElementById('custom-alert');
             const alertMessage = document.getElementById('alert-message');
 
@@ -262,10 +264,19 @@
             // Display the alert
             alertBox.classList.remove('hidden');
 
+            clearTimeout(alertTimeout);
             // Automatically hide the alert after 5 seconds
             alertTimeout = setTimeout(function () {
                 alertBox.classList.add('hidden');
-            }, 500); // 5000 milliseconds = 5 seconds
+            }, duration); // 5000 milliseconds = 5 seconds
+        }
+        function stopAlert() {
+            // Clear the timeout to stop the alert from hiding
+            clearTimeout(alertTimeout);
+
+            // Optionally, hide the alert immediately
+            const alertBox = document.getElementById('custom-alert');
+            alertBox.classList.add('hidden');
         }
 
         function updateCardNumber(newHPNumber, newATKNumber) {
@@ -342,7 +353,7 @@
                 document.getElementById("goldValue").textContent = Number(document.getElementById("goldValue").textContent) - 20;
             }
             else {
-                showAlert('Not enough money');
+                showAlert('Not enough money', 500);
             }
         });
 
@@ -388,11 +399,21 @@
             selectRandomCard(cardOptions);
         });
         readyButton.addEventListener('click', () => {
-            socket.emit('buffsSelected', room_Id, {
-                playerId: localStorage.getItem('userId'),
-                status: "ready"
-            });
-            clearInterval(roundTimerInterval);
+            if (readyButton.textContent === "Ready") {
+                // document.getElementById('additional-info').style.display = "block";
+                // document.getElementById('additional-info').textContent = "Waiting for second player";
+                showAlert("Waiting for second player", roundTimeLeft * 1000);
+                socket.emit('buffsSelected', room_Id, {
+                    playerId: localStorage.getItem('userId'),
+                    status: "ready"
+                });
+            }
+            else {
+                socket.emit('nextRound', room_Id, {
+                    // playerId: localStorage.getItem('userId'),
+                    // status: 
+                });
+            }
         });
 
         // Обработчик клика на карты
@@ -436,7 +457,7 @@
                     addBuffToBlock(shuffledBuffs[index]); // Adds one string per second
                 }
                 else {
-                    showAlert('Not enough money');
+                    showAlert('Not enough money', 500);
                 }
                 if (hiddenCardsCount === 3) {
                     cardBuffs.forEach(option => {
@@ -770,6 +791,9 @@
             // });
 
             socket.on('startTurn', (data) => {
+                clearInterval(roundTimerInterval);
+                roundTimeLeft = 30;
+                stopAlert()
                 // console.log(data);
                 const currentPlayerId = socket.id;
                 // Определяем себя
@@ -789,8 +813,27 @@
                     cardAb.style.backgroundSize = 'cover'; // Устанавливаем изображение на всю область
                     cardAb.style.backgroundPosition = 'center'; // Центрируем изображение
                 });
-            });
 
+                roundCounter++;
+                readyButton.textContent = "End round";
+                document.getElementById('round-counter').textContent = `Round: ${roundCounter}`;
+                socket.emit('firstRound', room_Id);
+                roundTimerInterval = setInterval(updateRoundTimer, 1000)
+
+                // socket.emit('roundEnd');
+
+            });
+            socket.on('firstTurn', (turnId, roundNum) => {
+                readyButton.textContent = `Round: ${roundNum}`
+                if(turnId === socket.id) {
+                    showAlert("Your turn", 2000);
+                    readyButton.disabled = false;
+                }
+                else {
+                    showAlert("Opponent turn", 30000);
+                    readyButton.disabled = true;
+                }
+            });
             // Debug log to confirm connection
             socket.on('connect', () => {
                 console.log('Connected to server with ID:', socket.id);

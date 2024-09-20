@@ -278,6 +278,9 @@ body {
     gap: 20px;
     z-index: 1;
 }
+#additional-info{
+    display: none;
+}
 
 /* Стиль для карт */
 .ability-card {
