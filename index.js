@@ -119,14 +119,15 @@ io.on('connection', (socket) => {
         });
     
         console.log(`Picked buffs for room ${roomId}:`, rooms[roomId].pickedBuffs);
-    
+        
+        
         // Отправляем событие с выбранными баффами всем игрокам в комнате
-        io.to(roomId).emit('startTurn', {
-            players: rooms[roomId].players.map(p => ({
-                id: p.id,
-                buffs: rooms[roomId].pickedBuffs[p.id] // Передаём массив баффов для каждого игрока
-            }))
-        });
+        // io.to(roomId).emit('startTurn', {
+        //     players: rooms[roomId].players.map(p => ({
+        //         id: p.id,
+        //         buffs: rooms[roomId].pickedBuffs[p.id] // Передаём массив баффов для каждого игрока
+        //     }))
+        // });
     });
 
     // Обработчик выхода игрока

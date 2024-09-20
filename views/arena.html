@@ -185,7 +185,7 @@
         </div>
 
         <!-- Вертикальный блок справа -->
-        <div class="side-rect">
+        <div class="side-rect" id="sideRect">
             <p>Side Block</p>
         </div>
     </div>
@@ -291,7 +291,20 @@
                 document.getElementById('op-attk-box').style.marginRight = "13px";
             }
         }
+        function addStringToBlock(string) {
+            const sideRect = document.getElementById('sideRect');
 
+            // Create a new <p> element for the string
+            const p = document.createElement('p');
+            p.textContent = string;
+            p.classList.add('new');  // Add class for animation
+
+            // Append the new <p> element to the block
+            sideRect.appendChild(p);
+
+            // Optional: Automatically scroll down to the latest content
+            sideRect.scrollTop = sideRect.scrollHeight;
+        }
         RollActionButton.addEventListener('click', function () {
             if (Number(document.getElementById("goldValue").textContent) >= 20) {
                 RandomCard();
@@ -381,6 +394,11 @@
                     option.style.display = 'none';
                     hiddenCardsCount++;
                     document.getElementById("goldValue").textContent = Number(document.getElementById("goldValue").textContent) - Number(shuffledBuffs[index].price);
+                            // Example: Add strings dynamically
+                    // const strings = ["First line", "Second line", "Third line", "Another line"];
+                    // strings.forEach((str, index) => {
+                        addStringToBlock(selectedCard); // Adds one string per second
+                    // });
                 }
                 else {
                     showAlert('Not enough money');

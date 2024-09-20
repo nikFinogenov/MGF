@@ -100,7 +100,7 @@ body {
     margin-bottom: 10px;
 }
 
-.choose-hero{
+.choose-hero {
     font-family: 'Cinzel', serif;
     font-size: 24px;
     color: #fff;
@@ -300,6 +300,7 @@ body {
 .ability-card:hover {
     transform: scale(1.1);
 }
+
 .alert {
     position: fixed;
     border: 2px solid red;
@@ -334,13 +335,46 @@ body {
     border: 2px solid #d4af37;
     border-radius: 10px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
+    padding: 20px;
     color: #fff;
     font-family: 'Cinzel', serif;
     font-size: 16px;
     text-align: center;
+    overflow-y: auto;
+    /* Allow scrolling if content exceeds height */
 }
+
+.side-rect p {
+    margin: 10px 0;
+    /* Adds space between lines */
+    padding: 5px 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    /* Subtle background */
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 1.5;
+    width: 100%;
+    text-align: center;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.side-rect p.new {
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: fadeInUp 0.5s forwards;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 
 /* Карта на поле */
 .field-card {
@@ -1000,5 +1034,6 @@ div.hpoppbar {
     100% {
         width: 0%;
     }
+
     /* Плавная анимация для стрелки */
 }
