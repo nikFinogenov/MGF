@@ -99,11 +99,79 @@ io.on('connection', (socket) => {
                         card: rooms[roomId].selections[p.id]
                     }))
                 });
-                console.log(`Both players have selected their cards. Emitting cardsSelected event.`);
+                console.log(`Both players have selected their cards. Emitting round event.`);
             }
         }
     });
+    socket.on('buffsSelected', (roomId, data) => {
+        console.log(`Player ${data.playerId} is ready!`);
 
+        if(roomId) {
+            rooms[roomId].actions[socket.id] = data.status;
+
+            const allPlayersSelected = rooms[roomId].players.every(p => rooms[roomId].actions[p.id]);
+
+            console.log(allPlayersSelected);
+
+            if (allPlayersSelected) {
+                // Notify both players that the selection is complete
+                io.to(roomId).emit('startTurn', {
+                    players: rooms[roomId].players.map(p => ({
+                        id: p.id,
+                        card: rooms[roomId].selections[p.id]
+                    }))
+                });
+                console.log(`Both players are ready. Emitting turn event.`);
+            }
+        }
+    });
+    const rarityRanking = {
+        'Common': 1,
+        'Rare': 2,
+        'Epic': 3,
+        'Legendary': 4
+    };
+    function addOrUpdateBuff(roomId, socketId, data) {
+        const playerBuffs = rooms[roomId].pickedBuffs[socketId];
+        let found = false;
+    
+        // Iterate through the existing buffs to check if the buff already exists
+        for (let buff of playerBuffs) {
+            if (buff.buffname === data.buff) {
+                found = true;
+    
+                // Compare the rarity of the existing buff and the new buff
+                if (rarityRanking[data.rarity] > rarityRanking[buff.buffRarity]) {
+                    // Update the existing buff with the higher rarity
+                    buff.buffRarity = data.rarity;
+                    buff.buffprice = data.price; // Optionally update other fields
+                    buff.bufflevel = data.level; // Update the level as well
+                } else if (rarityRanking[data.rarity] === rarityRanking[buff.buffRarity]) {
+                    // Move to the next rarity level if they are the same
+                    const rarities = Object.keys(rarityRanking);
+                    const currentIndex = rarities.indexOf(buff.buffRarity);
+    
+                    // If not the highest rarity, upgrade the rarity
+                    if (currentIndex < rarities.length - 1) {
+                        buff.buffRarity = rarities[currentIndex + 1];
+                        buff.buffprice = data.price; // Optionally update other fields
+                        buff.bufflevel = data.level; // Update the level as well
+                    }
+                }
+                break;
+            }
+        }
+    
+        // If the buff was not found, push the new buff
+        if (!found) {
+            playerBuffs.push({
+                buffname: data.buff, 
+                buffprice: data.price,
+                bufflevel: data.level,
+                buffRarity: data.rarity
+            });
+        }
+    }
     socket.on('buffSelected', (roomId, data) => {
         console.log(`Player ${data.playerId} selected buff: ${data.buff}`);
     
@@ -112,12 +180,21 @@ io.on('connection', (socket) => {
             rooms[roomId].pickedBuffs[socket.id] = [];
         }
     
+
+        // if(rooms[roomId].pickedBuffs[socket.id]) //
+
         // Добавляем новый бафф в массив баффов игрока
-        rooms[roomId].pickedBuffs[socket.id].push({
-            buffname: data.buff, 
-            buffprice: data.price,
-            bufflevel: data.level,
-            buffRarity: data.rarity
+        // rooms[roomId].pickedBuffs[socket.id].push({
+        //     buffname: data.buff, 
+        //     buffprice: data.price,
+        //     bufflevel: data.level,
+        //     buffRarity: data.rarity
+        // });
+        addOrUpdateBuff(roomId, socket.id, {
+            buff: data.buff,
+            price: data.price,
+            level: data.level,
+            rarity: data.rarity
         });
     
         console.log(`Picked buffs for room ${roomId}:`, rooms[roomId].pickedBuffs);
