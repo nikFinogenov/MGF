@@ -162,9 +162,9 @@
         </div>
 
         <div class="bottom-ability-cards">
-            <div class="ability-card" data-card="skill1">Card 4</div>
-            <div class="ability-card" data-card="skill2">Card 5</div>
-            <div class="ability-card" data-card="skill3">Card 6</div>
+            <div class="ability-card" data-card="skill1"></div>
+            <div class="ability-card" data-card="skill2"></div>
+            <div class="ability-card" data-card="skill3"></div>
         </div>
         <div class="attack-button-block">
             <button class="button" id="attackButton">
@@ -409,6 +409,7 @@
                 playerId: localStorage.getItem('userId'),
                 status: "ready"
             });
+            clearInterval(roundTimerInterval);
         });
 
         // Обработчик клика на карты
