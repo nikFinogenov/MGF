@@ -551,7 +551,7 @@
             // Обработчик для первого чекбокса
             checkbox1.addEventListener('change', function () {
                 if (checkbox1.checked) {
-                    mana.style.visibility = 'hidden'; 
+                    mana.style.visibility = 'hidden';
                 } else {
                     mana.style.visibility = 'visible';
                 }
@@ -562,7 +562,7 @@
                 if (checkbox2.checked) {
                     hp.style.visibility = 'hidden';
                     hpOpp.style.visibility = 'hidden';
-                } else {    
+                } else {
                     hp.style.visibility = 'visible';
                     hpOpp.style.visibility = 'visible';
                 }
@@ -734,6 +734,15 @@
             // Debug log for errors
             socket.on('connect_error', (error) => {
                 console.error('Connection error:', error);
+            });
+            socket.on('disconnect', function () {
+
+                // You can display an alert or take other actions
+                // showAlert("Server disconnected, try again later!")
+                window.location.href = "arena.html"
+
+                // Optionally, reload the page or redirect
+                // location.reload(); // to attempt reconnect
             });
         });
     </script>
