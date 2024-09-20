@@ -749,7 +749,7 @@
             "duration": "0"
         },
         {
-            "bf_name": "Mojo",
+            "bf_name": "Pepsi",
             "desc": "Description",
             "img": "../cards/buffs/1.png",
             "type": "amplification",
@@ -768,7 +768,7 @@
             "duration": "0"
         },
         {
-            "bf_name": "Mojo",
+            "bf_name": "Fanta",
             "desc": "Description",
             "img": "../cards/buffs/2.png",
             "type": "amplification",
@@ -806,7 +806,7 @@
             "duration": "0"
         },
         {
-            "bf_name": "Mojo",
+            "bf_name": "Jim Beam",
             "desc": "Description",
             "img": "../cards/buffs/4.png",
             "type": "amplification",

@@ -106,7 +106,7 @@ io.on('connection', (socket) => {
     socket.on('buffsSelected', (roomId, data) => {
         console.log(`Player ${data.playerId} is ready!`);
 
-        if(roomId) {
+        if (roomId) {
             rooms[roomId].actions[socket.id] = data.status;
 
             const allPlayersSelected = rooms[roomId].players.every(p => rooms[roomId].actions[p.id]);
@@ -130,56 +130,50 @@ io.on('connection', (socket) => {
         'Rare': 2,
         'Epic': 3,
         'Legendary': 4
-    };
+    }; 
     function addOrUpdateBuff(roomId, socketId, data) {
         const playerBuffs = rooms[roomId].pickedBuffs[socketId];
         let found = false;
-    
+
         // Iterate through the existing buffs to check if the buff already exists
         for (let buff of playerBuffs) {
             if (buff.buffname === data.buff) {
                 found = true;
-    
-                // Compare the rarity of the existing buff and the new buff
+
+                // If the buff level is less than 4, increment the level
+                if (buff.bufflevel < 4) {
+                    buff.bufflevel += 1;
+                }
+
+                // Update rarity if the new buff has a higher rarity
                 if (rarityRanking[data.rarity] > rarityRanking[buff.buffRarity]) {
-                    // Update the existing buff with the higher rarity
                     buff.buffRarity = data.rarity;
                     buff.buffprice = data.price; // Optionally update other fields
-                    buff.bufflevel = data.level; // Update the level as well
-                } else if (rarityRanking[data.rarity] === rarityRanking[buff.buffRarity]) {
-                    // Move to the next rarity level if they are the same
-                    const rarities = Object.keys(rarityRanking);
-                    const currentIndex = rarities.indexOf(buff.buffRarity);
-    
-                    // If not the highest rarity, upgrade the rarity
-                    if (currentIndex < rarities.length - 1) {
-                        buff.buffRarity = rarities[currentIndex + 1];
-                        buff.buffprice = data.price; // Optionally update other fields
-                        buff.bufflevel = data.level; // Update the level as well
-                    }
                 }
+
                 break;
             }
         }
-    
-        // If the buff was not found, push the new buff
+
+        // If the buff was not found, push the new buff with level 1
         if (!found) {
             playerBuffs.push({
-                buffname: data.buff, 
+                buffname: data.buff,
                 buffprice: data.price,
-                bufflevel: data.level,
+                bufflevel: 1, // Start with level 1 for new buffs
                 buffRarity: data.rarity
             });
         }
-    }
+    };
+
     socket.on('buffSelected', (roomId, data) => {
         console.log(`Player ${data.playerId} selected buff: ${data.buff}`);
-    
+
         // Инициализация массива баффов для конкретного игрока, если не существует
         if (!rooms[roomId].pickedBuffs[socket.id]) {
             rooms[roomId].pickedBuffs[socket.id] = [];
         }
-    
+
 
         // if(rooms[roomId].pickedBuffs[socket.id]) //
 
@@ -196,10 +190,10 @@ io.on('connection', (socket) => {
             level: data.level,
             rarity: data.rarity
         });
-    
+
         console.log(`Picked buffs for room ${roomId}:`, rooms[roomId].pickedBuffs);
-        
-        
+
+
         // Отправляем событие с выбранными баффами всем игрокам в комнате
         // io.to(roomId).emit('startTurn', {
         //     players: rooms[roomId].players.map(p => ({
@@ -224,7 +218,7 @@ io.on('connection', (socket) => {
                     delete rooms[roomId];
                     console.log(`Room ${roomId} deleted`);
                 }
-                else if(room.players.length === 1) {
+                else if (room.players.length === 1) {
                     io.to(roomId).emit('pause');
                 }
             }

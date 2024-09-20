@@ -301,52 +301,35 @@
             'Epic': 'purple',
             'Legendary': 'orange'
         };
-        function addBuffToBlock(buff, rarity) {
+        function addBuffToBlock(buff) {
             const sideRect = document.getElementById('sideRect');
             const existingElements = sideRect.getElementsByTagName('p');
-
             let found = false;
-
-            // Get the keys of rarityRanking to determine the next level
-            const rarities = Object.keys(rarityRanking);
 
             // Iterate through the existing elements to check if the buff already exists
             for (let p of existingElements) {
-                const [existingRarity, existingBuff] = p.textContent.split(' ');
+                const [existingBuff, existingLevelText] = p.textContent.split(' '); // Splits into buff name and level
+                const existingLevel = Number(existingLevelText.replace('level', '')); // Extracts the numeric level
 
                 // If the buff is found
-                if (existingBuff === buff) {
+                if (existingBuff === buff.bf_name) {
                     found = true;
 
-                    // Compare the rarity
-                    if (rarityRanking[rarity] > rarityRanking[existingRarity]) {
-                        // Update the rarity if the new one is higher
-                        p.textContent = `${rarity} ${buff}`;
-                        p.classList.add('updated');
-                        p.style.color = rarityColors[rarity];
-                    }
-                    else if (rarityRanking[rarity] === rarityRanking[existingRarity]) {
-                        // Get the index of the current rarity
-                        const currentIndex = rarities.indexOf(existingRarity);
-
-                        // If it's not the last level (Legendary), update to the next level
-                        if (currentIndex < rarities.length - 1) {
-                            const nextRarity = rarities[currentIndex + 1];
-                            p.textContent = `${nextRarity} ${buff}`;
-                            p.classList.add('upgraded'); // Optional class for upgrading
-                            p.style.color = rarityColors[nextRarity];
-                        }
+                    // Increment the level if it's less than 4
+                    if (existingLevel < 4) {
+                        const newLevel = existingLevel + 1;
+                        p.textContent = `${buff.bf_name} level${newLevel}`; // Update the buff level
+                        p.classList.add('updated'); // Optional class for highlighting updates
                     }
                     break;
                 }
             }
 
-            // If the buff is not found, add a new entry
+            // If the buff is not found, add a new entry with level 1
             if (!found) {
                 const p = document.createElement('p');
-                p.textContent = `${rarity} ${buff}`;
+                p.textContent = `${buff.bf_name} level1`; // Start with level 1
                 p.classList.add('new');
-                p.style.color = rarityColors[rarity];
                 sideRect.appendChild(p);
             }
 
@@ -450,7 +433,7 @@
                     hiddenCardsCount++;
                     document.getElementById("goldValue").textContent = Number(document.getElementById("goldValue").textContent) - Number(shuffledBuffs[index].price);
                     // Example: Add strings dynamically
-                    addBuffToBlock(selectedCard, shuffledBuffs[index].rarity); // Adds one string per second
+                    addBuffToBlock(shuffledBuffs[index]); // Adds one string per second
                 }
                 else {
                     showAlert('Not enough money');
