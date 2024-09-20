@@ -212,6 +212,7 @@
         let hiddenCardsCount = 0;
         let alertTimeout;
         let roundCounter = 0;
+        let serverdata = null
 
         const randomButton = document.getElementById('randomButton');
         const timerElement = document.getElementById('timer');
@@ -721,6 +722,7 @@
                 console.log('Players selected cards:', data.players);
 
                 const currentPlayerId = socket.id;
+                serverdata = data;
 
                 // Определяем противника и себя
                 const opponent = data.players.find(player => player.id !== currentPlayerId);
@@ -786,6 +788,46 @@
                 arena.style.display = 'block';
             });
 
+            const attackButton = document.getElementById('attackButton');
+
+            attackButton.addEventListener('click', () => {
+                const currentPlayerId = socket.id;
+
+                // Определяем противника и себя
+                const opponent = serverdata.players.find(player => player.id !== currentPlayerId);
+                const currentPlayer = serverdata.players.find(player => player.id === currentPlayerId);
+
+                socket.emit('Attack', room_Id, {
+                    attackerId: currentPlayer,
+                    targetId: opponent
+                });
+            });
+
+            socket.on('AttackResult', (data) => {
+                const { attackerId, targetId, damage } = data;
+                const currentPlayerId = socket.id;
+                const opponent = serverdata.players.find(player => player.id !== currentPlayerId);
+                const currentPlayer = serverdata.players.find(player => player.id === currentPlayerId);
+                console.log(currentPlayerId);
+                console.log(opponent);
+                console.log(currentPlayer);
+                console.log(targetId.id);
+                console.log(attackerId.id);
+                let newhp;
+
+                // Проверяем, кто является целью атаки
+                if (currentPlayerId === targetId.id) {
+                    // Если текущий игрок — это цель, обновляем его HP
+                    newhp = parseInt(document.getElementById('card-number-hp').textContent) - damage;
+                    updateCardNumber(newhp, document.getElementById('card-number-attk').textContent);
+                } else if (currentPlayerId === attackerId.id) {
+                    // Если текущий игрок — это атакующий, обновляем HP противника
+                    newhp = parseInt(document.getElementById('op-card-number-hp').textContent) - damage;
+                    updateOpCardNumber(newhp, document.getElementById('op-card-number-attk').textContent);
+                }
+
+                console.log(`Игрок ${attackerId.id} нанес ${damage} урона игроку ${targetId.id}`);
+            });
             // socket.on('startRound', (Timer) => {
 
             // });

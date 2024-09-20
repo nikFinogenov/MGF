@@ -12,10 +12,7 @@ const server = http.createServer(app);
 const io = new Server(server);
 const rooms = {}; // Объект для хранения комнат
 
-
-function joinRoom() {
-    // nado kak to join room sdelat function a to oni pohozhi no komu ne pohui glavnoe cho i tak rabotaet
-}
+const game = new Game();
 
 io.on('connection', (socket) => {
     console.log('New player connected:', socket.id);
@@ -96,9 +93,13 @@ io.on('connection', (socket) => {
 
             // Check if both players have selected their cards
             const allPlayersSelected = rooms[roomId].players.every(p => rooms[roomId].selections[p.id]);
-
             if (allPlayersSelected) {
-                // Notify both players that the selection is complete
+                const player1 = rooms[roomId].players[0];
+                const player2 = rooms[roomId].players[1];
+                game.InputCards(
+                    rooms[roomId].selections[player1.id],
+                    rooms[roomId].selections[player2.id]
+                );
                 io.to(roomId).emit('startRound', {
                     players: rooms[roomId].players.map(p => ({
                         id: p.id,
@@ -216,6 +217,47 @@ io.on('connection', (socket) => {
         //         buffs: rooms[roomId].pickedBuffs[p.id] // Передаём массив баффов для каждого игрока
         //     }))
         // });
+    });
+
+    socket.on('Attack', (roomId, data) => {
+        try {
+            // Проверяем наличие комнаты и игроков
+            const room = rooms[roomId];
+            if (!room) {
+                throw new Error('Комната не найдена');
+            }
+    
+            const { attackerId, targetId } = data;
+            const attackerName = attackerId.card;
+            const targetName = targetId.card;
+    
+            // Получаем экземпляры карт игроков по их именам
+            const attackerCard = Object.values(room.selections).find(card => card === attackerName);  // Карта атакующего
+            const targetCard = Object.values(room.selections).find(card => card === targetName);      // Карта цели
+            
+            console.log(attackerCard);
+            console.log(targetCard);
+    
+            if (!attackerCard || !targetCard) {
+                throw new Error('Карта не найдена');
+            }
+    
+            // Вызываем метод useAttack у карты атакующего и передаем карту цели
+            const damage = game.AttackEvent(attackerCard,targetCard)
+    
+            // Логируем нанесенный урон
+            console.log(`Игрок ${attackerName} атаковал игрока ${targetName}, нанося урон: ${damage}`);
+    
+            // Отправляем результат урона обоим игрокам
+            io.to(roomId).emit('AttackResult', {
+                attackerId: attackerId,
+                targetId: targetId,
+                damage: damage
+            });
+    
+        } catch (error) {
+            console.error('Ошибка при обработке атаки:', error);
+        }
     });
 
     // Обработчик выхода игрока
