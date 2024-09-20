@@ -86,7 +86,6 @@ class Card {
 
     addBuff(buff) {
         this.buffs.push(buff);
-
     }
 
     // Getter для здоровья героя

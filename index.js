@@ -50,7 +50,7 @@ io.on('connection', (socket) => {
         // Если нет комнаты, создаем новую
         if (!roomId) {
             roomId = `room_${socket.id}`;
-            rooms[roomId] = { players: [], selections: {}, pickedBuffs: {} };
+            rooms[roomId] = { players: [], selections: {}, pickedBuffs: {}, actions: {} };
         }
 
         // Присоединяем игрока к комнате
@@ -106,9 +106,6 @@ io.on('connection', (socket) => {
 
     socket.on('buffSelected', (roomId, data) => {
         console.log(`Player ${data.playerId} selected buff: ${data.buff}`);
-        
-        // Инициализация pickedBuffs, если не существует
-        rooms[roomId].pickedBuffs = rooms[roomId].pickedBuffs || {};
     
         // Инициализация массива баффов для конкретного игрока, если не существует
         if (!rooms[roomId].pickedBuffs[socket.id]) {
@@ -132,7 +129,7 @@ io.on('connection', (socket) => {
         });
     });
 
-    // // Обработчик выхода игрока
+    // Обработчик выхода игрока
     socket.on('disconnect', () => {
         for (let roomId in rooms) {
             const room = rooms[roomId];

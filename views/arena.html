@@ -285,7 +285,7 @@
         // updateOpCardNumber(11);
 
         RollActionButton.addEventListener('click', function () {
-            if (Number(document.getElementById("goldValue").textContent) > 20) {
+            if (Number(document.getElementById("goldValue").textContent) >= 20) {
                 RandomCard();
                 document.getElementById("goldValue").textContent = Number(document.getElementById("goldValue").textContent) - 20;
             }
