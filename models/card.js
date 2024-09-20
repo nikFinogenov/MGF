@@ -88,6 +88,10 @@ class Card {
         this.buffs.push(buff);
     }
 
+    get getName() {
+        return this.he_name;
+    }
+
     // Getter для здоровья героя
     get getHp() {
         return this.hp;

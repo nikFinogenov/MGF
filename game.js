@@ -6,12 +6,12 @@ const { Buff } = require('./models/buff');
 
 class Game {
     constructor(pID, oID) {
-        this.pID = pID; 
+        this.pID = pID;
         this.oID = oID;
         this.playerHero = null;
-        this.oponentHero = null; 
+        this.player2Hero = null;
         this.pHealth = 30;
-        this.oHealth = 30;       
+        this.oHealth = 30;
         this.turn = 0;
         this.round = 0;
         this.roundTimer = 30;
@@ -19,21 +19,69 @@ class Game {
         this.gold = 300;
         this.income = 200;
         this.roundWinner = null;
-        this.matchWinner = null;  
+        this.matchWinner = null;
     }
 
-    startGame(heroName, opHeroName) {
+    InputCards(heroName, opHeroName) {
         try {
             // Загрузка данных из JSON
             const data = JSON.parse(fs.readFileSync(path.join(__dirname, 'json/cards.json'), 'utf8'));
-            let card = new Card(heroName,);
-            let opCard = new Card(opHeroName,);
+            const cardData = data.hero_cards.find(card => card.he_name === heroName);
+            const opCardData = data.hero_cards.find(card => card.he_name === opHeroName);
 
+            if (!cardData || !opCardData) {
+                throw new Error('Не удалось найти данные о героях');
+            }
 
-            
+            // Создаем карты для обоих игроков
+            this.playerHero = this.createCard(cardData);
+            this.player2Hero = this.createCard(opCardData);
+            console.log(this.playerHero);
+            console.log(this.player2Hero);
+
         } catch (error) {
             console.error('Error loading JSON data:', error);
         }
+    }
+
+    AttackEvent(attackerName, targetName) {
+        // Проверяем, кто является атакующим и целью
+        let attacker;
+        let target;
+    
+        // Проверка, кто из игроков атакует
+        if (this.playerHero.getName === attackerName) {
+            attacker = this.playerHero;
+        } else if (this.player2Hero.getName === attackerName) {
+            attacker = this.player2Hero;
+        } else {
+            throw new Error(`Карта с именем ${attackerName} не найдена среди игроков`);
+        }
+    
+        // Проверка, кто является целью атаки
+        if (this.playerHero.getName === targetName) {
+            target = this.playerHero;
+        } else if (this.player2Hero.getName === targetName) {
+            target = this.player2Hero;
+        } else {
+            throw new Error(`Карта с именем ${targetName} не найдена среди игроков`);
+        }
+    
+        // Выполняем атаку
+        let damage = attacker.useAttack(target);
+        return damage;
+    }
+
+    SendCurrentHp(sender) {
+        let target;
+        if (this.playerHero.getName === sender) {
+            target = this.playerHero;
+        } else if (this.player2Hero.getName === sender) {
+            target = this.player2Hero;
+        } else {
+            throw new Error(`Карта с именем ${sender} не найдена среди игроков`);
+        }
+        return target.getHp();
     }
 
     createCard(heroData) {
