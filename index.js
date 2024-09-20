@@ -116,7 +116,8 @@ io.on('connection', (socket) => {
         rooms[roomId].pickedBuffs[socket.id].push({
             buffname: data.buff, 
             buffprice: data.price,
-            bufflevel: data.level
+            bufflevel: data.level,
+            buffRarity: data.rarity
         });
     
         console.log(`Picked buffs for room ${roomId}:`, rooms[roomId].pickedBuffs);

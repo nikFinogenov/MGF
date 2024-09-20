@@ -344,15 +344,12 @@ body {
     font-size: 16px;
     text-align: center;
     overflow-y: auto;
-    /* Allow scrolling if content exceeds height */
 }
 
 .side-rect p {
     margin: 10px 0;
-    /* Adds space between lines */
     padding: 5px 10px;
     background-color: rgba(255, 255, 255, 0.1);
-    /* Subtle background */
     border-radius: 5px;
     font-weight: bold;
     font-size: 14px;
@@ -360,6 +357,19 @@ body {
     width: 100%;
     text-align: center;
     transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Style for the header (Your buffs) */
+.side-rect p:first-of-type {
+    background-color: rgba(255, 255, 255, 0.2); /* Slightly brighter background */
+    font-size: 18px; /* Larger font size */
+    font-weight: bold;
+    color: #d4af37; /* Gold color for the header text */
+    border-bottom: 2px solid #d4af37; /* Gold underline */
+    text-transform: uppercase; /* Make text uppercase */
+    letter-spacing: 1px; /* Add some space between letters */
+    margin-bottom: 20px; /* Add extra space between the header and the first item */
+    padding: 10px 0; /* More padding for the header */
 }
 
 .side-rect p.new {

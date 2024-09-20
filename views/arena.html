@@ -186,7 +186,7 @@
 
         <!-- Вертикальный блок справа -->
         <div class="side-rect" id="sideRect">
-            <p>Side Block</p>
+            <p>Your buffs</p>
         </div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
@@ -291,16 +291,54 @@
                 document.getElementById('op-attk-box').style.marginRight = "13px";
             }
         }
-        function addStringToBlock(string) {
+        const rarityRanking = {
+            'Common': 1,
+            'Rare': 2,
+            'Epic': 3,
+            'Legendary': 4
+        };
+        const rarityColors = {
+            'Common': 'green',
+            'Rare': 'blue',
+            'Epic': 'purple',
+            'Legendary': 'orange'
+        };
+        function addBuffToBlock(buff, rarity) {
             const sideRect = document.getElementById('sideRect');
+            const existingElements = sideRect.getElementsByTagName('p');
 
-            // Create a new <p> element for the string
-            const p = document.createElement('p');
-            p.textContent = string;
-            p.classList.add('new');  // Add class for animation
+            let found = false;
 
-            // Append the new <p> element to the block
-            sideRect.appendChild(p);
+            // Iterate through the existing elements to check if the buff already exists
+            for (let p of existingElements) {
+                const [existingRarity, existingBuff] = p.textContent.split(' ');
+
+                // If the buff is found
+                if (existingBuff === buff) {
+                    found = true;
+
+                    // Compare the rarity
+                    if (rarityRanking[rarity] > rarityRanking[existingRarity]) {
+                        // Update the rarity if the new one is higher
+                        p.textContent = `${rarity} ${buff}`;
+                        p.classList.add('updated'); // Optionally add a class for highlighting updates
+
+                        p.style.color = rarityColors[rarity];
+                    }
+                    break;
+                }
+            }
+
+            // If the buff is not found, add a new entry
+            if (!found) {
+                const p = document.createElement('p');
+                p.textContent = `${rarity} ${buff}`;
+                p.classList.add('new');
+
+                p.style.color = rarityColors[rarity];
+
+                sideRect.appendChild(p);
+            }
 
             // Optional: Automatically scroll down to the latest content
             sideRect.scrollTop = sideRect.scrollHeight;
@@ -379,7 +417,6 @@
                 // clearInterval(timerInterval);
             });
         });
-
         cardBuffs.forEach((option, index) => {
             option.addEventListener('click', function () {
                 const selectedCard = option.getAttribute('data-card');
@@ -390,13 +427,14 @@
                         playerId: localStorage.getItem('userId'),
                         buff: selectedCard,
                         price: shuffledBuffs[index].price,
-                        level: shuffledBuffs[index].level
+                        level: shuffledBuffs[index].level,
+                        rarity: shuffledBuffs[index].rarity
                     });
                     option.style.display = 'none';
                     hiddenCardsCount++;
                     document.getElementById("goldValue").textContent = Number(document.getElementById("goldValue").textContent) - Number(shuffledBuffs[index].price);
                     // Example: Add strings dynamically
-                    addStringToBlock(`${selectedCard}: ${shuffledBuffs[index].level}`); // Adds one string per second
+                    addBuffToBlock(selectedCard, shuffledBuffs[index].rarity); // Adds one string per second
                 }
                 else {
                     showAlert('Not enough money');
