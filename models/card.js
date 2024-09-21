@@ -25,6 +25,10 @@ class Card {
         target.recieveDamage(value);
         return value;
     }
+    useHealkAbility(value) {
+        this.recieveHeal(value);
+        return value;
+    }
 
     lvlUp() {
         if (this.level < this.maxlevel) {
@@ -85,6 +89,11 @@ class Card {
         if (this.hp < 0) {
             this.hp = 0;
         }
+
+        return this.hp;
+    }
+    recieveHeal(value) {
+        this.hp += value;
 
         return this.hp;
     }
