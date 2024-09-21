@@ -277,9 +277,7 @@ body {
     display: flex;
     gap: 20px;
     z-index: 1;
-}
-#additional-info{
-    display: none;
+    /* Убедитесь, что у родителя этой секции есть высота, если это нужно */
 }
 
 /* Стиль для карт */
@@ -296,12 +294,35 @@ body {
     color: #fff;
     font-family: 'Cinzel', serif;
     font-size: 16px;
-    text-align: center;
     transition: transform 0.3s ease;
+    position: relative; /* Для корректного абсолютного позиционирования внутри */
+    z-index: 2;
 }
 
 .ability-card:hover {
     transform: scale(1.1);
+}
+
+.mana-cost {
+    position: absolute;
+    top: 5px;
+    left: 6px;
+    transform: translateX(-50%);
+    font-size: 12px;
+    color: #00ffff;
+    font-weight: bold;
+    z-index: 3;
+}
+
+.damage-value {
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 14px;
+    color: #ffffff;
+    font-weight: bold;
+    z-index: 3;
 }
 
 .alert {

@@ -170,9 +170,18 @@
         </div>
 
         <div class="bottom-ability-cards">
-            <div class="ability-card" data-card="skill1"></div>
-            <div class="ability-card" data-card="skill2"></div>
-            <div class="ability-card" data-card="skill3"></div>
+            <div class="ability-card" data-card="skill1">
+                <span class="mana-cost">8</span>
+                <span class="damage-value">10</span>
+            </div>
+            <div class="ability-card" data-card="skill2">
+                <span class="mana-cost">8</span>
+                <span class="damage-value">10</span>
+            </div>
+            <div class="ability-card" data-card="skill3">
+                <span class="mana-cost">8</span>
+                <span class="damage-value">10</span>
+            </div>
         </div>
         <div class="attack-button-block">
             <button class="button" id="attackButton">
@@ -984,6 +993,14 @@
                     cardAb.style.backgroundPosition = 'center'; // Центрируем изображение
                 });
                 cardAbilities.forEach((cardAb, index) => {
+
+                    const manaCost = cardAb.querySelector('.mana-cost');
+                    const damageValue = cardAb.querySelector('.damage-value');
+
+                    // Заполняем span'ы данными из текущей способности
+                    manaCost.textContent = currentPlayerHeroCard.abilities[index].property[0].manacost;
+                    damageValue.textContent = currentPlayerHeroCard.abilities[index].property[0].dmg;
+
                     cardAb.addEventListener('click', () => {
                         if (Number(document.querySelector('.mana').textContent) >= Number(currentPlayerHeroCard.abilities[index].property[0].manacost)) {
                             console.log("Will remove ", Number(currentPlayerHeroCard.abilities[index].property[0].manacost));
