@@ -72,7 +72,7 @@ class Game {
         return damage;
     }
 
-    SendCurrentHp(sender) {
+    SendBaseHp(sender) {
         let target;
         if (this.playerHero.getName === sender) {
             target = this.playerHero;
@@ -81,7 +81,8 @@ class Game {
         } else {
             throw new Error(`Карта с именем ${sender} не найдена среди игроков`);
         }
-        return target.getHp();
+        let hp = target.getBaseHp;
+        return hp;
     }
 
     createCard(heroData) {

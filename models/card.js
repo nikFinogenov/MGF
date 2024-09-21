@@ -1,7 +1,8 @@
 class Card {
     constructor(he_name, hp, atk, mana, money, manaregen, hpregen, img, desc, level, maxlevel, abilities = [], buffs = []) {
         this.he_name = he_name; // Имя героя
-        this.hp = hp; // Здоровье героя
+        this.hp = hp;
+        this.basehp = hp; // Здоровье героя
         this.atk = atk; // Атака героя
         this.mana = mana; // Мана героя
         this.money = money;
@@ -50,7 +51,8 @@ class Card {
     }
 
     addHp(hp) {
-        this.hp += hp;
+        this.basehp += hp;
+        this.hp = this.hp;
         return this.hp;
     }
 
@@ -95,6 +97,14 @@ class Card {
     // Getter для здоровья героя
     get getHp() {
         return this.hp;
+    }
+
+    set setHp(newHp) {
+        this.hp = newHp;
+    }
+
+    get getBaseHp() {
+        return this.basehp;
     }
 
     // Getter для атаки героя

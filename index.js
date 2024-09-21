@@ -244,20 +244,28 @@ io.on('connection', (socket) => {
     
             // Вызываем метод useAttack у карты атакующего и передаем карту цели
             const damage = game.AttackEvent(attackerCard,targetCard)
+            const hp1 = game.SendBaseHp(attackerCard);
+            const hp2 = game.SendBaseHp(targetCard);
     
             // Логируем нанесенный урон
-            console.log(`Игрок ${attackerName} атаковал игрока ${targetName}, нанося урон: ${damage}`);
+            console.log(`Игрок ${attackerName} атаковал игрока ${targetName}, нанося урон: ${damage} hp1: ${hp1} hp2: ${hp2}`);
     
             // Отправляем результат урона обоим игрокам
             io.to(roomId).emit('AttackResult', {
                 attackerId: attackerId,
                 targetId: targetId,
-                damage: damage
+                damage: damage,
+                attackerbasehp: hp1,
+                targetbasehp: hp2
             });
     
         } catch (error) {
             console.error('Ошибка при обработке атаки:', error);
         }
+    });
+
+    socket.on('EndRound', (roomId, data) => {
+
     });
 
     // Обработчик выхода игрока

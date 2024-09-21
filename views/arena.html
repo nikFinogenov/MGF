@@ -804,7 +804,7 @@
             });
 
             socket.on('AttackResult', (data) => {
-                const { attackerId, targetId, damage } = data;
+                const { attackerId, targetId, damage, attackerbasehp, targetbasehp } = data;
                 const currentPlayerId = socket.id;
                 const opponent = serverdata.players.find(player => player.id !== currentPlayerId);
                 const currentPlayer = serverdata.players.find(player => player.id === currentPlayerId);
@@ -819,11 +819,21 @@
                 if (currentPlayerId === targetId.id) {
                     // Если текущий игрок — это цель, обновляем его HP
                     newhp = parseInt(document.getElementById('card-number-hp').textContent) - damage;
-                    updateCardNumber(newhp, document.getElementById('card-number-attk').textContent);
+                    if (newhp <= 0) {
+                        socket.emit('EndRound');
+                        //updateCardNumber(0, document.getElementById('card-number-attk').textContent);
+                    } else {
+                        updateCardNumber(newhp, document.getElementById('card-number-attk').textContent);
+                    }
                 } else if (currentPlayerId === attackerId.id) {
                     // Если текущий игрок — это атакующий, обновляем HP противника
                     newhp = parseInt(document.getElementById('op-card-number-hp').textContent) - damage;
-                    updateOpCardNumber(newhp, document.getElementById('op-card-number-attk').textContent);
+                    if (newhp <= 0) {
+                        socket.emit('EndRound');
+                        //updateOpCardNumber(0, document.getElementById('op-card-number-attk').textContent);
+                    } else {
+                        updateOpCardNumber(newhp, document.getElementById('op-card-number-attk').textContent);
+                    }
                 }
 
                 console.log(`Игрок ${attackerId.id} нанес ${damage} урона игроку ${targetId.id}`);
@@ -867,15 +877,17 @@
             });
             socket.on('firstTurn', (turnId, roundNum) => {
                 document.getElementById('round-counter').textContent = `Round: ${roundNum}`
-                if(turnId === socket.id) {
+                if (turnId === socket.id) {
                     stopAlert();
                     showAlert("Your turn", 2000);
                     readyButton.disabled = false;
+                    attackButton.disabled = false;
                 }
                 else {
                     stopAlert();
                     showAlert("Opponent turn", 30000);
                     readyButton.disabled = true;
+                    attackButton.disabled = true;
                 }
             });
             // Debug log to confirm connection
