@@ -839,6 +839,9 @@
                     } else {
                         updateCardNumber(newhp, document.getElementById('card-number-attk').textContent);
                     }
+                    if(document.getElementById('pl-icon').style.display === 'flex') {
+                        document.getElementById('pl-icon').style.display = 'none';
+                    }
                 } else if (currentPlayerId === attackerId.id) {
                     // Если текущий игрок — это атакующий, обновляем HP противника
                     newhp = parseInt(document.getElementById('op-card-number-hp').textContent) - damage;
@@ -847,6 +850,9 @@
                         //updateOpCardNumber(0, document.getElementById('op-card-number-attk').textContent);
                     } else {
                         updateOpCardNumber(newhp, document.getElementById('op-card-number-attk').textContent);
+                    }
+                    if(document.getElementById('op-icon').style.display === 'flex') {
+                        document.getElementById('op-icon').style.display = 'none';
                     }
                 }
 
@@ -891,7 +897,7 @@
                     //     updateCardNumber(newhp, document.getElementById('card-number-attk').textContent);
                     // }
 
-                    document.getElementById('pl-icon').style.display = 'flex';
+                    document.getElementById('op-icon').style.display = 'flex';
                 } else if (currentPlayerId === attackerId.id) {
                     // // Если текущий игрок — это атакующий, обновляем HP противника
                     // newhp = parseInt(document.getElementById('op-card-number-hp').textContent) - damage;
@@ -901,7 +907,7 @@
                     // } else {
                     //     updateOpCardNumber(newhp, document.getElementById('op-card-number-attk').textContent);
                     // }
-                    document.getElementById('op-icon').style.display = 'flex';
+                    document.getElementById('pl-icon').style.display = 'flex';
                 }
             });
 
