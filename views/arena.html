@@ -65,7 +65,7 @@
 
         <!-- Выезжающая панель -->
         <div class="side-panel" id="sidePanel">
-            <button class="surrender-button">Сдаться</button>
+            <button class="surrender-button">Surrender</button>
 
             <!-- Добавляем чекбоксы -->
             <div class="checkbox-container">
@@ -325,18 +325,6 @@
             }
             else document.getElementById('op-attk-box').style.marginRight = "17px";
         }
-        const rarityRanking = {
-            'Common': 1,
-            'Rare': 2,
-            'Epic': 3,
-            'Legendary': 4
-        };
-        const rarityColors = {
-            'Common': 'green',
-            'Rare': 'blue',
-            'Epic': 'purple',
-            'Legendary': 'orange'
-        };
         function addBuffToBlock(buff) {
             const sideRect = document.getElementById('sideRect');
             const existingElements = sideRect.getElementsByTagName('p');
@@ -381,6 +369,11 @@
                 showAlert('Not enough money', 500);
             }
         });
+
+        document.querySelector('.surrender-button').addEventListener('click', () => {
+            window.location.href = "menu.html";
+        });
+
         function RandomCard() {
             // Перемешиваем массив баффов
             shuffledBuffs = shuffleArray(buffCards).slice(0, 3); // Берем 3 случайные карты
@@ -595,21 +588,21 @@
             }
         }
         function restoreMana(num) {
-        const track = document.getElementById('manaTrack');
-        const currentBars = track.querySelectorAll('.bar').length;
-        const maxBars = 5;
-        document.querySelector('.mana').textContent = maxBars;
+            const track = document.getElementById('manaTrack');
+            const currentBars = track.querySelectorAll('.bar').length;
+            const maxBars = 5;
+            document.querySelector('.mana').textContent = maxBars;
 
-        // Calculate how many bars to restore
-        const barsToRestore = Math.min(num, maxBars - currentBars);
+            // Calculate how many bars to restore
+            const barsToRestore = Math.min(num, maxBars - currentBars);
 
-        // Generate new bars
-        for (let i = 0; i < barsToRestore; i++) {
-            const bar = document.createElement('div');
-            bar.classList.add('bar');
-            track.appendChild(bar);
+            // Generate new bars
+            for (let i = 0; i < barsToRestore; i++) {
+                const bar = document.createElement('div');
+                bar.classList.add('bar');
+                track.appendChild(bar);
+            }
         }
-    }
 
         // Отправляем информацию о себе
         socket.emit('userEmail', localStorage.getItem('userEmail'));
