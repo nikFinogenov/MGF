@@ -478,7 +478,6 @@
             });
         }
 
-
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -855,6 +854,26 @@
                     cardAb.style.backgroundSize = 'cover'; // Устанавливаем изображение на всю область
                     cardAb.style.backgroundPosition = 'center'; // Центрируем изображение
                 });
+                cardAbilities.forEach((cardAb, index) => {
+                    cardAb.addEventListener('click', () => {
+                        const selectedCard = cardAb.getAttribute('data-card');
+                        switch (currentPlayerHeroCard.abilities[index].type) {
+                            case 'attack':
+                                console.log('attk');
+                                break;
+                            case 'heal':
+                                console.log('hel');
+                                break;
+                            case 'defense':
+                                console.log('def');
+                                break;
+
+                            default:
+                                break;
+                        }
+
+                    });
+                });
 
                 roundCounter++;
                 readyButton.textContent = "End round";
@@ -867,15 +886,17 @@
             });
             socket.on('firstTurn', (turnId, roundNum) => {
                 document.getElementById('round-counter').textContent = `Round: ${roundNum}`
-                if(turnId === socket.id) {
+                if (turnId === socket.id) {
                     stopAlert();
                     showAlert("Your turn", 2000);
                     readyButton.disabled = false;
+                    AttackbuttonBlock.disabled = true;
                 }
                 else {
                     stopAlert();
                     showAlert("Opponent turn", 30000);
                     readyButton.disabled = true;
+                    AttackbuttonBlock.disabled = true;
                 }
             });
             // Debug log to confirm connection
