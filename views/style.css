@@ -406,6 +406,7 @@ body {
     z-index: 2;
 }
 .icon-box {
+    display: none;
     position: absolute;
     top: 50%;
     left: 110%; /* Position it to the right of the card */
@@ -413,7 +414,6 @@ body {
     width: 60px;
     height: 80px;
     background-color: rgba(0, 0, 0, 0.7);
-    display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 8px;

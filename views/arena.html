@@ -126,9 +126,8 @@
                     <span id="op-card-number-attk">5</span>
                 </div>
             </div>
-            <div id="op-ab-log"></div>
-            <div class="icon-box">
-                <img id="op-icon" src="shield.png" alt="Icon" />
+            <div class="icon-box" id="op-icon">
+                <img src="shield.png" alt="Icon" />
             </div>
         </div>
 
@@ -148,6 +147,9 @@
                 <div class="card-stats-attk" id="attk-box">
                     <span id="card-number-attk">5</span>
                 </div>
+            </div>
+            <div class="icon-box" id="pl-icon">
+                <img src="shield.png" alt="Icon" />
             </div>
         </div>
 
@@ -810,6 +812,7 @@
                     targetId: opponent,
                     value: null
                 });
+                attackButton.disabled = true;
             });
 
             socket.on('AttackResult', (data) => {
@@ -852,6 +855,27 @@
                     // Если текущий игрок — это атакующий, обновляем HP противника
                     newhp = parseInt(document.getElementById('op-card-number-hp').textContent) + Number(heal);
                     updateOpCardNumber(newhp, document.getElementById('op-card-number-attk').textContent);
+                }
+
+                // console.log(`Игрок ${attackerId.id} нанес ${damage} урона игроку ${targetId.id}`);
+            });
+            socket.on('DefResult', (data) => {
+                const { DefId } = data;
+                const currentPlayerId = socket.id;
+                const currentPlayer = serverdata.players.find(player => player.id === currentPlayerId);
+                // let newhp;
+
+                // Проверяем, кто является целью атаки
+                if (currentPlayerId === DefId.id) {
+                    document.getElementById('pl-icon').style.display = "flex";
+                    // Если текущий игрок — это цель, обновляем его HP
+                    // newhp = parseInt(document.getElementById('card-number-hp').textContent) + Number(heal);
+                    // updateCardNumber(newhp, document.getElementById('card-number-attk').textContent);
+                } else if (currentPlayerId !== DefId.id) {
+                    document.getElementById('op-icon').style.display = "flex";
+                    // Если текущий игрок — это атакующий, обновляем HP противника
+                    // newhp = parseInt(document.getElementById('op-card-number-hp').textContent) + Number(heal);
+                    // updateOpCardNumber(newhp, document.getElementById('op-card-number-attk').textContent);
                 }
 
                 // console.log(`Игрок ${attackerId.id} нанес ${damage} урона игроку ${targetId.id}`);
@@ -906,7 +930,9 @@
                                 });
                                 break;
                             case 'defense':
-                                console.log('def');
+                                socket.emit('Defense', room_Id, {
+                                    DefId: currentPlayer
+                                });
                                 break;
 
                             default:
