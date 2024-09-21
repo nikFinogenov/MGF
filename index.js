@@ -243,7 +243,10 @@ io.on('connection', (socket) => {
             }
     
             // Вызываем метод useAttack у карты атакующего и передаем карту цели
-            const damage = game.AttackEvent(attackerCard,targetCard)
+            let damage;
+            console.log("datavalue ",data.value);
+            if(data.value === null) damage = game.AttackEvent(attackerCard,targetCard);
+            else damage = game.AttackEventAbility(attackerCard,targetCard, data.value);
     
             // Логируем нанесенный урон
             console.log(`Игрок ${attackerName} атаковал игрока ${targetName}, нанося урон: ${damage}`);

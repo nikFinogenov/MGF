@@ -212,7 +212,8 @@
         let hiddenCardsCount = 0;
         let alertTimeout;
         let roundCounter = 0;
-        let serverdata = null
+        let serverdata = null;
+        let areClicksDisabled = true;
 
         const randomButton = document.getElementById('randomButton');
         const timerElement = document.getElementById('timer');
@@ -357,7 +358,6 @@
                 showAlert('Not enough money', 500);
             }
         });
-
         function RandomCard() {
             // Перемешиваем массив баффов
             shuffledBuffs = shuffleArray(buffCards).slice(0, 3); // Берем 3 случайные карты
@@ -469,7 +469,12 @@
                 }
             });
         });
-
+        function toggleClicks(isMyTurn) {
+            const cardAbilities = document.querySelectorAll('.ability-card');
+            cardAbilities.forEach(card => {
+                card.style.pointerEvents = isMyTurn ? 'none' : 'auto';
+            });
+        }
         function hideUnselectedCards(selectedOption) {
             cardOptions.forEach(option => {
                 if (option !== selectedOption) {
@@ -798,7 +803,8 @@
 
                 socket.emit('Attack', room_Id, {
                     attackerId: currentPlayer,
-                    targetId: opponent
+                    targetId: opponent,
+                    value: null
                 });
             });
 
@@ -807,11 +813,11 @@
                 const currentPlayerId = socket.id;
                 const opponent = serverdata.players.find(player => player.id !== currentPlayerId);
                 const currentPlayer = serverdata.players.find(player => player.id === currentPlayerId);
-                console.log(currentPlayerId);
-                console.log(opponent);
-                console.log(currentPlayer);
-                console.log(targetId.id);
-                console.log(attackerId.id);
+                // console.log(currentPlayerId);
+                // console.log(opponent);
+                // console.log(currentPlayer);
+                // console.log(targetId.id);
+                // console.log(attackerId.id);
                 let newhp;
 
                 // Проверяем, кто является целью атаки
@@ -857,9 +863,18 @@
                 cardAbilities.forEach((cardAb, index) => {
                     cardAb.addEventListener('click', () => {
                         const selectedCard = cardAb.getAttribute('data-card');
+                        const currentPlayerId = socket.id;
+                        const opponent = serverdata.players.find(player => player.id !== currentPlayerId);
+                        const currentPlayer = serverdata.players.find(player => player.id === currentPlayerId);
+
                         switch (currentPlayerHeroCard.abilities[index].type) {
                             case 'attack':
-                                console.log('attk');
+                                // console.log(currentPlayerHeroCard.abilities[index].property[0].dmg);
+                                socket.emit('Attack', room_Id, {
+                                    attackerId: currentPlayer,
+                                    targetId: opponent,
+                                    value: currentPlayerHeroCard.abilities[index].property[0].dmg
+                                });
                                 break;
                             case 'heal':
                                 console.log('hel');
@@ -890,13 +905,15 @@
                     stopAlert();
                     showAlert("Your turn", 2000);
                     readyButton.disabled = false;
-                    AttackbuttonBlock.disabled = true;
+                    attackButton.disabled = false;
+                    toggleClicks(false);
                 }
                 else {
                     stopAlert();
                     showAlert("Opponent turn", 30000);
                     readyButton.disabled = true;
-                    AttackbuttonBlock.disabled = true;
+                    attackButton.disabled = true;
+                    toggleClicks(true);
                 }
             });
             // Debug log to confirm connection

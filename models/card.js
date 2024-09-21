@@ -20,6 +20,11 @@ class Card {
         target.recieveDamage(dealDamage);
         return dealDamage;
     }
+    useAttackAbility(target, value) {
+        // let dealDamage = this.atk;
+        target.recieveDamage(value);
+        return value;
+    }
 
     lvlUp() {
         if (this.level < this.maxlevel) {
