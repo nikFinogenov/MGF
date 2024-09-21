@@ -227,7 +227,7 @@ io.on('connection', (socket) => {
                 throw new Error('Комната не найдена');
             }
     
-            const { attackerId, targetId } = data;
+            const { attackerId, targetId, value } = data;
             const attackerName = attackerId.card;
             const targetName = targetId.card;
     
@@ -244,9 +244,13 @@ io.on('connection', (socket) => {
     
             // Вызываем метод useAttack у карты атакующего и передаем карту цели
             let damage;
-            console.log("datavalue ",data.value);
-            if(data.value === null) damage = game.AttackEvent(attackerCard,targetCard);
-            else damage = game.AttackEventAbility(attackerCard,targetCard, data.value);
+            // console.log("datavalue ",data.value);
+            let isDef = rooms[roomId].actions[targetId];
+            // console.log('--->', rooms[roomId].players);
+            // console.log(Math.round(dmg / 2));
+            // if(isDef === 'def') game.AttackEventAbility(attackerCard,targetCard, isDef);
+            if(value === null) damage = game.AttackEvent(attackerCard,targetCard);
+            else damage = game.AttackEventAbility(attackerCard,targetCard, value);
     
             // Логируем нанесенный урон
             console.log(`Игрок ${attackerName} атаковал игрока ${targetName}, нанося урон: ${damage}`);
@@ -304,7 +308,8 @@ io.on('connection', (socket) => {
     
             const { DefId } = data;
             const DefName = DefId.card;
-    
+            rooms[roomId].actions[DefId.id] = 'def';
+            // console.log('<----', DefId.id)
             // Получаем экземпляры карт игроков по их именам
             const DefCard = Object.values(room.selections).find(card => card === DefName);  // Карта атакующего   // Карта цели
     

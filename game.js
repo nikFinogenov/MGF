@@ -95,7 +95,9 @@ class Game {
         }
     
         // Выполняем атаку
-        let damage = attacker.useAttackAbility(target, value);
+        let damage;
+        if(value !== 'def') damage = attacker.useAttackAbility(target, value);
+        else damage = attacker.useAttack(target);
         return damage;
     }
     HealEvent(healName, value) {

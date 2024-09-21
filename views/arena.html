@@ -806,7 +806,7 @@
                 // Определяем противника и себя
                 const opponent = serverdata.players.find(player => player.id !== currentPlayerId);
                 const currentPlayer = serverdata.players.find(player => player.id === currentPlayerId);
-
+                // const currentPlayerHeroCard = heroCards.find(card => card.he_name === currentPlayer.card);
                 socket.emit('Attack', room_Id, {
                     attackerId: currentPlayer,
                     targetId: opponent,
@@ -826,16 +826,21 @@
                 // console.log(targetId.id);
                 // console.log(attackerId.id);
                 let newhp;
-
-                // Проверяем, кто является целью атаки
+                // if (document.getElementById('op-icon').style.display === "flex" 
+                // || document.getElementById('pl-icon').style.display === "flex") {
+                //     damage = Math.round(damage / 2);
+                // }
+                // Проверяем, кто является целью атакиs
                 if (currentPlayerId === targetId.id) {
                     // Если текущий игрок — это цель, обновляем его HP
                     newhp = parseInt(document.getElementById('card-number-hp').textContent) - damage;
                     updateCardNumber(newhp, document.getElementById('card-number-attk').textContent);
+                    document.getElementById('pl-icon').style.display === "none"
                 } else if (currentPlayerId === attackerId.id) {
                     // Если текущий игрок — это атакующий, обновляем HP противника
                     newhp = parseInt(document.getElementById('op-card-number-hp').textContent) - damage;
                     updateOpCardNumber(newhp, document.getElementById('op-card-number-attk').textContent);
+                    document.getElementById('op-icon').style.display === "none"
                 }
 
                 console.log(`Игрок ${attackerId.id} нанес ${damage} урона игроку ${targetId.id}`);
