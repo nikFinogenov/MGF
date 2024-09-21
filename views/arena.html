@@ -127,8 +127,8 @@
                 </div>
             </div>
             <div id="op-ab-log"></div>
-            <div class="icon-box">
-                <img id="op-icon" src="shield.png" alt="Icon" />
+            <div class="icon-box" id="op-icon">
+                <img src="shield.png" alt="Icon" />
             </div>
         </div>
 
@@ -148,6 +148,9 @@
                 <div class="card-stats-attk" id="attk-box">
                     <span id="card-number-attk">5</span>
                 </div>
+                <div class="icon-box" id="pl-icon">
+                    <img src="shield.png" alt="Icon" />
+                </div>
             </div>
         </div>
 
@@ -161,7 +164,7 @@
         <div class="manapool">
             <div class="mana"></div>
             <div class="progress">
-                <div class="track">
+                <div class="track" id="manaTrack">
                 </div>
             </div>
         </div>
@@ -299,23 +302,27 @@
         function updateCardNumber(newHPNumber, newATKNumber) {
             document.getElementById('card-number-hp').textContent = newHPNumber;
             document.getElementById('card-number-attk').textContent = newATKNumber;
-            if (newHPNumber > 10) {
+            if (newHPNumber >= 10) {
                 document.getElementById('hp-box').style.marginLeft = "13px";
             }
-            if (newATKNumber > 10) {
+            else document.getElementById('hp-box').style.marginLeft = "17px";
+            if (newATKNumber >= 10) {
                 document.getElementById('attk-box').style.marginRight = "13px";
             }
+            else document.getElementById('attk-box').style.marginRight = "17px";
         }
 
         function updateOpCardNumber(newHPNumber, newATKNumber) {
             document.getElementById('op-card-number-hp').textContent = newHPNumber;
             document.getElementById('op-card-number-attk').textContent = newATKNumber;
-            if (newHPNumber > 10) {
+            if (newHPNumber >= 10) {
                 document.getElementById('op-hp-box').style.marginLeft = "13px";
             }
-            if (newATKNumber > 10) {
+            else document.getElementById('op-hp-box').style.marginLeft = "17px";
+            if (newATKNumber >= 10) {
                 document.getElementById('op-attk-box').style.marginRight = "13px";
             }
+            else document.getElementById('op-attk-box').style.marginRight = "17px";
         }
         const rarityRanking = {
             'Common': 1,
@@ -573,6 +580,35 @@
                 trackOpp.appendChild(barOpp);
             }
         }
+
+        function removeLastBars(n) {
+            const track = document.getElementById('manaTrack');
+            const bars = Array.from(track.querySelectorAll('.bar')); // Convert NodeList to Array
+
+            // Determine how many bars to remove
+            const barsToRemove = Math.min(n, bars.length);
+
+            // Remove the last 'barsToRemove' bars
+            for (let i = 0; i < barsToRemove; i++) {
+                track.removeChild(bars[bars.length - 1 - i]);
+            }
+        }
+        function restoreMana(num) {
+        const track = document.getElementById('manaTrack');
+        const currentBars = track.querySelectorAll('.bar').length;
+        const maxBars = 5;
+        document.querySelector('.mana').textContent = maxBars;
+
+        // Calculate how many bars to restore
+        const barsToRestore = Math.min(num, maxBars - currentBars);
+
+        // Generate new bars
+        for (let i = 0; i < barsToRestore; i++) {
+            const bar = document.createElement('div');
+            bar.classList.add('bar');
+            track.appendChild(bar);
+        }
+    }
 
         // Отправляем информацию о себе
         socket.emit('userEmail', localStorage.getItem('userEmail'));
@@ -845,6 +881,9 @@
                     } else {
                         updateCardNumber(newhp, document.getElementById('card-number-attk').textContent);
                     }
+                    if (document.getElementById('pl-icon').style.display === 'flex') {
+                        document.getElementById('pl-icon').style.display = 'none';
+                    }
                 } else if (currentPlayerId === attackerId.id) {
                     // Если текущий игрок — это атакующий, обновляем HP противника
                     newhp = parseInt(document.getElementById('op-card-number-hp').textContent) - damage;
@@ -853,6 +892,9 @@
                         //updateOpCardNumber(0, document.getElementById('op-card-number-attk').textContent);
                     } else {
                         updateOpCardNumber(newhp, document.getElementById('op-card-number-attk').textContent);
+                    }
+                    if (document.getElementById('op-icon').style.display === 'flex') {
+                        document.getElementById('op-icon').style.display = 'none';
                     }
                 }
 
@@ -881,6 +923,36 @@
             // socket.on('startRound', (Timer) => {
 
             // });
+
+            socket.on('DefenseResult', (data) => {
+                const { attackerId, targetId, damage } = data;
+                const currentPlayerId = socket.id;
+
+
+                if (currentPlayerId === targetId.id) {
+                    // Если текущий игрок — это цель, обновляем его HP
+                    // newhp = parseInt(document.getElementById('card-number-hp').textContent) - damage;
+                    // if (newhp <= 0) {
+                    //     socket.emit('roundEnd', { roomId: room_Id, loserId: currentPlayerId });
+                    //     //updateCardNumber(0, document.getElementById('card-number-attk').textContent);
+                    // } else {
+                    //     updateCardNumber(newhp, document.getElementById('card-number-attk').textContent);
+                    // }
+
+                    document.getElementById('op-icon').style.display = 'flex';
+                } else if (currentPlayerId === attackerId.id) {
+                    // // Если текущий игрок — это атакующий, обновляем HP противника
+                    // newhp = parseInt(document.getElementById('op-card-number-hp').textContent) - damage;
+                    // if (newhp <= 0) {
+                    //     socket.emit('roundEnd', { roomId: room_Id, loserId: opponent.id });
+                    //     //updateOpCardNumber(0, document.getElementById('op-card-number-attk').textContent);
+                    // } else {
+                    //     updateOpCardNumber(newhp, document.getElementById('op-card-number-attk').textContent);
+                    // }
+                    document.getElementById('pl-icon').style.display = 'flex';
+                }
+            });
+
 
             socket.on('startTurn', (data) => {
                 socket.emit('GetBaseHp', room_Id, { playerId: socket.id });
@@ -930,32 +1002,44 @@
                     damageValue.textContent = currentPlayerHeroCard.abilities[index].property[0].dmg;
 
                     cardAb.addEventListener('click', () => {
-                        const selectedCard = cardAb.getAttribute('data-card');
-                        const currentPlayerId = socket.id;
-                        const opponent = serverdata.players.find(player => player.id !== currentPlayerId);
-                        const currentPlayer = serverdata.players.find(player => player.id === currentPlayerId);
+                        if (Number(document.querySelector('.mana').textContent) >= Number(currentPlayerHeroCard.abilities[index].property[0].manacost)) {
+                            console.log("Will remove ", Number(currentPlayerHeroCard.abilities[index].property[0].manacost));
+                            removeLastBars(Number(currentPlayerHeroCard.abilities[index].property[0].manacost));
+                            // currentPlayerHeroCard.abilities[index].manacost 
+                            const selectedCard = cardAb.getAttribute('data-card');
+                            const currentPlayerId = socket.id;
+                            const opponent = serverdata.players.find(player => player.id !== currentPlayerId);
+                            const currentPlayer = serverdata.players.find(player => player.id === currentPlayerId);
 
-                        switch (currentPlayerHeroCard.abilities[index].type) {
-                            case 'attack':
-                                // console.log(currentPlayerHeroCard.abilities[index].property[0].dmg);
-                                socket.emit('Attack', room_Id, {
-                                    attackerId: currentPlayer,
-                                    targetId: opponent,
-                                    value: currentPlayerHeroCard.abilities[index].property[0].dmg
-                                });
-                                break;
-                            case 'heal':
-                                socket.emit('Heal', room_Id, {
-                                    HealId: currentPlayer,
-                                    value: currentPlayerHeroCard.abilities[index].property[0].dmg
-                                });
-                                break;
-                            case 'defense':
-                                console.log('def');
-                                break;
+                            switch (currentPlayerHeroCard.abilities[index].type) {
+                                case 'attack':
+                                    // console.log(currentPlayerHeroCard.abilities[index].property[0].dmg);
+                                    socket.emit('Attack', room_Id, {
+                                        attackerId: currentPlayer,
+                                        targetId: opponent,
+                                        value: currentPlayerHeroCard.abilities[index].property[0].dmg
+                                    });
+                                    break;
+                                case 'heal':
+                                    socket.emit('Heal', room_Id, {
+                                        HealId: currentPlayer,
+                                        value: currentPlayerHeroCard.abilities[index].property[0].dmg
+                                    });
+                                    break;
+                                case 'defense':
+                                    socket.emit('Defense', room_Id, {
+                                        attackerId: currentPlayer,
+                                        targetId: opponent,
+                                        value: currentPlayerHeroCard.abilities[index].property[0].dmg
+                                    });
+                                    break;
 
-                            default:
-                                break;
+                                default:
+                                    break;
+                            }
+
+                            document.querySelector('.mana').textContent = Number(document.querySelector('.mana').textContent) - Number(currentPlayerHeroCard.abilities[index].property[0].manacost);
+                            document.getElementById('manaTrack')
                         }
 
                     });
@@ -969,10 +1053,16 @@
 
             });
             socket.on('firstTurn', (turnId, roundNum) => {
+                if (roundNum != 1) {
+                    clearInterval(roundTimerInterval);
+                    roundTimeLeft = 30;
+                    roundTimerInterval = setInterval(updateRoundTimer, 1000)
+                }
                 document.getElementById('round-counter').textContent = `Round: ${roundNum}`
                 if (turnId === socket.id) {
                     stopAlert();
                     showAlert("Your turn", 2000);
+                    restoreMana(5);
                     readyButton.disabled = false;
                     attackButton.disabled = false;
                     toggleClicks(false);
@@ -988,6 +1078,10 @@
 
             socket.on('roundResult', (data) => {
                 const { winnerId, loserId } = data;
+                readyButton.disabled = false;
+                attackButton.disabled = false;
+                toggleClicks(false);
+
                 console.log(`Раунд завершен. Победитель: ${winnerId}, Проигравший: ${loserId}`);
                 updateOpCardNumber(baseOppHp, document.getElementById('op-card-number-attk').textContent);
                 updateCardNumber(baseHp, document.getElementById('card-number-attk').textContent);
@@ -1001,8 +1095,8 @@
 
             socket.on('startBuffPhase', (data) => {
                 clearInterval(roundTimerInterval);
-                // Обновляем таймер и интерфейс
-                roundTimerInterval = setInterval(updateRoundTimer, 1000);
+                roundTimeLeft = 30;
+                roundTimerInterval = setInterval(updateRoundTimer, 1000)
                 // Обновляем интерфейс для бафф-фазы
                 document.getElementById('round-counter').textContent = data.phase;
 
@@ -1013,6 +1107,9 @@
                 buffBlock.style.display = 'flex';
                 AbilityBlock.style.display = 'none';
                 AttackbuttonBlock.style.display = 'none';
+                buttonGoldBlock.style.display = 'flex';
+
+                readyButton.textContent = "Ready";
 
                 // Можно сбросить/обновить баффы на картах игроков и противников
             });

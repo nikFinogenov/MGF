@@ -329,10 +329,54 @@ io.on('connection', (socket) => {
             console.error('Ошибка при обработке атаки:', error);
         }
     });
+    socket.on('Defense', (roomId, data) => {
+        try {
+            // Проверяем наличие комнаты и игроков
+            const room = rooms[roomId];
+            if (!room) {
+                throw new Error('Комната не найдена');
+            }
+
+            const { attackerId, targetId } = data;
+            const attackerName = attackerId.card;
+            const targetName = targetId.card;
+
+            // Получаем экземпляры карт игроков по их именам
+            const attackerCard = Object.values(room.selections).find(card => card === attackerName);  // Карта атакующего
+            const targetCard = Object.values(room.selections).find(card => card === targetName);      // Карта цели
+
+            console.log(attackerCard);
+            console.log(targetCard);
+
+            if (!attackerCard || !targetCard) {
+                throw new Error('Карта не найдена');
+            }
+
+            // Вызываем метод useAttack у карты атакующего и передаем карту цели
+            let damage;
+            // console.log("datavalue ", data.value);
+            // if (data.value === null) damage = game.AttackEvent(attackerCard, targetCard);
+            // else damage = game.AttackEventAbility(attackerCard, targetCard, data.value);
+
+            // Логируем нанесенный урон
+            console.log(`Игрок ${attackerName} нажал щит`);
+
+            // Отправляем результат урона обоим игрокам
+            io.to(roomId).emit('DefenseResult', {
+                attackerId: attackerId,
+                targetId: targetId,
+                damage: damage,
+            });
+
+        } catch (error) {
+            console.error('Ошибка при обработке атаки:', error);
+        }
+    });
 
     socket.on('roundEnd', (data) => {
         const { roomId, loserId } = data;
         const room = rooms[roomId];
+        rooms[roomId].actions[socket.id] = "";
 
         if (!room) {
             console.error(`Комната ${roomId} не найдена`);
