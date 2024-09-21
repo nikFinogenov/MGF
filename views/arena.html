@@ -581,6 +581,39 @@
             }
         }
 
+        function removeLastHpBars(loserId, n) {
+            const currentPlayerId = socket.id;  // Получаем текущий ID игрока
+
+            // Находим элементы с классами 'hp-track' и 'opponent-hp-track'
+            const track = document.querySelector('.hp-track');
+            const trackOpp = document.querySelector('.opponent-hp-track');
+
+            // Преобразуем NodeList в массив для работы с элементами
+            const bars = Array.from(track.querySelectorAll('.hpbar'));
+            const barsOpp = Array.from(trackOpp.querySelectorAll('.hpoppbar'));
+
+            // Определяем, является ли проигравший текущим игроком или оппонентом
+            if (loserId === currentPlayerId) {
+                // Если текущий игрок проиграл, удаляем полоски здоровья у игрока
+                const barsToRemove = Math.min(n, bars.length);
+                const playerHp = document.querySelector('.hp');
+                if (playerHp) playerHp.textContent = parseInt(playerHp.textContent) - 1;
+                // Удаляем последние 'barsToRemove' полоски здоровья у игрока
+                for (let i = 0; i < barsToRemove; i++) {
+                    track.removeChild(bars[bars.length - 1 - i]);
+                }
+            } else {
+                // Если проиграл оппонент, удаляем полоски здоровья у оппонента
+                const barsOppToRemove = Math.min(n, barsOpp.length);
+                const opponentHp = document.querySelector('.opponenthp');
+                if (opponentHp) opponentHp.textContent = parseInt(opponentHp.textContent) - 1;
+                // Удаляем последние 'barsOppToRemove' полоски здоровья у оппонента
+                for (let i = 0; i < barsOppToRemove; i++) {
+                    trackOpp.removeChild(barsOpp[barsOpp.length - 1 - i]);
+                }
+            }
+        }
+
         function removeLastBars(n) {
             const track = document.getElementById('manaTrack');
             const bars = Array.from(track.querySelectorAll('.bar')); // Convert NodeList to Array
@@ -593,22 +626,23 @@
                 track.removeChild(bars[bars.length - 1 - i]);
             }
         }
+
         function restoreMana(num) {
-        const track = document.getElementById('manaTrack');
-        const currentBars = track.querySelectorAll('.bar').length;
-        const maxBars = 5;
-        document.querySelector('.mana').textContent = maxBars;
+            const track = document.getElementById('manaTrack');
+            const currentBars = track.querySelectorAll('.bar').length;
+            const maxBars = 5;
+            document.querySelector('.mana').textContent = maxBars;
 
-        // Calculate how many bars to restore
-        const barsToRestore = Math.min(num, maxBars - currentBars);
+            // Calculate how many bars to restore
+            const barsToRestore = Math.min(num, maxBars - currentBars);
 
-        // Generate new bars
-        for (let i = 0; i < barsToRestore; i++) {
-            const bar = document.createElement('div');
-            bar.classList.add('bar');
-            track.appendChild(bar);
+            // Generate new bars
+            for (let i = 0; i < barsToRestore; i++) {
+                const bar = document.createElement('div');
+                bar.classList.add('bar');
+                track.appendChild(bar);
+            }
         }
-    }
 
         // Отправляем информацию о себе
         socket.emit('userEmail', localStorage.getItem('userEmail'));
@@ -1085,12 +1119,31 @@
                 console.log(`Раунд завершен. Победитель: ${winnerId}, Проигравший: ${loserId}`);
                 updateOpCardNumber(baseOppHp, document.getElementById('op-card-number-attk').textContent);
                 updateCardNumber(baseHp, document.getElementById('card-number-attk').textContent);
-                // Отображаем результат раунда
-                if (socket.id === loserId) {
-                    showAlert('Вы проиграли раунд!', 2000);
-                } else if (socket.id === winnerId) {
-                    showAlert('Вы выиграли раунд!', 2000);
+                removeLastHpBars(loserId, 1);
+                const playerHp = document.querySelector('.hp');
+                const opponentHp = document.querySelector('.opponenthp');
+                if (playerHp.textContent <= '0') {
+                    arena.style.display = 'none';
+                    showAlert('Вы проиграли игру ЛОХ!', 6000);
+                    setTimeout(() => {
+                        window.location.href = "menu.html";
+                    }, 6000);  // Задержка 6 секунд
+                } else if (opponentHp.textContent <= '0') {
+                    arena.style.display = 'none';
+                    showAlert('Вы выиграли игру, всеравно ЛОХ!', 6000);
+                    setTimeout(() => {
+                        window.location.href = "menu.html";
+                    }, 6000);  // Задержка 6 секунд
                 }
+
+                if (playerHp.textContent > '0' && opponentHp.textContent > '0') {
+                    if (socket.id === loserId) {
+                        showAlert('Вы проиграли раунд!', 2000);
+                    } else if (socket.id === winnerId) {
+                        showAlert('Вы выиграли раунд!', 2000);
+                    }
+                }
+
             });
 
             socket.on('startBuffPhase', (data) => {

@@ -10,8 +10,8 @@ class Game {
         this.oID = oID;
         this.playerHero = null;
         this.player2Hero = null;
-        this.pHealth = 30;
-        this.oHealth = 30;
+        this.p1Health = 30;
+        this.p2Health = 30;
         this.turn = 0;
         this.round = 0;
         this.roundTimer = 30;
@@ -20,6 +20,26 @@ class Game {
         this.income = 200;
         this.roundWinner = null;
         this.matchWinner = null;
+    }
+
+    DealDamageToPlayer(looser) {
+        if (this.playerHero.getName === looser) {
+            this.p1Health -= 1;
+            return this.p1Health;
+        } else if (this.player2Hero.getName === looser) {
+            this.p2Health -= 1
+            return this.p2Health;
+        } else {
+            throw new Error(`Карта с именем ${attackerName} не найдена среди игроков`);
+        }
+    }
+
+    get getHp1() {
+        return this.p1Health;
+    }
+
+    get getHp2() {
+        return this.p2Health;
     }
 
     InputCards(heroName, opHeroName) {

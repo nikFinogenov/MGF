@@ -385,6 +385,9 @@ io.on('connection', (socket) => {
 
         const winnerId = room.players.find(player => player.id !== loserId).id;
 
+        game.DealDamageToPlayer(rooms[roomId].selections[loserId]);
+        console.log(game.getHp1);
+        console.log(game.getHp2);
         console.log(`Раунд завершен. Игрок ${loserId} проиграл раунд. Победитель: ${winnerId}`);
 
         // Отправляем всем игрокам информацию о завершении раунда
