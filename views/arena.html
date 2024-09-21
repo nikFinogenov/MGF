@@ -839,7 +839,7 @@
                     } else {
                         updateCardNumber(newhp, document.getElementById('card-number-attk').textContent);
                     }
-                    if(document.getElementById('pl-icon').style.display === 'flex') {
+                    if (document.getElementById('pl-icon').style.display === 'flex') {
                         document.getElementById('pl-icon').style.display = 'none';
                     }
                 } else if (currentPlayerId === attackerId.id) {
@@ -851,7 +851,7 @@
                     } else {
                         updateOpCardNumber(newhp, document.getElementById('op-card-number-attk').textContent);
                     }
-                    if(document.getElementById('op-icon').style.display === 'flex') {
+                    if (document.getElementById('op-icon').style.display === 'flex') {
                         document.getElementById('op-icon').style.display = 'none';
                     }
                 }
@@ -995,7 +995,7 @@
 
             });
             socket.on('firstTurn', (turnId, roundNum) => {
-                if(roundNum != 1) {
+                if (roundNum != 1) {
                     clearInterval(roundTimerInterval);
                     roundTimeLeft = 30;
                     roundTimerInterval = setInterval(updateRoundTimer, 1000)
@@ -1019,6 +1019,10 @@
 
             socket.on('roundResult', (data) => {
                 const { winnerId, loserId } = data;
+                readyButton.disabled = false;
+                attackButton.disabled = false;
+                toggleClicks(false);
+                
                 console.log(`Раунд завершен. Победитель: ${winnerId}, Проигравший: ${loserId}`);
                 updateOpCardNumber(baseOppHp, document.getElementById('op-card-number-attk').textContent);
                 updateCardNumber(baseHp, document.getElementById('card-number-attk').textContent);
@@ -1032,8 +1036,8 @@
 
             socket.on('startBuffPhase', (data) => {
                 clearInterval(roundTimerInterval);
-                // Обновляем таймер и интерфейс
-                roundTimerInterval = setInterval(updateRoundTimer, 1000);
+                roundTimeLeft = 30;
+                roundTimerInterval = setInterval(updateRoundTimer, 1000)
                 // Обновляем интерфейс для бафф-фазы
                 document.getElementById('round-counter').textContent = data.phase;
 
@@ -1044,6 +1048,9 @@
                 buffBlock.style.display = 'flex';
                 AbilityBlock.style.display = 'none';
                 AttackbuttonBlock.style.display = 'none';
+                buttonGoldBlock.style.display = 'flex';
+
+                readyButton.textContent = "Ready";
 
                 // Можно сбросить/обновить баффы на картах игроков и противников
             });

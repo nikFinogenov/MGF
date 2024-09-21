@@ -376,6 +376,7 @@ io.on('connection', (socket) => {
     socket.on('roundEnd', (data) => {
         const { roomId, loserId } = data;
         const room = rooms[roomId];
+        rooms[roomId].actions[socket.id] = "";
 
         if (!room) {
             console.error(`Комната ${roomId} не найдена`);
