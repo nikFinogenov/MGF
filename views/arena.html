@@ -995,6 +995,11 @@
 
             });
             socket.on('firstTurn', (turnId, roundNum) => {
+                if(roundNum != 1) {
+                    clearInterval(roundTimerInterval);
+                    roundTimeLeft = 30;
+                    roundTimerInterval = setInterval(updateRoundTimer, 1000)
+                }
                 document.getElementById('round-counter').textContent = `Round: ${roundNum}`
                 if (turnId === socket.id) {
                     stopAlert();
