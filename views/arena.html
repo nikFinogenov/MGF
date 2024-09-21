@@ -232,6 +232,7 @@
         let roundCounter = 0;
         let serverdata = null;
         let areClicksDisabled = true;
+        let moneyAdded = false;
 
         const randomButton = document.getElementById('randomButton');
         const timerElement = document.getElementById('timer');
@@ -857,6 +858,7 @@
                     targetId: opponent,
                     value: null
                 });
+                attackButton.disabled = true;
             });
 
             socket.on('AttackResult', (data) => {
@@ -1087,10 +1089,14 @@
                 updateCardNumber(baseHp, document.getElementById('card-number-attk').textContent);
                 // Отображаем результат раунда
                 if (socket.id === loserId) {
-                    showAlert('Вы проиграли раунд!', 2000);
+                    showAlert('You lost round!', 2000);
+                    if (!moneyAdded) document.getElementById('goldValue').textContent = Number(document.getElementById('goldValue').textContent) + 50;
                 } else if (socket.id === winnerId) {
-                    showAlert('Вы выиграли раунд!', 2000);
+                    showAlert('You won round!', 2000);
+                    console.log("money added");
+                    if (!moneyAdded) document.getElementById('goldValue').textContent = Number(document.getElementById('goldValue').textContent) + 150;
                 }
+                moneyAdded = !moneyAdded;
             });
 
             socket.on('startBuffPhase', (data) => {
