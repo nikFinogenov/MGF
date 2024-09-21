@@ -19,8 +19,8 @@ io.on('connection', (socket) => {
     socket.on('firstRound', (roomId) => {
         rooms[roomId].actions['turn'] = 1;
         io.to(roomId).emit('firstTurn', rooms[roomId].players[0].id, rooms[roomId].actions['turn']);
-            // console.log(rooms[roomId].players[randomNumber]);
-            // console.log(randomNumber)
+        // console.log(rooms[roomId].players[randomNumber]);
+        // console.log(randomNumber)
     });
 
     // Получаем email пользователя
@@ -119,7 +119,6 @@ io.on('connection', (socket) => {
             const allPlayersSelected = rooms[roomId].players.every(p => rooms[roomId].actions[p.id]);
 
             console.log(allPlayersSelected);
-
             if (allPlayersSelected) {
                 // Notify both players that the selection is complete
                 io.to(roomId).emit('startTurn', {
@@ -138,7 +137,7 @@ io.on('connection', (socket) => {
         rooms[roomId].actions['turn']++;
 
         console.log(rooms[roomId].actions['turn'] + " - " + turn);
-        io.to(roomId).emit('firstTurn', rooms[roomId].players[turn].id, rooms[roomId].actions['turn'] )
+        io.to(roomId).emit('firstTurn', rooms[roomId].players[turn].id, rooms[roomId].actions['turn'])
         // console.log("next");
     });
     const rarityRanking = {
@@ -146,7 +145,7 @@ io.on('connection', (socket) => {
         'Rare': 2,
         'Epic': 3,
         'Legendary': 4
-    }; 
+    };
     function addOrUpdateBuff(roomId, socketId, data) {
         const playerBuffs = rooms[roomId].pickedBuffs[socketId];
         let found = false;
@@ -219,6 +218,34 @@ io.on('connection', (socket) => {
         // });
     });
 
+    socket.on('GetBaseHp', (roomId, data) => {
+        const room = rooms[roomId];
+    
+        if (!room) {
+            console.error(`Комната с ID ${roomId} не найдена`);
+            return;
+        }
+        
+        const p1 = rooms[roomId].players[0];
+        const p2 = rooms[roomId].players[1];
+        // Предполагается, что у вас есть объекты для игроков и их карт
+        const player1 = rooms[roomId].selections[p1.id];
+  
+        const player2 = rooms[roomId].selections[p2.id]
+    
+        // Получаем базовое HP для карт обоих игроков
+        const hp1 = game.SendBaseHp(player1);
+        const hp2 = game.SendBaseHp(player2);
+    
+        // Отправляем игрокам информацию о базовом HP
+        io.to(roomId).emit('BaseHpResult', {
+            players: [
+                { id: p1.id, hp: hp1 },
+                { id: p2.id, hp: hp2 }
+            ]
+        });
+    });
+
     socket.on('Attack', (roomId, data) => {
         try {
             // Проверяем наличие комнаты и игроков
@@ -226,41 +253,38 @@ io.on('connection', (socket) => {
             if (!room) {
                 throw new Error('Комната не найдена');
             }
-    
+
             const { attackerId, targetId } = data;
             const attackerName = attackerId.card;
             const targetName = targetId.card;
-    
+
             // Получаем экземпляры карт игроков по их именам
             const attackerCard = Object.values(room.selections).find(card => card === attackerName);  // Карта атакующего
             const targetCard = Object.values(room.selections).find(card => card === targetName);      // Карта цели
-            
+
             console.log(attackerCard);
             console.log(targetCard);
-    
+
             if (!attackerCard || !targetCard) {
                 throw new Error('Карта не найдена');
             }
-    
+
             // Вызываем метод useAttack у карты атакующего и передаем карту цели
             let damage;
-            console.log("datavalue ",data.value);
-            if(data.value === null) damage = game.AttackEvent(attackerCard,targetCard);
-            else damage = game.AttackEventAbility(attackerCard,targetCard, data.value);
-            const hp1 = game.SendBaseHp(attackerCard);
-            const hp2 = game.SendBaseHp(targetCard);
+            console.log("datavalue ", data.value);
+            if (data.value === null) damage = game.AttackEvent(attackerCard, targetCard);
+            else damage = game.AttackEventAbility(attackerCard, targetCard, data.value);
+
             // Логируем нанесенный урон
-            console.log(`Игрок ${attackerName} атаковал игрока ${targetName}, нанося урон: ${damage} hp1: ${hp1} hp2: ${hp2}`);
-    
+            console.log(`Игрок ${attackerName} атаковал игрока ${targetName}, нанося урон: ${damage}`);
+
             // Отправляем результат урона обоим игрокам
             io.to(roomId).emit('AttackResult', {
                 attackerId: attackerId,
                 targetId: targetId,
                 damage: damage,
-                attackerbasehp: hp1,
-                targetbasehp: hp2
             });
-    
+
         } catch (error) {
             console.error('Ошибка при обработке атаки:', error);
         }
@@ -272,42 +296,64 @@ io.on('connection', (socket) => {
             if (!room) {
                 throw new Error('Комната не найдена');
             }
-    
+
             const { HealId } = data;
             const HealName = HealId.card;
-    
+
             // Получаем экземпляры карт игроков по их именам
             const HealCard = Object.values(room.selections).find(card => card === HealName);  // Карта атакующего   // Карта цели
-            
+
             // console.log(attackerCard);
             // console.log(targetCard);
-    
+
             if (!HealCard) {
                 throw new Error('Карта не найдена');
             }
-    
+
             // Вызываем метод useAttack у карты атакующего и передаем карту цели
             let heal = game.HealEvent(HealCard, data.value);;
             // console.log("datavalue ",data.value);
             // if(data.value === null) damage = game.AttackEvent(attackerCard,targetCard);
             // else damage = game.AttackEventAbility(attackerCard,targetCard, data.value);
-    
+
             // Логируем нанесенный урон
             console.log(`Игрок ${HealName} восстановил: ${heal} хп`);
-    
+
             // Отправляем результат урона обоим игрокам
             io.to(roomId).emit('HealResult', {
                 HealId: HealId,
                 heal: heal
             });
-    
+
         } catch (error) {
             console.error('Ошибка при обработке атаки:', error);
         }
     });
 
-    socket.on('EndRound', (roomId, data) => {
+    socket.on('roundEnd', (data) => {
+        const { roomId, loserId } = data;
+        const room = rooms[roomId];
 
+        if (!room) {
+            console.error(`Комната ${roomId} не найдена`);
+            return;
+        }
+
+        const winnerId = room.players.find(player => player.id !== loserId).id;
+
+        console.log(`Раунд завершен. Игрок ${loserId} проиграл раунд. Победитель: ${winnerId}`);
+
+        // Отправляем всем игрокам информацию о завершении раунда
+        io.to(roomId).emit('roundResult', {
+            winnerId,
+            loserId
+        });
+
+        room.roundsPlayed++;
+        io.to(roomId).emit('startBuffPhase', {
+            phase: 'Buff phase',
+            nextRound: room.roundsPlayed + 1
+        });
     });
 
     // Обработчик выхода игрока

@@ -208,6 +208,8 @@
         const buttonGoldBlock = document.querySelector('.button-block');
         const AttackbuttonBlock = document.querySelector('.attack-button-block');
         const readyButton = document.getElementById('readyBuffs');
+        let baseHp = null;
+        let baseOppHp = null;
         let heroCards = null;
         let buffCards = null;
         let shuffledBuffs = null;
@@ -829,7 +831,7 @@
                     // Если текущий игрок — это цель, обновляем его HP
                     newhp = parseInt(document.getElementById('card-number-hp').textContent) - damage;
                     if (newhp <= 0) {
-                        socket.emit('EndRound');
+                        socket.emit('roundEnd', { roomId: room_Id, loserId: currentPlayerId });
                         //updateCardNumber(0, document.getElementById('card-number-attk').textContent);
                     } else {
                         updateCardNumber(newhp, document.getElementById('card-number-attk').textContent);
@@ -838,7 +840,7 @@
                     // Если текущий игрок — это атакующий, обновляем HP противника
                     newhp = parseInt(document.getElementById('op-card-number-hp').textContent) - damage;
                     if (newhp <= 0) {
-                        socket.emit('EndRound');
+                        socket.emit('roundEnd', { roomId: room_Id, loserId: opponent.id });
                         //updateOpCardNumber(0, document.getElementById('op-card-number-attk').textContent);
                     } else {
                         updateOpCardNumber(newhp, document.getElementById('op-card-number-attk').textContent);
@@ -847,6 +849,7 @@
 
                 console.log(`Игрок ${attackerId.id} нанес ${damage} урона игроку ${targetId.id}`);
             });
+
             socket.on('HealResult', (data) => {
                 const { HealId, heal } = data;
                 const currentPlayerId = socket.id;
@@ -871,6 +874,21 @@
             // });
 
             socket.on('startTurn', (data) => {
+                socket.emit('GetBaseHp', room_Id, { playerId: socket.id });
+                socket.on('BaseHpResult', (data) => {
+                    data.players.forEach(player => {
+                        if (socket.id === player.id) {
+                            // Это HP текущего игрока
+                            console.log(`Ваше базовое HP: ${player.hp}`);
+                            baseHp = player.hp;
+                        } else {
+                            // Это HP противника
+                            console.log(`HP противника: ${player.hp}`);
+                            baseOppHp = player.hp;
+                        }
+                    });
+                });
+                
                 clearInterval(roundTimerInterval);
                 roundTimeLeft = 30;
                 stopAlert()
@@ -932,8 +950,6 @@
                 socket.emit('firstRound', room_Id);
                 roundTimerInterval = setInterval(updateRoundTimer, 1000)
 
-                // socket.emit('roundEnd');
-
             });
             socket.on('firstTurn', (turnId, roundNum) => {
                 document.getElementById('round-counter').textContent = `Round: ${roundNum}`
@@ -951,6 +967,37 @@
                     attackButton.disabled = true;
                     toggleClicks(true);
                 }
+            });
+
+            socket.on('roundResult', (data) => {
+                const { winnerId, loserId } = data;
+                console.log(`Раунд завершен. Победитель: ${winnerId}, Проигравший: ${loserId}`);
+                updateOpCardNumber(baseOppHp, document.getElementById('op-card-number-attk').textContent);
+                updateCardNumber(baseHp, document.getElementById('card-number-attk').textContent);
+                // Отображаем результат раунда
+                if (socket.id === loserId) {
+                    showAlert('Вы проиграли раунд!', 2000);
+                } else if (socket.id === winnerId) {
+                    showAlert('Вы выиграли раунд!', 2000);
+                }
+            });
+
+            socket.on('startBuffPhase', (data) => {
+                clearInterval(roundTimerInterval);
+                // Обновляем таймер и интерфейс
+                roundTimerInterval = setInterval(updateRoundTimer, 1000);
+                // Обновляем интерфейс для бафф-фазы
+                document.getElementById('round-counter').textContent = data.phase;
+
+                console.log('Received startBuffPhase event from server');
+                console.log(`Следующий раунд: ${data.nextRound}`);
+
+                // Показываем блок для баффов
+                buffBlock.style.display = 'flex';
+                AbilityBlock.style.display = 'none';
+                AttackbuttonBlock.style.display = 'none';
+
+                // Можно сбросить/обновить баффы на картах игроков и противников
             });
             // Debug log to confirm connection
             socket.on('connect', () => {
