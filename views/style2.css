@@ -24,9 +24,9 @@ body.login::before,.register::before {
     background-image: url('hell-gate-closed.jpg');
     background-size: cover;
     background-position: center;
-    filter: blur(0px); /* Регулируйте значение для изменения степени размытия */
-    opacity: 1; /* Устанавливает прозрачность наложения */
-    z-index: -1; /* Помещает наложение позади контента */
+    filter: blur(0px);
+    opacity: 1;
+    z-index: -1;
 }
 
 body.menu::before {
@@ -39,9 +39,9 @@ body.menu::before {
     background-image: url('hell-gate-open.jpg');
     background-size: cover;
     background-position: center;
-    filter: blur(0px); /* Регулируйте значение для изменения степени размытия */
-    opacity: 1; /* Устанавливает прозрачность наложения */
-    z-index: -1; /* Помещает наложение позади контента */
+    filter: blur(0px);
+    opacity: 1;
+    z-index: -1;
 }
 
 body.edit::before {
@@ -54,9 +54,9 @@ body.edit::before {
     background-image: url('hell-gate-open.jpg');
     background-size: cover;
     background-position: center;
-    filter: blur(0px); /* Регулируйте значение для изменения степени размытия */
-    opacity: 1; /* Устанавливает прозрачность наложения */
-    z-index: -1; /* Помещает наложение позади контента */
+    filter: blur(0px);
+    opacity: 1;
+    z-index: -1;
 }
 
 .info-message {
@@ -144,7 +144,6 @@ body.edit::before {
 
 .registration-container::before {
     content: '';
-    /* background: url('colosseum-arch.png') no-repeat center center; */
     background-size: 100px;
     position: absolute;
     top: -60px;
@@ -154,7 +153,6 @@ body.edit::before {
     height: 100px;
 }
 
-/* Стили, добавленные ранее */
 .login-micro {
     margin-top: 15px;
     text-align: center;
@@ -188,7 +186,6 @@ body.edit::before {
     position: absolute;
 }
 
-/* Аватар и меню профиля */
 .avatar-container {
     position: absolute;
     top: 20px;
@@ -216,7 +213,6 @@ body.edit::before {
     text-align: left;
     opacity: 0;
     transition: opacity 0.3s ease, visibility 0s linear 0.3s;
-    /* Убираем меню с задержкой */
 }
 
 .dropdown-menu.show {
@@ -238,7 +234,6 @@ body.edit::before {
     color: #000;
 }
 
-/* Основное меню с заголовком и кнопкой */
 .menu-content {
     display: flex;
     flex-direction: column;
@@ -250,25 +245,13 @@ body.edit::before {
 .menu-content h1 {
     font-family: 'Cinzel', serif;
     font-size: 48px;
-    margin: 0; /* Уберите отступы по умолчанию */
+    margin: 0;
     background: linear-gradient(to right, #ffc107,#ffc107,#e9410e, #e9410e,#e9410e,#ffc107, #ffc107);
-    /* background-color: #e9410e; */
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
-/* .start-game-btn {
-    background-color: #a31616;
-    color: #000;
-    font-family: 'Cinzel', serif;
-    font-size: 24px;
-    padding: 15px 30px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-} */
 
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap');
 
@@ -295,14 +278,10 @@ body.edit::before {
                 0 0 200px #c92c2c;
 }
 
-/* .start-game-btn:hover {
-    background-color: #c92c2c;
-} */
 
 .profile-edit-container {
     background-color: rgba(0, 0, 0, 0.7);
     padding: 10px 40px 40px 40px;
-    /* padding-top: 5px; */
     border-radius: 10px;
     border: 2px solid #a31616;
     width: 400px;
@@ -339,12 +318,10 @@ label, #change-ava {
 #change-ava {
     text-align: left;
 }
-/* Hide the radio button */
 input[type="radio"] {
     display: none;
 }
 
-/* Style for avatar container */
 .avatar-option img {
     width: 80px;
     height: 80px;
@@ -354,9 +331,8 @@ input[type="radio"] {
     transition: border-color 0.3s ease;
 }
 
-/* Style when the radio button is selected (checked) */
 .avatar-option input[type="radio"]:checked + img {
-    border: 2px solid white; /* Red border when selected */
+    border: 2px solid white;
 }
 
 
@@ -418,7 +394,6 @@ input:focus {
     background-color: #a68a1e;
 }
 
-/* Модальное окно для смены пароля */
 .modal-overlay {
     display: none;
     position: fixed;
@@ -471,29 +446,29 @@ input:focus {
 }
 
 .link-container {
-    text-align: left; /* Центрирование ссылки */
+    text-align: left;
     margin-top: 10px;
 }
 
 #goBackLink {
-    font-family: 'Cinzel', serif; /* Шрифт, чтобы сочетался с заголовком */
-    font-size: 30px; /* Размер текста для заметности */
-    color: #ff5252; /* Ярко-красный цвет текста */
-    text-decoration: none; /* Убираем подчеркивание ссылки */
+    font-family: 'Cinzel', serif;
+    font-size: 30px;
+    color: #ff5252;
+    text-decoration: none;
     padding: 3px 3px;
-    border-radius: 8px; /* Закругленные углы */
-    transition: all 0.3s ease; /* Плавный переход для эффектов */
+    border-radius: 8px;
+    transition: all 0.3s ease;
     display: inline-block;
 }
 
 #goBackLink:hover {
-    background-color: #ff5252; /* Красный фон при наведении */
-    color: #fff; /* Белый текст при наведении */
-    box-shadow: 0 0 10px rgba(255, 82, 82, 0.6), 0 0 20px rgba(255, 82, 82, 0.8); /* Эффект сияния */
+    background-color: #ff5252;
+    color: #fff;
+    box-shadow: 0 0 10px rgba(255, 82, 82, 0.6), 0 0 20px rgba(255, 82, 82, 0.8);
 }
 
 #goBackLink:active {
-    transform: scale(0.95); /* Легкое уменьшение размера при клике */
+    transform: scale(0.95);
 }
 
 .avatars {

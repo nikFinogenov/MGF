@@ -10,11 +10,8 @@
 </head>
 
 <body>
-    <!-- Начальный экран выбора карт -->
     <div id="custom-alert" class="alert hidden">
         <span id="alert-message">Not enough money</span>
-        <!-- <br> -->
-        <!-- <button id="close-alert">OK</button> -->
     </div>
     <div class="card-selection-screen" id="cardSelectionScreen">
         <div class="screen-header">
@@ -50,7 +47,6 @@
         <button class="random-button" id="randomButton">Random</button>
     </div>
 
-    <!-- Фон арены -->
     <img class="arena" src="arena.png" alt="collesium">
     <div id="loading">
         <p>Searching for other player</p>
@@ -58,16 +54,13 @@
         <div class="loader"></div>
     </div>
     <div class="all">
-        <!-- Кнопка для открытия/закрытия панели -->
         <div class="toggle-panel" id="togglePanel">
             <div class="toggle-arrow">→</div>
         </div>
 
-        <!-- Выезжающая панель -->
         <div class="side-panel" id="sidePanel">
             <button class="surrender-button">Surrender</button>
 
-            <!-- Добавляем чекбоксы -->
             <div class="checkbox-container">
                 <label class="styled-checkbox">
                     <input type="checkbox" id="checkbox1">
@@ -82,7 +75,7 @@
 
         <div class="opponent-avatar-block">
             <div class="avatar opponent-avatar"></div>
-            <div class="enemy-nickname" id="opNick">Opponent Nick</div> <!-- Ник противника -->
+            <div class="enemy-nickname" id="opNick">Opponent Nick</div>
             <div class="opponent-hp">
                 <div class="opponent-hp-progress">
                     <div class="opponent-hp-track">
@@ -92,18 +85,13 @@
             </div>
         </div>
 
-        <!-- Блок для счёта раундов и таймера -->
         <div class="round-timer">
-            <!-- Круглый счётчик раундов -->
             <button class="button" id="readyBuffs">Ready</button>
             <div class="round-display" id="round-counter">Round: 1</div>
 
-            <!-- Таймер под счётом раундов -->
             <div class="timer-display" id="round-time">00:30</div>
-            <!-- <p class="choose-hero" id="additional-info"></p> -->
         </div>
 
-        <!-- Блок для аватара и ника игрока -->
         <div class="player-avatar-block">
             <div class="player-hp">
                 <div class="hp"></div>
@@ -116,7 +104,6 @@
             <div class="avatar player-avatar"></div>
         </div>
 
-        <!-- Блок для карты противника сверху -->
         <div class="opponent-card">
             <div class="opponentcard-large">
                 <div class="card-stats-hp" id="op-hp-box">
@@ -132,14 +119,12 @@
             </div>
         </div>
 
-        <!-- Блок для карт сверху -->
         <div class="top-cards">
             <div class="enemycard card-left"></div>
             <div class="enemycard card-center"></div>
             <div class="enemycard card-right"></div>
         </div>
 
-        <!-- Блок для карты на поле -->
         <div class="field-card">
             <div class="card-large">
                 <div class="card-stats-hp" id="hp-box">
@@ -154,7 +139,6 @@
             </div>
         </div>
 
-        <!-- Блок для карт снизу -->
         <div class="bottom-cards">
             <div class="card" data-card="buff1">Card 1</div>
             <div class="card" data-card="buff2">Card 2</div>
@@ -201,7 +185,6 @@
             </div>
         </div>
 
-        <!-- Вертикальный блок справа -->
         <div class="side-rect" id="sideRect">
             <p>Your buffs</p>
         </div>
@@ -209,8 +192,8 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
         const socket = io('http://localhost:3000');
-        const arena = document.querySelector('.all');  // Инициализация сокета
-        const load = document.querySelector('#loading');  // Инициализация сокета
+        const arena = document.querySelector('.all');
+        const load = document.querySelector('#loading');
         const cardOptions = document.querySelectorAll('.card-option');
         const cardBuffs = document.querySelectorAll('.card');
         const cardSelectionScreen = document.getElementById('cardSelectionScreen');
@@ -239,17 +222,13 @@
         const roundTimeElement = document.getElementById('round-time');
 
         let room_Id = null;
-        let timeLeft = 30;  // Время в секундах
-        let roundTimeLeft = 30;  // Время в секундах
-        let hasSelectedCard = false;  // Отслеживает, выбрал ли игрок карту
+        let timeLeft = 30;
+        let roundTimeLeft = 30;
+        let hasSelectedCard = false;
 
-        // buffBlock.style.display = 'none';
-        // buttonGoldBlock.style.display = 'none';
         AbilityBlock.style.display = 'none';
         AttackbuttonBlock.style.display = 'none';
 
-
-        // Функция для обновления таймера
         function updateTimer() {
             if (timeLeft > 0) {
                 timeLeft--;
@@ -263,6 +242,7 @@
                 }
             }
         }
+
         function updateRoundTimer() {
             if (roundTimeLeft > 0) {
                 roundTimeLeft--;
@@ -279,23 +259,19 @@
             const alertBox = document.getElementById('custom-alert');
             const alertMessage = document.getElementById('alert-message');
 
-            // Set the message
             alertMessage.textContent = message;
 
-            // Display the alert
             alertBox.classList.remove('hidden');
 
             clearTimeout(alertTimeout);
-            // Automatically hide the alert after 5 seconds
             alertTimeout = setTimeout(function () {
                 alertBox.classList.add('hidden');
-            }, duration); // 5000 milliseconds = 5 seconds
+            }, duration);
         }
+
         function stopAlert() {
-            // Clear the timeout to stop the alert from hiding
             clearTimeout(alertTimeout);
 
-            // Optionally, hide the alert immediately
             const alertBox = document.getElementById('custom-alert');
             alertBox.classList.add('hidden');
         }
@@ -330,34 +306,29 @@
             const existingElements = sideRect.getElementsByTagName('p');
             let found = false;
 
-            // Iterate through the existing elements to check if the buff already exists
             for (let p of existingElements) {
-                const [existingBuff, existingLevelText] = p.textContent.split(' '); // Splits into buff name and level
-                const existingLevel = Number(existingLevelText.replace('level', '')); // Extracts the numeric level
+                const [existingBuff, existingLevelText] = p.textContent.split(' ');
+                const existingLevel = Number(existingLevelText.replace('level', ''));
 
-                // If the buff is found
                 if (existingBuff === buff.bf_name) {
                     found = true;
 
-                    // Increment the level if it's less than 4
                     if (existingLevel < 4) {
                         const newLevel = existingLevel + 1;
-                        p.textContent = `${buff.bf_name} level${newLevel}`; // Update the buff level
-                        p.classList.add('updated'); // Optional class for highlighting updates
+                        p.textContent = `${buff.bf_name} level${newLevel}`;
+                        p.classList.add('updated');
                     }
                     break;
                 }
             }
 
-            // If the buff is not found, add a new entry with level 1
             if (!found) {
                 const p = document.createElement('p');
-                p.textContent = `${buff.bf_name} level1`; // Start with level 1
+                p.textContent = `${buff.bf_name} level1`;
                 p.classList.add('new');
                 sideRect.appendChild(p);
             }
 
-            // Optional: Automatically scroll down to the latest content
             sideRect.scrollTop = sideRect.scrollHeight;
         };
         RollActionButton.addEventListener('click', function () {
@@ -375,50 +346,38 @@
         });
 
         function RandomCard() {
-            // Перемешиваем массив баффов
-            shuffledBuffs = shuffleArray(buffCards).slice(0, 3); // Берем 3 случайные карты
+            shuffledBuffs = shuffleArray(buffCards).slice(0, 3);
 
-            // Получаем все элементы с классом card
             const cardBuffs = document.querySelectorAll('.card');
 
-            // Присваиваем каждому div новые данные о баффах
             cardBuffs.forEach((cardBuff, index) => {
                 const buff = shuffledBuffs[index];
 
-                // Назначаем имя баффа в data-card атрибут
                 cardBuff.setAttribute('data-card', buff.bf_name);
 
-                console.log('data-card установлен на:', cardBuff.getAttribute('data-card')); // Проверяем data-card
-
-                // Изменяем текст внутри div на имя баффа
                 cardBuff.textContent = buff.buff_name;
 
-                // Присваиваем изображение как фон
                 cardBuff.style.backgroundImage = `url(${buff.img})`;
-                cardBuff.style.backgroundSize = 'cover'; // Устанавливаем изображение на всю область
-                cardBuff.style.backgroundPosition = 'center'; // Центрируем изображение
+                cardBuff.style.backgroundSize = 'cover';
+                cardBuff.style.backgroundPosition = 'center';
             });
             cardBuffs.forEach(option => {
-                option.style.display = 'block'; // Восстанавливаем видимость карт
+                option.style.display = 'block';
             });
             hiddenCardsCount = 0;
         }
 
-        // Функция для выбора случайной карты
         function selectRandomCard(cards) {
             const randomIndex = Math.floor(Math.random() * cards.length);
             const randomCard = cards[randomIndex];
-            randomCard.click();  // Симуляция клика на случайную карту
+            randomCard.click();
         }
 
-        // Добавляем обработчик на кнопку Random
         randomButton.addEventListener('click', function () {
             selectRandomCard(cardOptions);
         });
         readyButton.addEventListener('click', () => {
             if (readyButton.textContent === "Ready") {
-                // document.getElementById('additional-info').style.display = "block";
-                // document.getElementById('additional-info').textContent = "Waiting for second player";
                 showAlert("Waiting for second player", roundTimeLeft * 1000);
                 socket.emit('buffsSelected', room_Id, {
                     playerId: localStorage.getItem('userId'),
@@ -427,38 +386,30 @@
             }
             else {
                 socket.emit('nextRound', room_Id, {
-                    // playerId: localStorage.getItem('userId'),
-                    // status: 
                 });
             }
         });
 
-        // Обработчик клика на карты
         cardOptions.forEach(option => {
             option.addEventListener('click', function () {
-                if (hasSelectedCard) return;  // Предотвращаем повторный выбор
-                hasSelectedCard = true;  // Отмечаем, что карта выбрана
+                if (hasSelectedCard) return;
+                hasSelectedCard = true;
 
                 const selectedCard = option.getAttribute('data-card');
                 hideUnselectedCards(option);
 
                 document.getElementById('info-text').textContent = "Waiting for second player";
 
-                // Отправляем выбранную карту на сервер
                 socket.emit('cardSelected', room_Id, {
                     playerId: localStorage.getItem('userId'),
                     card: selectedCard
                 });
                 randomButton.style.display = 'none';
-                // Останавливаем таймер
-                // clearInterval(timerInterval);
             });
         });
         cardBuffs.forEach((option, index) => {
             option.addEventListener('click', function () {
                 const selectedCard = option.getAttribute('data-card');
-                // let selectdPrice = option.get
-                // console.log(selectedCard);
                 if (Number(document.getElementById("goldValue").textContent >= Number(shuffledBuffs[index].price))) {
                     socket.emit('buffSelected', room_Id, {
                         playerId: localStorage.getItem('userId'),
@@ -470,15 +421,14 @@
                     option.style.display = 'none';
                     hiddenCardsCount++;
                     document.getElementById("goldValue").textContent = Number(document.getElementById("goldValue").textContent) - Number(shuffledBuffs[index].price);
-                    // Example: Add strings dynamically
-                    addBuffToBlock(shuffledBuffs[index]); // Adds one string per second
+                    addBuffToBlock(shuffledBuffs[index]);
                 }
                 else {
                     showAlert('Not enough money', 500);
                 }
                 if (hiddenCardsCount === 3) {
                     cardBuffs.forEach(option => {
-                        option.style.display = 'block'; // Восстанавливаем видимость карт
+                        option.style.display = 'block';
                     });
                     hiddenCardsCount = 0;
                     RandomCard();
@@ -494,7 +444,7 @@
         function hideUnselectedCards(selectedOption) {
             cardOptions.forEach(option => {
                 if (option !== selectedOption) {
-                    option.style.visibility = 'hidden';  // Скрываем остальные карты
+                    option.style.visibility = 'hidden';
                 }
             });
         }
@@ -508,28 +458,22 @@
         }
 
         function createBars(count, manaCount) {
-            // Находим элемент с классом 'track'
             const track = document.querySelector('.track');
             const progress = document.querySelector('.progress');
             const mana = document.querySelector('.mana');
 
             mana.textContent = manaCount;
 
-            // Очищаем track перед добавлением новых bar
             track.innerHTML = '';
 
-            // Ширина одного бара и отступов
-            const barWidth = 6;  // ширина одной полоски .bar
-            const margin = 2;    // отступ между полосками
+            const barWidth = 6;
+            const margin = 2;
 
 
-            // Вычисляем общую ширину progress
             const totalWidth = count * (barWidth + margin * 2);
 
-            // Устанавливаем динамическую ширину прогресс-бара
-            progress.style.width = `${totalWidth + 4}px`; // +4px для небольшого запаса на границы
+            progress.style.width = `${totalWidth + 4}px`;
 
-            // Создаем нужное количество div с классом 'bar'
             for (let i = 0; i < count; i++) {
                 const bar = document.createElement('div');
                 bar.classList.add('bar');
@@ -538,7 +482,6 @@
         }
 
         function createHpBars(count, hpCountOwn, hpCountOpp) {
-            // Находим элемент с классом 'track'
             const track = document.querySelector('.hp-track');
             const trackOpp = document.querySelector('.opponent-hp-track');
             const progress = document.querySelector('.hp-progress');
@@ -549,22 +492,17 @@
             hp.textContent = hpCountOwn;
             hpOpp.textContent = hpCountOpp;
 
-            // Очищаем track перед добавлением новых bar
             track.innerHTML = '';
             trackOpp.innerHTML = '';
 
-            // Ширина одного бара и отступов
-            const barWidth = 6;  // ширина одной полоски .bar
-            const margin = 2;    // отступ между полосками
+            const barWidth = 6;
+            const margin = 2;
 
 
-            // Вычисляем общую ширину progress
             const totalWidth = count * (barWidth + margin * 2);
 
-            // Устанавливаем динамическую ширину прогресс-бара
-            progress.style.width = `${totalWidth + 4}px`; // +4px для небольшого запаса на границы
+            progress.style.width = `${totalWidth + 4}px`;
             progressOpp.style.width = `${totalWidth + 4}px`;
-            // Создаем нужное количество div с классом 'bar'
             for (let i = 0; i < count; i++) {
                 const bar = document.createElement('div');
                 const barOpp = document.createElement('div');
@@ -576,32 +514,25 @@
         }
 
         function removeLastHpBars(loserId, n) {
-            const currentPlayerId = socket.id;  // Получаем текущий ID игрока
+            const currentPlayerId = socket.id;
 
-            // Находим элементы с классами 'hp-track' и 'opponent-hp-track'
             const track = document.querySelector('.hp-track');
             const trackOpp = document.querySelector('.opponent-hp-track');
 
-            // Преобразуем NodeList в массив для работы с элементами
             const bars = Array.from(track.querySelectorAll('.hpbar'));
             const barsOpp = Array.from(trackOpp.querySelectorAll('.hpoppbar'));
 
-            // Определяем, является ли проигравший текущим игроком или оппонентом
             if (loserId === currentPlayerId) {
-                // Если текущий игрок проиграл, удаляем полоски здоровья у игрока
                 const barsToRemove = Math.min(n, bars.length);
                 const playerHp = document.querySelector('.hp');
                 if (playerHp) playerHp.textContent = parseInt(playerHp.textContent) - 1;
-                // Удаляем последние 'barsToRemove' полоски здоровья у игрока
                 for (let i = 0; i < barsToRemove; i++) {
                     track.removeChild(bars[bars.length - 1 - i]);
                 }
             } else {
-                // Если проиграл оппонент, удаляем полоски здоровья у оппонента
                 const barsOppToRemove = Math.min(n, barsOpp.length);
                 const opponentHp = document.querySelector('.opponenthp');
                 if (opponentHp) opponentHp.textContent = parseInt(opponentHp.textContent) - 1;
-                // Удаляем последние 'barsOppToRemove' полоски здоровья у оппонента
                 for (let i = 0; i < barsOppToRemove; i++) {
                     trackOpp.removeChild(barsOpp[barsOpp.length - 1 - i]);
                 }
@@ -610,12 +541,10 @@
 
         function removeLastBars(n) {
             const track = document.getElementById('manaTrack');
-            const bars = Array.from(track.querySelectorAll('.bar')); // Convert NodeList to Array
+            const bars = Array.from(track.querySelectorAll('.bar'));
 
-            // Determine how many bars to remove
             const barsToRemove = Math.min(n, bars.length);
 
-            // Remove the last 'barsToRemove' bars
             for (let i = 0; i < barsToRemove; i++) {
                 track.removeChild(bars[bars.length - 1 - i]);
             }
@@ -627,10 +556,8 @@
             const maxBars = 5;
             document.querySelector('.mana').textContent = maxBars;
 
-            // Calculate how many bars to restore
             const barsToRestore = Math.min(num, maxBars - currentBars);
 
-            // Generate new bars
             for (let i = 0; i < barsToRestore; i++) {
                 const bar = document.createElement('div');
                 bar.classList.add('bar');
@@ -638,25 +565,22 @@
             }
         }
 
-        // Отправляем информацию о себе
         socket.emit('userEmail', localStorage.getItem('userEmail'));
         socket.emit('userId', localStorage.getItem('userId'));
-        socket.emit('userName', localStorage.getItem('userName')); // добавь соответствующий обработчик на сервере
-        socket.emit('userAvatar', localStorage.getItem('userAvatar')); // добавь соответствующий обработчик на сервере
+        socket.emit('userName', localStorage.getItem('userName'));
+        socket.emit('userAvatar', localStorage.getItem('userAvatar'));
         socket.emit('searchGame');
         socket.on('pause', () => {
             localStorage.setItem('loginInfo', 'Game ended! Second player quit the session.');
             window.location.href = "menu.html";
         });
         socket.on('startGame', ({ roomId, players }) => {
-            // Запуск таймера
             timerInterval = setInterval(updateTimer, 1000);
-            cardSelectionScreen.style.display = 'flex'; // Скрываем экран выбора карт
-            arena.style.display = 'none'; // Показываем арену
+            cardSelectionScreen.style.display = 'flex';
+            arena.style.display = 'none';
             load.style.display = 'none';
             room_Id = roomId;
 
-            // Сохраняем данные об оппоненте
             const player = players.find(p => p.id === socket.id);
             const opponent = players.find(p => p.id !== socket.id);
             document.getElementById('playerNick').textContent = player.name;
@@ -676,26 +600,23 @@
             const sidePanel = document.getElementById('sidePanel');
             const arrow = document.querySelector('.toggle-arrow');
 
-            // Открытие и закрытие панели
             togglePanel.addEventListener('click', function () {
                 if (sidePanel.style.left === '0px') {
                     sidePanel.style.left = '-250px';
-                    arrow.style.transform = 'rotate(0deg)'; // Возвращаем стрелку вправо
+                    arrow.style.transform = 'rotate(0deg)';
                 } else {
                     sidePanel.style.left = '0px';
-                    arrow.style.transform = 'rotate(180deg)'; // Поворачиваем стрелку влево
+                    arrow.style.transform = 'rotate(180deg)';
                 }
             });
 
-            // Закрытие панели при клике вне её области
             document.addEventListener('click', function (event) {
                 const isClickInsidePanel = sidePanel.contains(event.target);
                 const isClickOnToggle = togglePanel.contains(event.target);
 
                 if (!isClickInsidePanel && !isClickOnToggle) {
-                    // Закрываем панель, если клик вне её области и вне кнопки
                     sidePanel.style.left = '-250px';
-                    arrow.style.transform = 'rotate(0deg)'; // Возвращаем стрелку вправо
+                    arrow.style.transform = 'rotate(0deg)';
                 }
             });
 
@@ -705,7 +626,6 @@
             const hpOpp = document.querySelector('.opponenthp');
             const mana = document.querySelector('.mana');
 
-            // Обработчик для первого чекбокса
             checkbox1.addEventListener('change', function () {
                 if (checkbox1.checked) {
                     mana.style.visibility = 'hidden';
@@ -714,7 +634,6 @@
                 }
             });
 
-            // Обработчик для второго чекбокса
             checkbox2.addEventListener('change', function () {
                 if (checkbox2.checked) {
                     hp.style.visibility = 'hidden';
@@ -725,7 +644,7 @@
                 }
             });
 
-            let hasSelectedCard = false;// Track if the player has selected a card
+            let hasSelectedCard = false;
 
             fetch('cards.json')
                 .then(response => {
@@ -735,36 +654,29 @@
                     return response.json();
                 })
                 .then(data => {
-                    console.log('JSON данные загружены:', data); // Проверяем, что данные загружены
 
                     heroCards = data.hero_cards;
                     buffCards = data.buffs;
 
-                    // Перемешиваем массив героев для случайного выбора
-                    const shuffledHeroes = shuffleArray(heroCards).slice(0, 3); // Берем первые 3 карты
-                    shuffledBuffs = shuffleArray(buffCards).slice(0, 3); // Берем первые 3 баффа
+                    const shuffledHeroes = shuffleArray(heroCards).slice(0, 3);
+                    shuffledBuffs = shuffleArray(buffCards).slice(0, 3);
 
                     RandomCard();
 
-                    // Присваиваем каждому div данные о героях без повторений
                     cardOptions.forEach((cardElement, index) => {
                         const hero = shuffledHeroes[index];
-                        // Назначаем имя героя в data-card атрибут
                         cardElement.setAttribute('data-card', hero.he_name);
 
-                        console.log('data-card установлен на:', cardElement.getAttribute('data-card')); // Проверяем data-card
 
-                        // Присваиваем изображение как фон
-                        // updateCardNumber()
                         cardElement.style.backgroundImage = `url(${hero.img})`;
-                        cardElement.style.backgroundSize = 'cover'; // Устанавливаем изображение на всю область
-                        cardElement.style.backgroundPosition = 'center'; // Центрируем изображение
+                        cardElement.style.backgroundSize = 'cover';
+                        cardElement.style.backgroundPosition = 'center';
 
                         const hpElement = cardElement.querySelector('.card-opt-hp-text');
                         const attackElement = cardElement.querySelector('.card-opt-attk-text');
 
-                        hpElement.textContent = hero.hp; // Заполняем HP
-                        attackElement.textContent = hero.atk; // Заполняем атаку
+                        hpElement.textContent = hero.hp;
+                        attackElement.textContent = hero.atk;
 
                         const hpBox = cardElement.querySelector('.card-opt-hp');
                         const attkBox = cardElement.querySelector('.card-opt-attk');
@@ -772,57 +684,38 @@
                         if (hero.hp > 10) {
                             hpBox.style.marginLeft = "23px";
                         } else {
-                            hpBox.style.marginLeft = ""; // Возвращаем стиль по умолчанию
+                            hpBox.style.marginLeft = "";
                         }
 
-                        // Обновляем только для той карты, у которой атака > 10
                         if (hero.atk > 10) {
                             attkBox.style.marginRight = "23px";
                         } else {
-                            attkBox.style.marginRight = ""; // Возвращаем стиль по умолчанию
+                            attkBox.style.marginRight = "";
                         }
                     });
                 })
                 .catch(error => {
-                    console.error('Ошибка загрузки JSON:', error); // Отслеживаем ошибки загрузки JSON
+                    console.error('Ошибка загрузки JSON:', error);
                 });
 
 
-            // function hideUnselectedCards(selectedOption) {
-            //     cardOptions.forEach(option => {
-            //         if (option !== selectedOption) {
-            //             option.style.visibility = 'hidden'; // Hide other cards
-            //         }
-            //     });
-            // }
 
-            // Handle the response from the server when both players have selected cards
             socket.on('startRound', (data) => {
                 roundTimerInterval = setInterval(updateRoundTimer, 1000);
                 document.getElementById('round-counter').textContent = "Buff phase";
 
-                console.log('Received startRound event from server');
-                console.log('Players selected cards:', data.players);
-
                 const currentPlayerId = socket.id;
                 serverdata = data;
 
-                // Определяем противника и себя
                 const opponent = data.players.find(player => player.id !== currentPlayerId);
                 const currentPlayer = data.players.find(player => player.id === currentPlayerId);
                 createHpBars(30, 30, 30);
-                // Обработка карты противника
                 if (opponent) {
-                    console.log(`Opponent's card: ${opponent.card}`);
-
-                    // Находим изображение карты по имени в загруженных данных
                     const opponentHeroCard = heroCards.find(card => card.he_name === opponent.card);
 
                     if (opponentHeroCard) {
                         const opponentCardImg = opponentHeroCard.img;
-                        console.log(`Opponent's card image: ${opponentCardImg}`);
 
-                        // Добавляем стиль для отображения изображения карты противника
                         const opponentCardElement = document.querySelector('.opponentcard-large');
                         if (opponentCardElement) {
                             opponentCardElement.style.backgroundImage = `url(${opponentCardImg})`;
@@ -837,21 +730,16 @@
                     console.log('Error: Opponent not found in data.players');
                 }
 
-                // Обработка карты текущего игрока
                 if (currentPlayer) {
-                    console.log(`Your card: ${currentPlayer.card}`);
 
-                    // Находим изображение карты по имени в загруженных данных
                     const currentPlayerHeroCard = heroCards.find(card => card.he_name === currentPlayer.card);
 
                     if (currentPlayerHeroCard) {
                         const currentPlayerCardImg = currentPlayerHeroCard.img;
-                        console.log(`Your card image: ${currentPlayerCardImg}`);
                         createBars(parseInt(currentPlayerHeroCard.mana), currentPlayerHeroCard.mana);
 
                         document.getElementById("goldValue").textContent = currentPlayerHeroCard.money;
 
-                        // Добавляем стиль для отображения изображения карты текущего игрока
                         const currentPlayerCardElement = document.querySelector('.card-large');
                         if (currentPlayerCardElement) {
                             currentPlayerCardElement.style.backgroundImage = `url(${currentPlayerCardImg})`;
@@ -866,7 +754,6 @@
                     console.log('Error: Current player not found in data.players');
                 }
 
-                // Скрываем экран выбора карт и показываем арену
                 cardSelectionScreen.style.display = 'none';
                 arena.style.display = 'block';
             });
@@ -876,7 +763,6 @@
             attackButton.addEventListener('click', () => {
                 const currentPlayerId = socket.id;
 
-                // Определяем противника и себя
                 const opponent = serverdata.players.find(player => player.id !== currentPlayerId);
                 const currentPlayer = serverdata.players.find(player => player.id === currentPlayerId);
 
@@ -893,20 +779,12 @@
                 const currentPlayerId = socket.id;
                 const opponent = serverdata.players.find(player => player.id !== currentPlayerId);
                 const currentPlayer = serverdata.players.find(player => player.id === currentPlayerId);
-                // console.log(currentPlayerId);
-                // console.log(opponent);
-                // console.log(currentPlayer);
-                // console.log(targetId.id);
-                // console.log(attackerId.id);
                 let newhp;
 
-                // Проверяем, кто является целью атаки
                 if (currentPlayerId === targetId.id) {
-                    // Если текущий игрок — это цель, обновляем его HP
                     newhp = parseInt(document.getElementById('card-number-hp').textContent) - damage;
                     if (newhp <= 0) {
                         socket.emit('roundEnd', { roomId: room_Id, loserId: currentPlayerId });
-                        //updateCardNumber(0, document.getElementById('card-number-attk').textContent);
                     } else {
                         updateCardNumber(newhp, document.getElementById('card-number-attk').textContent);
                     }
@@ -914,20 +792,17 @@
                         document.getElementById('pl-icon').style.display = 'none';
                     }
                 } else if (currentPlayerId === attackerId.id) {
-                    // Если текущий игрок — это атакующий, обновляем HP противника
                     newhp = parseInt(document.getElementById('op-card-number-hp').textContent) - damage;
                     if (newhp <= 0) {
                         socket.emit('roundEnd', { roomId: room_Id, loserId: opponent.id });
-                        //updateOpCardNumber(0, document.getElementById('op-card-number-attk').textContent);
                     } else {
                         updateOpCardNumber(newhp, document.getElementById('op-card-number-attk').textContent);
                     }
-                    if(document.getElementById('op-icon').style.display === 'flex') socket.emit('DefenseEnd');
+                    if (document.getElementById('op-icon').style.display === 'flex') socket.emit('DefenseEnd');
                     if (document.getElementById('op-icon').style.display === 'flex') {
                         document.getElementById('op-icon').style.display = 'none';
                     }
                 }
-                console.log(`Игрок ${attackerId.id} нанес ${damage} урона игроку ${targetId.id}`);
             });
 
             socket.on('HealResult', (data) => {
@@ -936,22 +811,16 @@
                 const currentPlayer = serverdata.players.find(player => player.id === currentPlayerId);
                 let newhp;
 
-                // Проверяем, кто является целью атаки
                 if (currentPlayerId === HealId.id) {
-                    // Если текущий игрок — это цель, обновляем его HP
                     newhp = parseInt(document.getElementById('card-number-hp').textContent) + Number(heal);
                     updateCardNumber(newhp, document.getElementById('card-number-attk').textContent);
                 } else if (currentPlayerId !== HealId.id) {
-                    // Если текущий игрок — это атакующий, обновляем HP противника
                     newhp = parseInt(document.getElementById('op-card-number-hp').textContent) + Number(heal);
                     updateOpCardNumber(newhp, document.getElementById('op-card-number-attk').textContent);
                 }
 
-                // console.log(`Игрок ${attackerId.id} нанес ${damage} урона игроку ${targetId.id}`);
             });
-            // socket.on('startRound', (Timer) => {
 
-            // });
 
             socket.on('DefenseResult', (data) => {
                 const { attackerId, targetId, damage } = data;
@@ -959,25 +828,9 @@
 
 
                 if (currentPlayerId === targetId.id) {
-                    // Если текущий игрок — это цель, обновляем его HP
-                    // newhp = parseInt(document.getElementById('card-number-hp').textContent) - damage;
-                    // if (newhp <= 0) {
-                    //     socket.emit('roundEnd', { roomId: room_Id, loserId: currentPlayerId });
-                    //     //updateCardNumber(0, document.getElementById('card-number-attk').textContent);
-                    // } else {
-                    //     updateCardNumber(newhp, document.getElementById('card-number-attk').textContent);
-                    // }
 
                     document.getElementById('op-icon').style.display = 'flex';
                 } else if (currentPlayerId === attackerId.id) {
-                    // // Если текущий игрок — это атакующий, обновляем HP противника
-                    // newhp = parseInt(document.getElementById('op-card-number-hp').textContent) - damage;
-                    // if (newhp <= 0) {
-                    //     socket.emit('roundEnd', { roomId: room_Id, loserId: opponent.id });
-                    //     //updateOpCardNumber(0, document.getElementById('op-card-number-attk').textContent);
-                    // } else {
-                    //     updateOpCardNumber(newhp, document.getElementById('op-card-number-attk').textContent);
-                    // }
                     document.getElementById('pl-icon').style.display = 'flex';
                 }
             });
@@ -988,12 +841,8 @@
                 socket.on('BaseHpResult', (data) => {
                     data.players.forEach(player => {
                         if (socket.id === player.id) {
-                            // Это HP текущего игрока
-                            console.log(`Ваше базовое HP: ${player.hp}`);
                             baseHp = player.hp;
                         } else {
-                            // Это HP противника
-                            console.log(`HP противника: ${player.hp}`);
                             baseOppHp = player.hp;
                         }
                     });
@@ -1002,39 +851,30 @@
                 clearInterval(roundTimerInterval);
                 roundTimeLeft = 30;
                 stopAlert()
-                // console.log(data);
                 const currentPlayerId = socket.id;
-                // Определяем себя
                 const currentPlayer = data.players.find(player => player.id === currentPlayerId);
                 const currentPlayerHeroCard = heroCards.find(card => card.he_name === currentPlayer.card);
-                // console.log("turn started")
                 const cardAbilities = document.querySelectorAll('.ability-card');
                 buffBlock.style.display = 'none';
                 buttonGoldBlock.style.display = 'none';
                 AbilityBlock.style.display = 'flex';
                 AttackbuttonBlock.style.display = 'block';
-                // // Присваиваем каждому div новые данные о баффах
                 cardAbilities.forEach((cardAb, index) => {
-                    // console.log(heroCards[index].abilities[index].img);
-                    // Присваиваем изображение как фон
                     cardAb.style.backgroundImage = `url(${currentPlayerHeroCard.abilities[index].img})`;
-                    cardAb.style.backgroundSize = 'cover'; // Устанавливаем изображение на всю область
-                    cardAb.style.backgroundPosition = 'center'; // Центрируем изображение
+                    cardAb.style.backgroundSize = 'cover';
+                    cardAb.style.backgroundPosition = 'center';
                 });
                 cardAbilities.forEach((cardAb, index) => {
 
                     const manaCost = cardAb.querySelector('.mana-cost');
                     const damageValue = cardAb.querySelector('.damage-value');
 
-                    // Заполняем span'ы данными из текущей способности
                     manaCost.textContent = currentPlayerHeroCard.abilities[index].property[0].manacost;
                     damageValue.textContent = currentPlayerHeroCard.abilities[index].property[0].dmg;
 
                     cardAb.addEventListener('click', () => {
                         if (Number(document.querySelector('.mana').textContent) >= Number(currentPlayerHeroCard.abilities[index].property[0].manacost)) {
-                            console.log("Will remove ", Number(currentPlayerHeroCard.abilities[index].property[0].manacost));
                             removeLastBars(Number(currentPlayerHeroCard.abilities[index].property[0].manacost));
-                            // currentPlayerHeroCard.abilities[index].manacost 
                             const selectedCard = cardAb.getAttribute('data-card');
                             const currentPlayerId = socket.id;
                             const opponent = serverdata.players.find(player => player.id !== currentPlayerId);
@@ -1042,7 +882,6 @@
 
                             switch (currentPlayerHeroCard.abilities[index].type) {
                                 case 'attack':
-                                    // console.log(currentPlayerHeroCard.abilities[index].property[0].dmg);
                                     socket.emit('Attack', room_Id, {
                                         attackerId: currentPlayer,
                                         targetId: opponent,
@@ -1111,21 +950,16 @@
                 attackButton.disabled = false;
                 toggleClicks(false);
 
-                console.log(`Раунд завершен. Победитель: ${winnerId}, Проигравший: ${loserId}`);
                 updateOpCardNumber(baseOppHp, document.getElementById('op-card-number-attk').textContent);
                 updateCardNumber(baseHp, document.getElementById('card-number-attk').textContent);
-<<<<<<< HEAD
-                // Отображаем результат раунда
                 if (socket.id === loserId) {
                     showAlert('You lost round!', 2000);
                     if (!moneyAdded) document.getElementById('goldValue').textContent = Number(document.getElementById('goldValue').textContent) + 50;
                 } else if (socket.id === winnerId) {
                     showAlert('You won round!', 2000);
-                    console.log("money added");
                     if (!moneyAdded) document.getElementById('goldValue').textContent = Number(document.getElementById('goldValue').textContent) + 150;
                 }
                 moneyAdded = !moneyAdded;
-=======
                 removeLastHpBars(loserId, 1);
                 const playerHp = document.querySelector('.hp');
                 const opponentHp = document.querySelector('.opponenthp');
@@ -1134,13 +968,13 @@
                     showAlert('Вы проиграли игру ЛОХ!', 6000);
                     setTimeout(() => {
                         window.location.href = "menu.html";
-                    }, 6000);  // Задержка 6 секунд
+                    }, 6000);
                 } else if (opponentHp.textContent <= '0') {
                     arena.style.display = 'none';
                     showAlert('Вы выиграли игру, всеравно ЛОХ!', 6000);
                     setTimeout(() => {
                         window.location.href = "menu.html";
-                    }, 6000);  // Задержка 6 секунд
+                    }, 6000);
                 }
 
                 if (playerHp.textContent > '0' && opponentHp.textContent > '0') {
@@ -1151,20 +985,14 @@
                     }
                 }
 
->>>>>>> arena-server-client
             });
 
             socket.on('startBuffPhase', (data) => {
                 clearInterval(roundTimerInterval);
                 roundTimeLeft = 30;
                 roundTimerInterval = setInterval(updateRoundTimer, 1000)
-                // Обновляем интерфейс для бафф-фазы
                 document.getElementById('round-counter').textContent = data.phase;
 
-                console.log('Received startBuffPhase event from server');
-                console.log(`Следующий раунд: ${data.nextRound}`);
-
-                // Показываем блок для баффов
                 buffBlock.style.display = 'flex';
                 AbilityBlock.style.display = 'none';
                 AttackbuttonBlock.style.display = 'none';
@@ -1172,25 +1000,18 @@
 
                 readyButton.textContent = "Ready";
 
-                // Можно сбросить/обновить баффы на картах игроков и противников
             });
-            // Debug log to confirm connection
             socket.on('connect', () => {
                 console.log('Connected to server with ID:', socket.id);
             });
 
-            // Debug log for errors
             socket.on('connect_error', (error) => {
                 console.error('Connection error:', error);
             });
             socket.on('disconnect', function () {
 
-                // You can display an alert or take other actions
-                // showAlert("Server disconnected, try again later!")
                 window.location.href = "arena.html"
 
-                // Optionally, reload the page or redirect
-                // location.reload(); // to attempt reconnect
             });
         });
     </script>

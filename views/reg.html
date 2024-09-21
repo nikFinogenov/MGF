@@ -33,7 +33,6 @@
 
             <button type="submit" class="btn-register">Create</button>
 
-            <!-- Micro-login button -->
             <div class="login-micro">
                 <p>Already have an account?</p>
                 <a href="login.html" class="login-link">Login here</a>
@@ -44,7 +43,7 @@
     <script>
         const form = document.getElementById('registerForm');
         form.addEventListener('submit', async function (event) {
-            event.preventDefault(); // Prevent the default form submission
+            event.preventDefault();
 
             const formData = new FormData(this);
             const data = {};
@@ -55,7 +54,6 @@
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirm-password').value;
 
-            // Check if passwords match
             if (password !== confirmPassword) {
                 alert('Passwords do not match!');
                 return;
@@ -70,16 +68,13 @@
                     body: JSON.stringify(data)
                 });
 
-                const result = await response.json(); // Get the response in JSON format
+                const result = await response.json();
 
                 if (response.ok) {
-                    // If the server responded successfully
-                    // alert('Registration successful!');
                     form.reset();
                     localStorage.setItem('registrationInfo', 'Registration successful!');
                     window.location.href = "login.html"
                 } else if (response.status === 400) {
-                    // If there was an error, show it
                     alert("User with this email already exists");
                 } else {
                     alert(result.error);

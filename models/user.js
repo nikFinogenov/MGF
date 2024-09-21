@@ -1,17 +1,13 @@
-// const Model = require('../model');
 const db = require('../db');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 class User {
     constructor(name, email, password) {
-        // super('users', attributes);
         this.name = name || '';
         this.email = email || '';
         this.password = password || '';
         this.avatar = '123.png';
-        // this.full_name = attributes.full_name || '';
-        // this.status = '';
         this.id = -1;
     }
     clear() {
@@ -20,20 +16,7 @@ class User {
         this.email = '';
         this.id = -1;
     }
-    //     async find(id) {
-    //       try {
-    //           const [rows] = await db.query(`SELECT * FROM users WHERE id = ? LIMIT 1`, [id]);
 
-    //           if (rows.length > 0) {
-    //               this.attributes = rows[0];
-    //               return this;
-    //           } else {
-    //               throw new Error(`Record with ID ${id} not found in table ${this.table}`);
-    //           }
-    //       } catch (error) {
-    //           throw new Error(`Error finding record: ${error.message}`);
-    //       }
-    //   }
 
     async delete() {
         if (!this.id || this.id === -1) {
@@ -54,7 +37,6 @@ class User {
 
     async save() {
         return new Promise((resolve, reject) => {
-            // console.log(this.password);
             bcrypt.hash(this.password, saltRounds, async (err, hash) => {
                 if (err) {
                     return reject(new Error('Error occurred during registration. Please try again.'));
@@ -69,11 +51,10 @@ class User {
                         const [result] = await db.query(`UPDATE users SET ? WHERE id = ?`, [attributes, this.id]);
 
                         if (result.affectedRows === 0) {
-                            // console.log("qwe");
                             return reject(new Error(`Record with ID ${this.id} not found for update in table users`));
                         }
 
-                        resolve(result); // Если всё успешно
+                        resolve(result);
                     } catch (error) {
                         if (error.code === 'ER_DUP_ENTRY') {
                             reject(new Error('Duplicate'));
@@ -106,16 +87,13 @@ class User {
                 throw new Error('User not found');
             }
     
-            // Compare the current password
             const passwordMatch = await bcrypt.compare(this.password, rows[0].password);
             if (!passwordMatch) {
                 throw new Error('Password mismatch');
             }
     
-            // Hash the new password
             const hash = await bcrypt.hash(newPass, saltRounds);
     
-            // Update the user's password
             const attributes = { password: hash };
             const [result] = await db.query(`UPDATE users SET ? WHERE id = ?`, [attributes, this.id]);
     
@@ -123,7 +101,7 @@ class User {
                 throw new Error(`Record with ID ${this.id} not found for update in table users`);
             }
     
-            return result; // Success
+            return result;
         } catch (error) {
             throw new Error(error.message);
         }

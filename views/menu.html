@@ -11,7 +11,6 @@
 <body class="menu">
     <div id="infoMessage" class="info-message"></div>
     <div class="menu-container">
-        <!-- Аватар и всплывающее меню -->
         <div class="avatar-container">
             <img src="123.png" alt="Player Avatar" class="avatar" id="avatarimg">
             <div class="dropdown-menu">
@@ -20,7 +19,6 @@
             </div>
         </div>
 
-        <!-- Заголовок и кнопка "Начать игру" -->
         <div class="menu-content">
             <h1>Welcome to the Arena</h1>
             <br><br>
@@ -31,7 +29,6 @@
     <script>
         document.getElementById('startGame').addEventListener('click', (event) => {
             event.preventDefault();
-            // window.location.href = "loading.html";
             window.location.href = "arena.html";
         });
 
@@ -58,14 +55,12 @@
         const dropdownMenu = document.querySelector('.dropdown-menu');
         let timeoutId;
 
-        // Функция для закрытия меню, если курсор уходит из области меню
         function hideMenu() {
             timeoutId = setTimeout(() => {
                 dropdownMenu.classList.remove('show');
-            }, 300); // Задержка в 300 мс
+            }, 300); 
         }
 
-        // Открытие меню при нажатии на аватар
         avatar.addEventListener('click', () => {
             if (!dropdownMenu.classList.contains('show')) {
                 dropdownMenu.classList.add('show');
@@ -74,17 +69,14 @@
             }
         });
 
-        // Если курсор уходит из меню, начинается таймер на закрытие
         dropdownMenu.addEventListener('mouseleave', () => {
             hideMenu();
         });
-
-        // Если курсор возвращается в меню до завершения таймера, меню не закроется
+        
         dropdownMenu.addEventListener('mouseenter', () => {
             clearTimeout(timeoutId);
         });
 
-        // Закрытие меню при клике вне области аватара и меню
         document.addEventListener('click', (event) => {
             if (!avatar.contains(event.target) && !dropdownMenu.contains(event.target)) {
                 dropdownMenu.classList.remove('show');

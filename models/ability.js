@@ -1,13 +1,13 @@
 class Ability {
     constructor(ab_name, img, desc, type, behavior, level, maxlevel, property = {}) {
-        this.ab_name = ab_name; // Имя способности
+        this.ab_name = ab_name;
         this.img = img;
-        this.desc = desc; // Описание способности
-        this.type = type; // Тип способности (например, прямой урон)
-        this.behavior = behavior; // Поведение способности (активная, пассивная)
-        this.level = level; // Текущий уровень способности
-        this.maxlevel = maxlevel; // Максимальный уровень способности
-        this.property = property; // Свойства способности (например, урон, кулдаун, манакост)
+        this.desc = desc;
+        this.type = type;
+        this.behavior = behavior;
+        this.level = level;
+        this.maxlevel = maxlevel;
+        this.property = property;
     }
 
     Cast() {
@@ -26,10 +26,10 @@ class Ability {
 
 class Property {
     constructor(dmg, cooldown, duration, manacost) {
-        this.dmg = dmg; // Урон способности
-        this.cooldown = cooldown; // Кулдаун способности
-        this.duration = duration; // Длительность действия способности (если есть)
-        this.manacost = manacost; // Стоимость маны
+        this.dmg = dmg;
+        this.cooldown = cooldown;
+        this.duration = duration;
+        this.manacost = manacost;
     }
 }
 

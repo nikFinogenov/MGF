@@ -1,19 +1,19 @@
 class Card {
     constructor(he_name, hp, atk, mana, money, manaregen, hpregen, img, desc, level, maxlevel, abilities = [], buffs = []) {
-        this.he_name = he_name; // Имя героя
+        this.he_name = he_name;
         this.hp = hp;
-        this.basehp = hp; // Здоровье героя
-        this.atk = atk; // Атака героя
-        this.mana = mana; // Мана героя
+        this.basehp = hp;
+        this.atk = atk;
+        this.mana = mana;
         this.money = money;
-        this.manaregen = manaregen; // Регенерация маны
-        this.hpregen = hpregen; // Регенерация здоровья
-        this.img = img; // Путь к изображению героя
-        this.desc = desc; // Описание героя
-        this.level = level; // Текущий уровень героя
-        this.maxlevel = maxlevel; // Максимальный уровень героя
-        this.abilities = abilities; // Способности героя (массив объектов Ability)
-        this.buffs = buffs; // Баффы героя (массив объектов Buff)
+        this.manaregen = manaregen;
+        this.hpregen = hpregen;
+        this.img = img;
+        this.desc = desc;
+        this.level = level;
+        this.maxlevel = maxlevel;
+        this.abilities = abilities;
+        this.buffs = buffs;
     }
 
     useAttack(target, defense) {
@@ -22,8 +22,6 @@ class Card {
         return dealDamage;
     }
     useAttackAbility(target, value, defense) {
-        // console.log(Math.round(value * defense));
-        // let dealDamage = this.atk;
         target.recieveDamage(Math.round(value * defense));
         return Math.round(value * defense);
     }
@@ -109,7 +107,6 @@ class Card {
         return this.he_name;
     }
 
-    // Getter для здоровья героя
     get getHp() {
         return this.hp;
     }
@@ -122,27 +119,22 @@ class Card {
         return this.basehp;
     }
 
-    // Getter для атаки героя
     get getAtk() {
         return this.atk;
     }
 
-    // Getter для маны героя
     get getMana() {
         return this.mana;
     }
 
-    // Getter для регенерации маны
     get getManaregen() {
         return this.manaregen;
     }
 
-    // Getter для регенерации здоровья
     get getHpregen() {
         return this.hpregen;
     }
 
-    // Getter для уровня героя
     get getLevel() {
         return this.level;
     }

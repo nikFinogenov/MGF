@@ -1,49 +1,36 @@
 const express = require('express');
 const http = require('http');
-// const WebSocket = require('ws');
 const { Server } = require('socket.io');
 const User = require('./models/user');
 const Game = require('./game')
 const app = express();
 const port = 3000;
 
-// Создаем HTTP-сервер
 const server = http.createServer(app);
 const io = new Server(server);
-const rooms = {}; // Объект для хранения комнат
+const rooms = {};
 
 const game = new Game();
 
 io.on('connection', (socket) => {
-    console.log('New player connected:', socket.id);
     socket.on('firstRound', (roomId) => {
         rooms[roomId].actions['turn'] = 1;
-        // let rnd = Math.round(Math.random());
         io.to(roomId).emit('firstTurn', rooms[roomId].players[0].id, rooms[roomId].actions['turn']);
-        // console.log(rooms[roomId].players[randomNumber]);
-        // console.log(randomNumber)
     });
 
-    // Получаем email пользователя
     socket.on('userEmail', (email) => {
-        socket.email = email; // Сохраняем email в сокете
+        socket.email = email;
     });
     socket.on('userAvatar', (avatar) => {
-        socket.avatar = avatar; // Сохраняем email в сокете
+        socket.avatar = avatar;
     });
     socket.on('userName', (name) => {
-        socket.name = name; // Сохраняем email в сокете
+        socket.name = name;
     });
 
-    // socket.on('userId', (idd) => {
-    //   socket.idd = idd; // Сохраняем email в сокете
-    // });
-
-    // Обработчик поиска игры
     socket.on('searchGame', () => {
         let roomId = null;
 
-        // Ищем комнату с одним игроком
         for (let id in rooms) {
             if (rooms[id].players.length === 1) {
                 roomId = id;
@@ -51,13 +38,11 @@ io.on('connection', (socket) => {
             }
         }
 
-        // Если нет комнаты, создаем новую
         if (!roomId) {
             roomId = `room_${socket.id}`;
             rooms[roomId] = { players: [], selections: {}, pickedBuffs: {}, actions: {} };
         }
 
-        // Присоединяем игрока к комнате
         rooms[roomId].players.push({
             id: socket.id,
             email: socket.email,
@@ -65,34 +50,22 @@ io.on('connection', (socket) => {
             avatar: socket.avatar
         });
         socket.join(roomId);
-        console.log(`Player ${socket.id} joined room ${roomId}`);
 
-        // Если два игрока в комнате, начинаем игру
         if (rooms[roomId].players.length === 2) {
             const players = rooms[roomId].players;
 
-            // Отправляем обоим игрокам информацию о противнике
-            console.log(`---->${socket.id} started game in ${roomId}`);
             io.to(roomId).emit('startGame', {
                 roomId,
                 players
             });
         }
         else {
-            // console.log("pidoras");
-            // socket.emit('loadingScreen');
         }
     });
 
     socket.on('cardSelected', (roomId, data) => {
-        console.log(`Player ${data.playerId} selected card: ${data.card}`);
-
         if (roomId) {
             rooms[roomId].selections[socket.id] = data.card;
-
-            console.log(`Current selections for room ${roomId}:`, rooms[roomId].selections);
-
-            // Check if both players have selected their cards
             const allPlayersSelected = rooms[roomId].players.every(p => rooms[roomId].selections[p.id]);
             if (allPlayersSelected) {
                 const player1 = rooms[roomId].players[0];
@@ -107,39 +80,30 @@ io.on('connection', (socket) => {
                         card: rooms[roomId].selections[p.id]
                     }))
                 });
-                console.log(`Both players have selected their cards. Emitting round event.`);
             }
         }
     });
     socket.on('buffsSelected', (roomId, data) => {
-        console.log(`Player ${data.playerId} is ready!`);
-
         if (roomId) {
             rooms[roomId].actions[socket.id] = data.status;
 
             const allPlayersSelected = rooms[roomId].players.every(p => rooms[roomId].actions[p.id]);
 
-            console.log(allPlayersSelected);
             if (allPlayersSelected) {
-                // Notify both players that the selection is complete
                 io.to(roomId).emit('startTurn', {
                     players: rooms[roomId].players.map(p => ({
                         id: p.id,
                         card: rooms[roomId].selections[p.id]
                     }))
                 });
-                console.log(`Both players are ready. Emitting turn event.`);
             }
         }
     });
     socket.on('nextRound', (roomId, data) => {
         let turn = rooms[roomId].actions['turn'] % 2;
-        // if(rooms[roomId].actions['turn'] === 1) turn--;
         rooms[roomId].actions['turn']++;
 
-        console.log(rooms[roomId].actions['turn'] + " - " + turn);
         io.to(roomId).emit('firstTurn', rooms[roomId].players[turn].id, rooms[roomId].actions['turn'])
-        // console.log("next");
     });
     const rarityRanking = {
         'Common': 1,
@@ -151,94 +115,61 @@ io.on('connection', (socket) => {
         const playerBuffs = rooms[roomId].pickedBuffs[socketId];
         let found = false;
 
-        // Iterate through the existing buffs to check if the buff already exists
         for (let buff of playerBuffs) {
             if (buff.buffname === data.buff) {
                 found = true;
 
-                // If the buff level is less than 4, increment the level
                 if (buff.bufflevel < 4) {
                     buff.bufflevel += 1;
                 }
 
-                // Update rarity if the new buff has a higher rarity
-                // if (rarityRanking[data.rarity] > rarityRanking[buff.buffRarity]) {
-                //     buff.buffRarity = data.rarity;
-                //     buff.buffprice = data.price; // Optionally update other fields
-                // }
 
                 break;
             }
         }
 
-        // If the buff was not found, push the new buff with level 1
         if (!found) {
             playerBuffs.push({
                 buffname: data.buff,
                 buffprice: data.price,
-                bufflevel: 1, // Start with level 1 for new buffs
+                bufflevel: 1,
                 buffRarity: data.rarity
             });
         }
     };
 
     socket.on('buffSelected', (roomId, data) => {
-        console.log(`Player ${data.playerId} selected buff: ${data.buff}`);
-
-        // Инициализация массива баффов для конкретного игрока, если не существует
         if (!rooms[roomId].pickedBuffs[socket.id]) {
             rooms[roomId].pickedBuffs[socket.id] = [];
         }
 
 
-        // if(rooms[roomId].pickedBuffs[socket.id]) //
 
-        // Добавляем новый бафф в массив баффов игрока
-        // rooms[roomId].pickedBuffs[socket.id].push({
-        //     buffname: data.buff, 
-        //     buffprice: data.price,
-        //     bufflevel: data.level,
-        //     buffRarity: data.rarity
-        // });
         addOrUpdateBuff(roomId, socket.id, {
             buff: data.buff,
             price: data.price,
             level: data.level,
             rarity: data.rarity
         });
-
-        console.log(`Picked buffs for room ${roomId}:`, rooms[roomId].pickedBuffs);
-
-
-        // Отправляем событие с выбранными баффами всем игрокам в комнате
-        // io.to(roomId).emit('startTurn', {
-        //     players: rooms[roomId].players.map(p => ({
-        //         id: p.id,
-        //         buffs: rooms[roomId].pickedBuffs[p.id] // Передаём массив баффов для каждого игрока
-        //     }))
-        // });
     });
 
     socket.on('GetBaseHp', (roomId, data) => {
         const room = rooms[roomId];
-    
+
         if (!room) {
             console.error(`Комната с ID ${roomId} не найдена`);
             return;
         }
-        
+
         const p1 = rooms[roomId].players[0];
         const p2 = rooms[roomId].players[1];
-        // Предполагается, что у вас есть объекты для игроков и их карт
         const player1 = rooms[roomId].selections[p1.id];
-  
+
         const player2 = rooms[roomId].selections[p2.id]
-    
-        // Получаем базовое HP для карт обоих игроков
+
         const hp1 = game.SendBaseHp(player1);
         const hp2 = game.SendBaseHp(player2);
-    
-        // Отправляем игрокам информацию о базовом HP
+
         io.to(roomId).emit('BaseHpResult', {
             players: [
                 { id: p1.id, hp: hp1 },
@@ -249,7 +180,6 @@ io.on('connection', (socket) => {
 
     socket.on('Attack', (roomId, data) => {
         try {
-            // Проверяем наличие комнаты и игроков
             const room = rooms[roomId];
             if (!room) {
                 throw new Error('Комната не найдена');
@@ -259,29 +189,17 @@ io.on('connection', (socket) => {
             const attackerName = attackerId.card;
             const targetName = targetId.card;
 
-            // Получаем экземпляры карт игроков по их именам
-            const attackerCard = Object.values(room.selections).find(card => card === attackerName);  // Карта атакующего
-            const targetCard = Object.values(room.selections).find(card => card === targetName);      // Карта цели
-
-            console.log(attackerCard);
-            console.log(targetCard);
+            const attackerCard = Object.values(room.selections).find(card => card === attackerName);
+            const targetCard = Object.values(room.selections).find(card => card === targetName);
 
             if (!attackerCard || !targetCard) {
                 throw new Error('Карта не найдена');
             }
 
-            // Вызываем метод useAttack у карты атакующего и передаем карту цели
             let damage;
-            console.log("datavalue ", data.value);
             if (data.value === null) damage = game.AttackEvent(attackerCard, targetCard);
             else damage = game.AttackEventAbility(attackerCard, targetCard, data.value);
 
-            // console.log("->dmg", damage);
-
-            // Логируем нанесенный урон
-            console.log(`Игрок ${attackerName} атаковал игрока ${targetName}, нанося урон: ${damage}`);
-
-            // Отправляем результат урона обоим игрокам
             io.to(roomId).emit('AttackResult', {
                 attackerId: attackerId,
                 targetId: targetId,
@@ -294,7 +212,6 @@ io.on('connection', (socket) => {
     });
     socket.on('Heal', (roomId, data) => {
         try {
-            // Проверяем наличие комнаты и игроков
             const room = rooms[roomId];
             if (!room) {
                 throw new Error('Комната не найдена');
@@ -303,26 +220,16 @@ io.on('connection', (socket) => {
             const { HealId } = data;
             const HealName = HealId.card;
 
-            // Получаем экземпляры карт игроков по их именам
-            const HealCard = Object.values(room.selections).find(card => card === HealName);  // Карта атакующего   // Карта цели
+            const HealCard = Object.values(room.selections).find(card => card === HealName);
 
-            // console.log(attackerCard);
-            // console.log(targetCard);
 
             if (!HealCard) {
                 throw new Error('Карта не найдена');
             }
 
-            // Вызываем метод useAttack у карты атакующего и передаем карту цели
             let heal = game.HealEvent(HealCard, data.value);;
-            // console.log("datavalue ",data.value);
-            // if(data.value === null) damage = game.AttackEvent(attackerCard,targetCard);
-            // else damage = game.AttackEventAbility(attackerCard,targetCard, data.value);
 
-            // Логируем нанесенный урон
-            console.log(`Игрок ${HealName} восстановил: ${heal} хп`);
 
-            // Отправляем результат урона обоим игрокам
             io.to(roomId).emit('HealResult', {
                 HealId: HealId,
                 heal: heal
@@ -334,7 +241,6 @@ io.on('connection', (socket) => {
     });
     socket.on('Defense', (roomId, data) => {
         try {
-            // Проверяем наличие комнаты и игроков
             const room = rooms[roomId];
             if (!room) {
                 throw new Error('Комната не найдена');
@@ -344,29 +250,16 @@ io.on('connection', (socket) => {
             const attackerName = attackerId.card;
             const targetName = targetId.card;
 
-            // Получаем экземпляры карт игроков по их именам
-            const attackerCard = Object.values(room.selections).find(card => card === attackerName);  // Карта атакующего
-            const targetCard = Object.values(room.selections).find(card => card === targetName);      // Карта цели
-
-            console.log(attackerCard);
-            console.log(targetCard);
+            const attackerCard = Object.values(room.selections).find(card => card === attackerName);
+            const targetCard = Object.values(room.selections).find(card => card === targetName);
 
             if (!attackerCard || !targetCard) {
                 throw new Error('Карта не найдена');
             }
 
-            // Вызываем метод useAttack у карты атакующего и передаем карту цели
             let damage;
-            console.log("ENABLEING");
             game.enableDefenseEvent();
-            // console.log("datavalue ", data.value);
-            // if (data.value === null) damage = game.AttackEvent(attackerCard, targetCard);
-            // else damage = game.AttackEventAbility(attackerCard, targetCard, data.value);
 
-            // Логируем нанесенный урон
-            console.log(`Игрок ${attackerName} нажал щит`);
-
-            // Отправляем результат урона обоим игрокам
             io.to(roomId).emit('DefenseResult', {
                 attackerId: attackerId,
                 targetId: targetId,
@@ -391,11 +284,7 @@ io.on('connection', (socket) => {
         const winnerId = room.players.find(player => player.id !== loserId).id;
 
         game.DealDamageToPlayer(rooms[roomId].selections[loserId]);
-        console.log(game.getHp1);
-        console.log(game.getHp2);
-        console.log(`Раунд завершен. Игрок ${loserId} проиграл раунд. Победитель: ${winnerId}`);
 
-        // Отправляем всем игрокам информацию о завершении раунда
         io.to(roomId).emit('roundResult', {
             winnerId,
             loserId
@@ -410,51 +299,12 @@ io.on('connection', (socket) => {
 
     socket.on('DefenseEnd', () => {
         try {
-            // // Проверяем наличие комнаты и игроков
-            // const room = rooms[roomId];
-            // if (!room) {
-            //     throw new Error('Комната не найдена');
-            // }
-
-            // const { attackerId, targetId } = data;
-            // const attackerName = attackerId.card;
-            // const targetName = targetId.card;
-
-            // // Получаем экземпляры карт игроков по их именам
-            // const attackerCard = Object.values(room.selections).find(card => card === attackerName);  // Карта атакующего
-            // const targetCard = Object.values(room.selections).find(card => card === targetName);      // Карта цели
-
-            // // console.log(attackerCard);
-            // // console.log(targetCard);
-
-            // if (!attackerCard || !targetCard) {
-            //     throw new Error('Карта не найдена');
-            // }
-
-            // Вызываем метод useAttack у карты атакующего и передаем карту цели
-            let damage;
-            console.log("DISABLE");
             game.disableDefenseEvent();
-            // console.log("datavalue ", data.value);
-            // if (data.value === null) damage = game.AttackEvent(attackerCard, targetCard);
-            // else damage = game.AttackEventAbility(attackerCard, targetCard, data.value);
-
-            // Логируем нанесенный урон
-            // console.log(`Игрок ${attackerName} нажал щит`);
-
-            // Отправляем результат урона обоим игрокам
-            // io.to(roomId).emit('DefenseResult', {
-            //     attackerId: attackerId,
-            //     targetId: targetId,
-            //     damage: damage,
-            // });
-
         } catch (error) {
             console.error('Ошибка при обработке атаки:', error);
         }
     })
 
-    // Обработчик выхода игрока
     socket.on('disconnect', () => {
         for (let roomId in rooms) {
             const room = rooms[roomId];
@@ -462,12 +312,9 @@ io.on('connection', (socket) => {
             if (index !== -1) {
                 room.players.splice(index, 1);
                 socket.leave(roomId);
-                console.log(`Player ${socket.id} left room ${roomId}`);
 
-                // Удаляем комнату, если она пустая
                 if (room.players.length === 0) {
                     delete rooms[roomId];
-                    console.log(`Room ${roomId} deleted`);
                 }
                 else if (room.players.length === 1) {
                     io.to(roomId).emit('pause');
@@ -477,8 +324,6 @@ io.on('connection', (socket) => {
     });
 });
 
-// Подключаем WebSocket-логику //nahui web-socket logiku, mi socket.io chads teper
-// require('./gameSocket')(wss);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('views'));
@@ -542,10 +387,7 @@ app.post('/login', async (request, response) => {
     }
 });
 
-// const game = new Game(1, 2);
-// game.startGame();
 
-// Запускаем сервер
 server.listen(port, () => {
     console.log(`Сервер запущен на http://localhost:${port}`);
 });

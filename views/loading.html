@@ -12,51 +12,26 @@
 <body>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        const socket = io('http://localhost:3000');  // Инициализация сокета
+        const socket = io('http://localhost:3000');
     
-        // Отправляем информацию о себе
         socket.emit('userEmail', localStorage.getItem('userEmail'));
         socket.emit('userId', localStorage.getItem('userId'));
-        socket.emit('userName', localStorage.getItem('userName')); // добавь соответствующий обработчик на сервере
-        socket.emit('userAvatar', localStorage.getItem('userAvatar')); // добавь соответствующий обработчик на сервере
-    
-        // Ищем игру
+        socket.emit('userName', localStorage.getItem('userName')); 
+        socket.emit('userAvatar', localStorage.getItem('userAvatar'));
     
         document.addEventListener('DOMContentLoaded', (event) => {
             event.preventDefault();
             const userEmail = localStorage.getItem('userEmail');
     
             if (userEmail) {
-                socket.emit('searchGame'); // Ищем комнату для игры
+                socket.emit('searchGame');
             } else {
-                console.log("User email not found in localStorage.");
             }
         });
     
-        // Когда начинается игра
-        socket.on('startGame', ({ roomId, players }) => {
-
-            // let roomPlayers = players;
-            // console.log(`Game started in room ${roomId}`);
+        socket.on('startGame', ({ roomId, players }) => {});
     
-            // Сохраняем данные об оппоненте
-            // const player = players.find(p => p.id !== socket.id);
-            // if (player) {
-                // localStorage.setItem('opName', player.name);
-                // localStorage.setItem('opEmail', player.email);
-                // localStorage.setItem('opId', player.id);
-                // localStorage.setItem('opAva', player.avatar);
-            // }
-            // console.log(players);
-            // Перенаправляем на страницу арены
-            // socket.emit('leaveRoom', { roomId });
-            // socket.emit('arenaStart', {roomId, players})
-            // window.location.href = "arena.html";
-        });
-    
-        // Обработка, если комната переполнена
         socket.on('roomFull', ({ message }) => {
-            console.log(message);
         });
     </script>
 </body>

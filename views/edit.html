@@ -33,11 +33,6 @@
                 <input type="email" id="email" name="email" placeholder="Enter your new email">
             </div>
 
-            <!-- Изменение аватара -->
-            <!-- <div class="form-group">
-                <label for="avatar">Change Avatar</label>
-                <input type="file" id="avatar" name="avatar" accept="image/*">
-            </div> -->
             <div class="form-group">
                 <p id="change-ava">Change Avatar:</p>
                 <div class="avatars">
@@ -58,22 +53,17 @@
 
 
 
-            <!-- Кнопка сохранения изменений профиля -->
             <div class="form-group">
                 <button type="submit" class="save-btn" id="saveChanges">Save Changes</button>
             </div>
         </form>
 
         <hr><br>
-        <!-- Кнопка для изменения пароля -->
-        <!-- <div class="form-group"> -->
         <button type="button" class="change-password-btn" id="open-password-modal">Change Password</button>
-        <!-- </div> -->
     </div>
 
 
 
-    <!-- Модальное окно для изменения пароля -->
     <div class="modal-overlay" id="modal-overlay"></div>
     <div class="password-modal" id="password-modal">
         <h2>Change Password</h2>
@@ -100,18 +90,16 @@
     </div>
 
     <script>
-        // Функция для выбора радио-кнопки с определенным значением
         function selectAvatarByValue(value) {
             const radios = document.querySelectorAll('input[name="avatar"]');
 
             radios.forEach((radio) => {
                 if (radio.value === value) {
-                    radio.checked = true; // Устанавливаем checked для нужного значения
+                    radio.checked = true;
                 }
             });
         }
 
-        // Пример вызова функции
         selectAvatarByValue(localStorage.getItem('userAvatar'));
         document.getElementById('current-ava').src = localStorage.getItem('userAvatar');
 
@@ -126,8 +114,6 @@
             let newMail = document.getElementById("email").value;
             let newName = document.getElementById("name").value;
             let newAva = document.querySelector('input[name="avatar"]:checked').value;
-            // let oldname = localStorage.getItem('userName');
-            // console.log(oldname);
             if (newMail !== '' || newName !== '' || newAva !== localStorage.getItem('userAvatar')) {
                 const response = await fetch(`/user/${localStorage.getItem('userId')}`, {
                     method: 'PUT',
@@ -223,29 +209,22 @@
                 alert('An error occurred: ' + error.message);
             }
 
-            // let oldname = localStorage.getItem('userName');
-            // console.log(oldname);
 
         });
 
         document.getElementById("current-name").textContent = localStorage.getItem("userName");
         document.getElementById("current-email").textContent = localStorage.getItem("userEmail");
-        // document.getElementById('current-ava').src = localStorage.getItem('userAvatar');
-        // Открытие и закрытие модального окна для смены парол
 
-        // Открыть модальное окно
         openPasswordModalBtn.addEventListener('click', () => {
             passwordModal.style.display = 'block';
             modalOverlay.style.display = 'block';
         });
 
-        // Закрыть модальное окно
         closePasswordModalBtn.addEventListener('click', () => {
             passwordModal.style.display = 'none';
             modalOverlay.style.display = 'none';
         });
 
-        // Закрытие при клике на затемнение
         modalOverlay.addEventListener('click', () => {
             passwordModal.style.display = 'none';
             modalOverlay.style.display = 'none';
