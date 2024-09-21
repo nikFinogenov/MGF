@@ -16,15 +16,16 @@ class Card {
         this.buffs = buffs; // Баффы героя (массив объектов Buff)
     }
 
-    useAttack(target) {
-        let dealDamage = this.atk;
-        target.recieveDamage(dealDamage);
+    useAttack(target, defense) {
+        let dealDamage = this.atk * defense;
+        target.recieveDamage(Math.round(dealDamage));
         return dealDamage;
     }
-    useAttackAbility(target, value) {
+    useAttackAbility(target, value, defense) {
+        // console.log(Math.round(value * defense));
         // let dealDamage = this.atk;
-        target.recieveDamage(value);
-        return value;
+        target.recieveDamage(Math.round(value * defense));
+        return Math.round(value * defense);
     }
     useHealkAbility(value) {
         this.recieveHeal(value);

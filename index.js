@@ -18,6 +18,7 @@ io.on('connection', (socket) => {
     console.log('New player connected:', socket.id);
     socket.on('firstRound', (roomId) => {
         rooms[roomId].actions['turn'] = 1;
+        // let rnd = Math.round(Math.random());
         io.to(roomId).emit('firstTurn', rooms[roomId].players[0].id, rooms[roomId].actions['turn']);
         // console.log(rooms[roomId].players[randomNumber]);
         // console.log(randomNumber)
@@ -275,6 +276,8 @@ io.on('connection', (socket) => {
             if (data.value === null) damage = game.AttackEvent(attackerCard, targetCard);
             else damage = game.AttackEventAbility(attackerCard, targetCard, data.value);
 
+            // console.log("->dmg", damage);
+
             // Логируем нанесенный урон
             console.log(`Игрок ${attackerName} атаковал игрока ${targetName}, нанося урон: ${damage}`);
 
@@ -354,6 +357,8 @@ io.on('connection', (socket) => {
 
             // Вызываем метод useAttack у карты атакующего и передаем карту цели
             let damage;
+            console.log("ENABLEING");
+            game.enableDefenseEvent();
             // console.log("datavalue ", data.value);
             // if (data.value === null) damage = game.AttackEvent(attackerCard, targetCard);
             // else damage = game.AttackEventAbility(attackerCard, targetCard, data.value);
@@ -399,6 +404,52 @@ io.on('connection', (socket) => {
             nextRound: room.roundsPlayed + 1
         });
     });
+
+    socket.on('DefenseEnd', () => {
+        try {
+            // // Проверяем наличие комнаты и игроков
+            // const room = rooms[roomId];
+            // if (!room) {
+            //     throw new Error('Комната не найдена');
+            // }
+
+            // const { attackerId, targetId } = data;
+            // const attackerName = attackerId.card;
+            // const targetName = targetId.card;
+
+            // // Получаем экземпляры карт игроков по их именам
+            // const attackerCard = Object.values(room.selections).find(card => card === attackerName);  // Карта атакующего
+            // const targetCard = Object.values(room.selections).find(card => card === targetName);      // Карта цели
+
+            // // console.log(attackerCard);
+            // // console.log(targetCard);
+
+            // if (!attackerCard || !targetCard) {
+            //     throw new Error('Карта не найдена');
+            // }
+
+            // Вызываем метод useAttack у карты атакующего и передаем карту цели
+            let damage;
+            console.log("DISABLE");
+            game.disableDefenseEvent();
+            // console.log("datavalue ", data.value);
+            // if (data.value === null) damage = game.AttackEvent(attackerCard, targetCard);
+            // else damage = game.AttackEventAbility(attackerCard, targetCard, data.value);
+
+            // Логируем нанесенный урон
+            // console.log(`Игрок ${attackerName} нажал щит`);
+
+            // Отправляем результат урона обоим игрокам
+            // io.to(roomId).emit('DefenseResult', {
+            //     attackerId: attackerId,
+            //     targetId: targetId,
+            //     damage: damage,
+            // });
+
+        } catch (error) {
+            console.error('Ошибка при обработке атаки:', error);
+        }
+    })
 
     // Обработчик выхода игрока
     socket.on('disconnect', () => {

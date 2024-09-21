@@ -888,11 +888,11 @@
                     } else {
                         updateOpCardNumber(newhp, document.getElementById('op-card-number-attk').textContent);
                     }
+                    if(document.getElementById('op-icon').style.display === 'flex') socket.emit('DefenseEnd');
                     if (document.getElementById('op-icon').style.display === 'flex') {
                         document.getElementById('op-icon').style.display = 'none';
                     }
                 }
-
                 console.log(`Игрок ${attackerId.id} нанес ${damage} урона игроку ${targetId.id}`);
             });
 

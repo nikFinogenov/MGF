@@ -20,6 +20,7 @@ class Game {
         this.income = 200;
         this.roundWinner = null;
         this.matchWinner = null;
+        this.defense = 1;
     }
 
     InputCards(heroName, opHeroName) {
@@ -68,7 +69,7 @@ class Game {
         }
     
         // Выполняем атаку
-        let damage = attacker.useAttack(target);
+        let damage = attacker.useAttack(target, this.defense);
         return damage;
     }
     AttackEventAbility(attackerName, targetName, value) {
@@ -95,7 +96,8 @@ class Game {
         }
     
         // Выполняем атаку
-        let damage = attacker.useAttackAbility(target, value);
+        let damage = attacker.useAttackAbility(target, value, this.defense);
+        // console.log("->dmg2", damage);
         return damage;
     }
     HealEvent(healName, value) {
@@ -123,6 +125,13 @@ class Game {
         // Выполняем атаку
         let heal = healer.useHealkAbility(value);
         return heal;
+    }
+
+    enableDefenseEvent() {
+        this.defense = 0.5;
+    }
+    disableDefenseEvent() {
+        this.defense = 1;
     }
 
     SendBaseHp(sender) {
