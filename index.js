@@ -265,6 +265,46 @@ io.on('connection', (socket) => {
             console.error('Ошибка при обработке атаки:', error);
         }
     });
+    socket.on('Heal', (roomId, data) => {
+        try {
+            // Проверяем наличие комнаты и игроков
+            const room = rooms[roomId];
+            if (!room) {
+                throw new Error('Комната не найдена');
+            }
+    
+            const { HealId } = data;
+            const HealName = HealId.card;
+    
+            // Получаем экземпляры карт игроков по их именам
+            const HealCard = Object.values(room.selections).find(card => card === HealName);  // Карта атакующего   // Карта цели
+            
+            // console.log(attackerCard);
+            // console.log(targetCard);
+    
+            if (!HealCard) {
+                throw new Error('Карта не найдена');
+            }
+    
+            // Вызываем метод useAttack у карты атакующего и передаем карту цели
+            let heal = game.HealEvent(HealCard, data.value);;
+            // console.log("datavalue ",data.value);
+            // if(data.value === null) damage = game.AttackEvent(attackerCard,targetCard);
+            // else damage = game.AttackEventAbility(attackerCard,targetCard, data.value);
+    
+            // Логируем нанесенный урон
+            console.log(`Игрок ${HealName} восстановил: ${heal} хп`);
+    
+            // Отправляем результат урона обоим игрокам
+            io.to(roomId).emit('HealResult', {
+                HealId: HealId,
+                heal: heal
+            });
+    
+        } catch (error) {
+            console.error('Ошибка при обработке атаки:', error);
+        }
+    });
 
     socket.on('EndRound', (roomId, data) => {
 

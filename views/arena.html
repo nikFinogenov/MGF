@@ -126,6 +126,10 @@
                     <span id="op-card-number-attk">5</span>
                 </div>
             </div>
+            <div id="op-ab-log"></div>
+            <div class="icon-box">
+                <img id="op-icon" src="shield.png" alt="Icon" />
+            </div>
         </div>
 
         <!-- Блок для карт сверху -->
@@ -843,6 +847,25 @@
 
                 console.log(`Игрок ${attackerId.id} нанес ${damage} урона игроку ${targetId.id}`);
             });
+            socket.on('HealResult', (data) => {
+                const { HealId, heal } = data;
+                const currentPlayerId = socket.id;
+                const currentPlayer = serverdata.players.find(player => player.id === currentPlayerId);
+                let newhp;
+
+                // Проверяем, кто является целью атаки
+                if (currentPlayerId === HealId.id) {
+                    // Если текущий игрок — это цель, обновляем его HP
+                    newhp = parseInt(document.getElementById('card-number-hp').textContent) + Number(heal);
+                    updateCardNumber(newhp, document.getElementById('card-number-attk').textContent);
+                } else if (currentPlayerId !== HealId.id) {
+                    // Если текущий игрок — это атакующий, обновляем HP противника
+                    newhp = parseInt(document.getElementById('op-card-number-hp').textContent) + Number(heal);
+                    updateOpCardNumber(newhp, document.getElementById('op-card-number-attk').textContent);
+                }
+
+                // console.log(`Игрок ${attackerId.id} нанес ${damage} урона игроку ${targetId.id}`);
+            });
             // socket.on('startRound', (Timer) => {
 
             // });
@@ -887,7 +910,10 @@
                                 });
                                 break;
                             case 'heal':
-                                console.log('hel');
+                                socket.emit('Heal', room_Id, {
+                                    HealId: currentPlayer,
+                                    value: currentPlayerHeroCard.abilities[index].property[0].dmg
+                                });
                                 break;
                             case 'defense':
                                 console.log('def');

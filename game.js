@@ -98,6 +98,32 @@ class Game {
         let damage = attacker.useAttackAbility(target, value);
         return damage;
     }
+    HealEvent(healName, value) {
+        // Проверяем, кто является атакующим и целью
+        let healer;
+    
+        // Проверка, кто из игроков атакует
+        if (this.playerHero.getName === healName) {
+            healer = this.playerHero;
+        } else if (this.player2Hero.getName === healName) {
+            healer = this.player2Hero;
+        } else {
+            throw new Error(`Карта с именем ${healName} не найдена среди игроков`);
+        }
+    
+        // // Проверка, кто является целью атаки
+        // if (this.playerHero.getName === targetName) {
+        //     target = this.playerHero;
+        // } else if (this.player2Hero.getName === targetName) {
+        //     target = this.player2Hero;
+        // } else {
+        //     throw new Error(`Карта с именем ${targetName} не найдена среди игроков`);
+        // }
+    
+        // Выполняем атаку
+        let heal = healer.useHealkAbility(value);
+        return heal;
+    }
 
     SendBaseHp(sender) {
         let target;
