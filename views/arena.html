@@ -127,8 +127,8 @@
                 </div>
             </div>
             <div id="op-ab-log"></div>
-            <div class="icon-box">
-                <img id="op-icon" src="shield.png" alt="Icon" />
+            <div class="icon-box" id="op-icon">
+                <img src="shield.png" alt="Icon" />
             </div>
         </div>
 
@@ -147,6 +147,9 @@
                 </div>
                 <div class="card-stats-attk" id="attk-box">
                     <span id="card-number-attk">5</span>
+                </div>
+                <div class="icon-box" id="pl-icon">
+                    <img src="shield.png" alt="Icon" />
                 </div>
             </div>
         </div>
@@ -873,6 +876,36 @@
 
             // });
 
+            socket.on('DefenseResult', (data) => {
+                const { attackerId, targetId, damage } = data;
+                const currentPlayerId = socket.id;
+
+
+                if (currentPlayerId === targetId.id) {
+                    // Если текущий игрок — это цель, обновляем его HP
+                    // newhp = parseInt(document.getElementById('card-number-hp').textContent) - damage;
+                    // if (newhp <= 0) {
+                    //     socket.emit('roundEnd', { roomId: room_Id, loserId: currentPlayerId });
+                    //     //updateCardNumber(0, document.getElementById('card-number-attk').textContent);
+                    // } else {
+                    //     updateCardNumber(newhp, document.getElementById('card-number-attk').textContent);
+                    // }
+
+                    document.getElementById('pl-icon').style.display = 'flex';
+                } else if (currentPlayerId === attackerId.id) {
+                    // // Если текущий игрок — это атакующий, обновляем HP противника
+                    // newhp = parseInt(document.getElementById('op-card-number-hp').textContent) - damage;
+                    // if (newhp <= 0) {
+                    //     socket.emit('roundEnd', { roomId: room_Id, loserId: opponent.id });
+                    //     //updateOpCardNumber(0, document.getElementById('op-card-number-attk').textContent);
+                    // } else {
+                    //     updateOpCardNumber(newhp, document.getElementById('op-card-number-attk').textContent);
+                    // }
+                    document.getElementById('op-icon').style.display = 'flex';
+                }
+            });
+
+
             socket.on('startTurn', (data) => {
                 socket.emit('GetBaseHp', room_Id, { playerId: socket.id });
                 socket.on('BaseHpResult', (data) => {
@@ -888,7 +921,7 @@
                         }
                     });
                 });
-                
+
                 clearInterval(roundTimerInterval);
                 roundTimeLeft = 30;
                 stopAlert()
@@ -934,7 +967,11 @@
                                 });
                                 break;
                             case 'defense':
-                                console.log('def');
+                                socket.emit('Defense', room_Id, {
+                                    attackerId: currentPlayer,
+                                    targetId: opponent,
+                                    value: currentPlayerHeroCard.abilities[index].property[0].dmg
+                                });
                                 break;
 
                             default:
