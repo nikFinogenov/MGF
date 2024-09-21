@@ -17,7 +17,7 @@
                     "ab_name": "Test_ability1",
                     "img": "../cards/abilities/nagieva.jpg",
                     "desc": "Description",
-                    "type": "direct",
+                    "type": "attack",
                     "behavior": "active",
                     "level": "1",
                     "maxlevel": "1",
@@ -34,7 +34,7 @@
                     "ab_name": "Test_ability1",
                     "img": "../cards/abilities/nagieva.jpg",
                     "desc": "Description",
-                    "type": "direct",
+                    "type": "attack",
                     "behavior": "active",
                     "level": "1",
                     "maxlevel": "1",
@@ -51,7 +51,7 @@
                     "ab_name": "Test_ability1",
                     "img": "../cards/abilities/nagieva.jpg",
                     "desc": "Description",
-                    "type": "direct",
+                    "type": "attack",
                     "behavior": "active",
                     "level": "1",
                     "maxlevel": "1",
@@ -84,7 +84,7 @@
                     "ab_name": "Test_ability1",
                     "img": "../cards/abilities/nagieva.jpg",
                     "desc": "Description",
-                    "type": "direct",
+                    "type": "attack",
                     "behavior": "active",
                     "level": "1",
                     "maxlevel": "1",
@@ -101,7 +101,7 @@
                     "ab_name": "Test_ability1",
                     "img": "../cards/abilities/nagieva.jpg",
                     "desc": "Description",
-                    "type": "direct",
+                    "type": "attack",
                     "behavior": "active",
                     "level": "1",
                     "maxlevel": "1",
@@ -118,7 +118,7 @@
                     "ab_name": "Test_ability1",
                     "img": "../cards/abilities/nagieva.jpg",
                     "desc": "Description",
-                    "type": "direct",
+                    "type": "attack",
                     "behavior": "active",
                     "level": "1",
                     "maxlevel": "1",
@@ -151,7 +151,7 @@
                     "ab_name": "Test_ability1",
                     "img": "../cards/abilities/nagieva.jpg",
                     "desc": "Description",
-                    "type": "direct",
+                    "type": "attack",
                     "behavior": "active",
                     "level": "1",
                     "maxlevel": "1",
@@ -168,7 +168,7 @@
                     "ab_name": "Test_ability1",
                     "img": "../cards/abilities/nagieva.jpg",
                     "desc": "Description",
-                    "type": "direct",
+                    "type": "attack",
                     "behavior": "active",
                     "level": "1",
                     "maxlevel": "1",
@@ -185,7 +185,7 @@
                     "ab_name": "Test_ability1",
                     "img": "../cards/abilities/nagieva.jpg",
                     "desc": "Description",
-                    "type": "direct",
+                    "type": "attack",
                     "behavior": "active",
                     "level": "1",
                     "maxlevel": "1",
@@ -218,7 +218,7 @@
                     "ab_name": "Test_ability1",
                     "img": "../cards/abilities/nagieva.jpg",
                     "desc": "Description",
-                    "type": "direct",
+                    "type": "attack",
                     "behavior": "active",
                     "level": "1",
                     "maxlevel": "1",
@@ -235,7 +235,7 @@
                     "ab_name": "Test_ability1",
                     "img": "../cards/abilities/nagieva.jpg",
                     "desc": "Description",
-                    "type": "direct",
+                    "type": "attack",
                     "behavior": "active",
                     "level": "1",
                     "maxlevel": "1",
@@ -252,7 +252,7 @@
                     "ab_name": "Test_ability1",
                     "img": "../cards/abilities/nagieva.jpg",
                     "desc": "Description",
-                    "type": "direct",
+                    "type": "attack",
                     "behavior": "active",
                     "level": "1",
                     "maxlevel": "1",
@@ -285,7 +285,7 @@
                     "ab_name": "Test_ability1",
                     "img": "../cards/abilities/nagieva.jpg",
                     "desc": "Description",
-                    "type": "direct",
+                    "type": "attack",
                     "behavior": "active",
                     "level": "1",
                     "maxlevel": "1",
@@ -302,7 +302,7 @@
                     "ab_name": "Test_ability1",
                     "img": "../cards/abilities/nagieva.jpg",
                     "desc": "Description",
-                    "type": "direct",
+                    "type": "attack",
                     "behavior": "active",
                     "level": "1",
                     "maxlevel": "1",
@@ -319,7 +319,7 @@
                     "ab_name": "Test_ability1",
                     "img": "../cards/abilities/nagieva.jpg",
                     "desc": "Description",
-                    "type": "direct",
+                    "type": "attack",
                     "behavior": "active",
                     "level": "1",
                     "maxlevel": "1",
@@ -352,16 +352,16 @@
                     "ab_name": "death_atk",
                     "img": "../cards/abilities/death_atk.png",
                     "desc": "Description",
-                    "type": "direct",
+                    "type": "attack",
                     "behavior": "active",
                     "level": "1",
                     "maxlevel": "1",
                     "property": [
                         {
-                            "dmg": "10",
+                            "dmg": "5",
                             "cooldown": "2",
                             "duration": "0",
-                            "manacost": "3"
+                            "manacost": "1"
                         }
                     ]
                 },
@@ -369,7 +369,7 @@
                     "ab_name": "death_heal",
                     "img": "../cards/abilities/death_heal.png",
                     "desc": "Description",
-                    "type": "direct",
+                    "type": "heal",
                     "behavior": "active",
                     "level": "1",
                     "maxlevel": "1",
@@ -378,7 +378,7 @@
                             "dmg": "10",
                             "cooldown": "2",
                             "duration": "0",
-                            "manacost": "3"
+                            "manacost": "5"
                         }
                     ]
                 },
@@ -386,13 +386,13 @@
                     "ab_name": "death_def",
                     "img": "../cards/abilities/death_def.png",
                     "desc": "Description",
-                    "type": "direct",
+                    "type": "defense",
                     "behavior": "active",
                     "level": "1",
                     "maxlevel": "1",
                     "property": [
                         {
-                            "dmg": "10",
+                            "dmg": "0",
                             "cooldown": "2",
                             "duration": "0",
                             "manacost": "3"
@@ -404,7 +404,7 @@
         },
         {
             "he_name": "Geralt",
-            "hp": "5",
+            "hp": "45",
             "atk": "20",
             "mana": "5",
             "money": "2000",
@@ -419,16 +419,16 @@
                     "ab_name": "ger_atk",
                     "img": "../cards/abilities/ger_atk.png",
                     "desc": "Description",
-                    "type": "direct",
+                    "type": "attack",
                     "behavior": "active",
                     "level": "1",
                     "maxlevel": "1",
                     "property": [
                         {
-                            "dmg": "10",
+                            "dmg": "2",
                             "cooldown": "2",
                             "duration": "0",
-                            "manacost": "3"
+                            "manacost": "1"
                         }
                     ]
                 },
@@ -436,16 +436,16 @@
                     "ab_name": "ger_atk2",
                     "img": "../cards/abilities/ger_atk2.png",
                     "desc": "Description",
-                    "type": "direct",
+                    "type": "attack",
                     "behavior": "active",
                     "level": "1",
                     "maxlevel": "1",
                     "property": [
                         {
-                            "dmg": "10",
+                            "dmg": "3",
                             "cooldown": "2",
                             "duration": "0",
-                            "manacost": "3"
+                            "manacost": "2"
                         }
                     ]
                 },
@@ -453,13 +453,13 @@
                     "ab_name": "ger_heal",
                     "img": "../cards/abilities/ger_heal.png",
                     "desc": "Description",
-                    "type": "direct",
+                    "type": "heal",
                     "behavior": "active",
                     "level": "1",
                     "maxlevel": "1",
                     "property": [
                         {
-                            "dmg": "10",
+                            "dmg": "5",
                             "cooldown": "2",
                             "duration": "0",
                             "manacost": "3"
@@ -486,16 +486,16 @@
                     "ab_name": "sau_atk",
                     "img": "../cards/abilities/sau_atk.png",
                     "desc": "Description",
-                    "type": "direct",
+                    "type": "attack",
                     "behavior": "active",
                     "level": "1",
                     "maxlevel": "1",
                     "property": [
                         {
-                            "dmg": "10",
+                            "dmg": "5",
                             "cooldown": "2",
                             "duration": "0",
-                            "manacost": "3"
+                            "manacost": "2"
                         }
                     ]
                 },
@@ -503,16 +503,16 @@
                     "ab_name": "sau_atk2",
                     "img": "../cards/abilities/sau_atk2.png",
                     "desc": "Description",
-                    "type": "direct",
+                    "type": "attack",
                     "behavior": "active",
                     "level": "1",
                     "maxlevel": "1",
                     "property": [
                         {
-                            "dmg": "10",
+                            "dmg": "2",
                             "cooldown": "2",
                             "duration": "0",
-                            "manacost": "3"
+                            "manacost": "1"
                         }
                     ]
                 },
@@ -520,7 +520,7 @@
                     "ab_name": "sau_atk",
                     "img": "../cards/abilities/sau_atk3.png",
                     "desc": "Description",
-                    "type": "direct",
+                    "type": "attack",
                     "behavior": "active",
                     "level": "1",
                     "maxlevel": "1",
@@ -529,7 +529,7 @@
                             "dmg": "10",
                             "cooldown": "2",
                             "duration": "0",
-                            "manacost": "3"
+                            "manacost": "5"
                         }
                     ]
                 }
@@ -553,13 +553,13 @@
                     "ab_name": "var_atk",
                     "img": "../cards/abilities/var_atk.png",
                     "desc": "Description",
-                    "type": "direct",
+                    "type": "attack",
                     "behavior": "active",
                     "level": "1",
                     "maxlevel": "1",
                     "property": [
                         {
-                            "dmg": "10",
+                            "dmg": "5",
                             "cooldown": "2",
                             "duration": "0",
                             "manacost": "3"
@@ -570,16 +570,16 @@
                     "ab_name": "var_atk2",
                     "img": "../cards/abilities/var_atk2.png",
                     "desc": "Description",
-                    "type": "direct",
+                    "type": "attack",
                     "behavior": "active",
                     "level": "1",
                     "maxlevel": "1",
                     "property": [
                         {
-                            "dmg": "10",
+                            "dmg": "3",
                             "cooldown": "2",
                             "duration": "0",
-                            "manacost": "3"
+                            "manacost": "1"
                         }
                     ]
                 },
@@ -587,13 +587,13 @@
                     "ab_name": "var_def",
                     "img": "../cards/abilities/var_def.png",
                     "desc": "Description",
-                    "type": "direct",
+                    "type": "defense",
                     "behavior": "active",
                     "level": "1",
                     "maxlevel": "1",
                     "property": [
                         {
-                            "dmg": "10",
+                            "dmg": "0",
                             "cooldown": "2",
                             "duration": "0",
                             "manacost": "3"
@@ -620,7 +620,7 @@
                     "ab_name": "ron_atk",
                     "img": "../cards/abilities/ron_atk.png",
                     "desc": "Description",
-                    "type": "direct",
+                    "type": "attack",
                     "behavior": "active",
                     "level": "1",
                     "maxlevel": "1",
@@ -629,7 +629,7 @@
                             "dmg": "10",
                             "cooldown": "2",
                             "duration": "0",
-                            "manacost": "3"
+                            "manacost": "2"
                         }
                     ]
                 },
@@ -637,13 +637,13 @@
                     "ab_name": "ron_heal",
                     "img": "../cards/abilities/ron_heal.png",
                     "desc": "Description",
-                    "type": "direct",
+                    "type": "heal",
                     "behavior": "active",
                     "level": "1",
                     "maxlevel": "1",
                     "property": [
                         {
-                            "dmg": "10",
+                            "dmg": "5",
                             "cooldown": "2",
                             "duration": "0",
                             "manacost": "3"
@@ -654,16 +654,16 @@
                     "ab_name": "ron_def",
                     "img": "../cards/abilities/ron_def.png",
                     "desc": "Description",
-                    "type": "direct",
+                    "type": "defense",
                     "behavior": "active",
                     "level": "1",
                     "maxlevel": "1",
                     "property": [
                         {
-                            "dmg": "10",
+                            "dmg": "0",
                             "cooldown": "2",
                             "duration": "0",
-                            "manacost": "3"
+                            "manacost": "2"
                         }
                     ]
                 }

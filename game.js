@@ -71,6 +71,33 @@ class Game {
         let damage = attacker.useAttack(target);
         return damage;
     }
+    AttackEventAbility(attackerName, targetName, value) {
+        // Проверяем, кто является атакующим и целью
+        let attacker;
+        let target;
+    
+        // Проверка, кто из игроков атакует
+        if (this.playerHero.getName === attackerName) {
+            attacker = this.playerHero;
+        } else if (this.player2Hero.getName === attackerName) {
+            attacker = this.player2Hero;
+        } else {
+            throw new Error(`Карта с именем ${attackerName} не найдена среди игроков`);
+        }
+    
+        // Проверка, кто является целью атаки
+        if (this.playerHero.getName === targetName) {
+            target = this.playerHero;
+        } else if (this.player2Hero.getName === targetName) {
+            target = this.player2Hero;
+        } else {
+            throw new Error(`Карта с именем ${targetName} не найдена среди игроков`);
+        }
+    
+        // Выполняем атаку
+        let damage = attacker.useAttackAbility(target, value);
+        return damage;
+    }
 
     SendBaseHp(sender) {
         let target;
