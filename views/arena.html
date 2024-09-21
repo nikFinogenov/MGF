@@ -1114,7 +1114,6 @@
                 console.log(`Раунд завершен. Победитель: ${winnerId}, Проигравший: ${loserId}`);
                 updateOpCardNumber(baseOppHp, document.getElementById('op-card-number-attk').textContent);
                 updateCardNumber(baseHp, document.getElementById('card-number-attk').textContent);
-<<<<<<< HEAD
                 // Отображаем результат раунда
                 if (socket.id === loserId) {
                     showAlert('You lost round!', 2000);
@@ -1125,7 +1124,6 @@
                     if (!moneyAdded) document.getElementById('goldValue').textContent = Number(document.getElementById('goldValue').textContent) + 150;
                 }
                 moneyAdded = !moneyAdded;
-=======
                 removeLastHpBars(loserId, 1);
                 const playerHp = document.querySelector('.hp');
                 const opponentHp = document.querySelector('.opponenthp');
@@ -1151,7 +1149,6 @@
                     }
                 }
 
->>>>>>> arena-server-client
             });
 
             socket.on('startBuffPhase', (data) => {
