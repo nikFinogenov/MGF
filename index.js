@@ -5,9 +5,6 @@ const User = require('./models/user');
 const Game = require('./game')
 const app = express();
 const port = 3000;
-
-require('dotenv').config();
-
 const server = http.createServer(app);
 const io = new Server(server);
 const rooms = {};
@@ -346,7 +343,9 @@ app.post('/register', async (req, res) => {
         if (error.message.includes("Duplicate")) {
             res.status(400).json({ error: 'A user with the same email already exists.' });
         } else {
-            res.status(500).json({ error: 'An error occurred while registering the user.' });
+            console
+            .log(error);
+            res.status(500).json({ "error": 'An error occurred while registering the user.' });
         }
     }
 });
