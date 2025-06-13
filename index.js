@@ -6,6 +6,8 @@ const Game = require('./game')
 const app = express();
 const port = 3000;
 
+require('dotenv').config();
+
 const server = http.createServer(app);
 const io = new Server(server);
 const rooms = {};
