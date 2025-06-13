@@ -12,7 +12,7 @@
 <body>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        const socket = io('http://0.0.0.0:3000');
+        const socket = io();
     
         socket.emit('userEmail', localStorage.getItem('userEmail'));
         socket.emit('userId', localStorage.getItem('userId'));
