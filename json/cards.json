@@ -669,6 +669,408 @@
                 }
             ],
             "buffs": []
+        },
+        {
+            "he_name": "Star Lord",
+            "hp": "30",
+            "atk": "15",
+            "mana": "5",
+            "money": "300",
+            "manaregen": "1",
+            "hpregen": "1",
+            "img": "../cards/heroes/star.png",
+            "desc": "Description",
+            "level": "1",
+            "maxlevel": "15",
+            "abilities": [
+                {
+                    "ab_name": "star_atk",
+                    "img": "../cards/abilities/star_atk.png",
+                    "desc": "Description",
+                    "type": "attack",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "3",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "1"
+                        }
+                    ]
+                },
+                {
+                    "ab_name": "star_atk2",
+                    "img": "../cards/abilities/star_atk2.png",
+                    "desc": "Description",
+                    "type": "attack",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "5",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "2"
+                        }
+                    ]
+                },
+                {
+                    "ab_name": "star_def",
+                    "img": "../cards/abilities/star_def.png",
+                    "desc": "Description",
+                    "type": "defense",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "0",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "2"
+                        }
+                    ]
+                }
+            ],
+            "buffs": []
+        },
+        {
+            "he_name": "Pudge",
+            "hp": "50",
+            "atk": "15",
+            "mana": "5",
+            "money": "300",
+            "manaregen": "1",
+            "hpregen": "1",
+            "img": "../cards/heroes/pudge.png",
+            "desc": "Description",
+            "level": "1",
+            "maxlevel": "15",
+            "abilities": [
+                {
+                    "ab_name": "pudge_atk",
+                    "img": "../cards/abilities/pudge_atk.png",
+                    "desc": "Description",
+                    "type": "attack",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "8",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "3"
+                        }
+                    ]
+                },
+                {
+                    "ab_name": "pudge_atk2",
+                    "img": "../cards/abilities/pudge_atk2.png",
+                    "desc": "Description",
+                    "type": "attack",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "4",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "1"
+                        }
+                    ]
+                },
+                {
+                    "ab_name": "pudge_heal",
+                    "img": "../cards/abilities/pudge_heal.png",
+                    "desc": "Description",
+                    "type": "heal",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "7",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "2"
+                        }
+                    ]
+                }
+            ],
+            "buffs": []
+        },
+        {
+            "he_name": "Heavy",
+            "hp": "50",
+            "atk": "20",
+            "mana": "5",
+            "money": "300",
+            "manaregen": "1",
+            "hpregen": "1",
+            "img": "../cards/heroes/heavy.png",
+            "desc": "Description",
+            "level": "1",
+            "maxlevel": "15",
+            "abilities": [
+                {
+                    "ab_name": "heavy_atk",
+                    "img": "../cards/abilities/heavy_atk.png",
+                    "desc": "Description",
+                    "type": "attack",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "5",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "1"
+                        }
+                    ]
+                },
+                {
+                    "ab_name": "heavy_atk2",
+                    "img": "../cards/abilities/heavy_atk2.png",
+                    "desc": "Description",
+                    "type": "attack",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "2",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "1"
+                        }
+                    ]
+                },
+                {
+                    "ab_name": "heavy_heal",
+                    "img": "../cards/abilities/heavy_heal.png",
+                    "desc": "Description",
+                    "type": "heal",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "5",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "2"
+                        }
+                    ]
+                }
+            ],
+            "buffs": []
+        },
+        {
+            "he_name": "Ember",
+            "hp": "50",
+            "atk": "10",
+            "mana": "5",
+            "money": "300",
+            "manaregen": "1",
+            "hpregen": "1",
+            "img": "../cards/heroes/ember.png",
+            "desc": "Description",
+            "level": "1",
+            "maxlevel": "15",
+            "abilities": [
+                {
+                    "ab_name": "ember_atk",
+                    "img": "../cards/abilities/ember_atk.png",
+                    "desc": "Description",
+                    "type": "attack",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "5",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "2"
+                        }
+                    ]
+                },
+                {
+                    "ab_name": "ember_atk2",
+                    "img": "../cards/abilities/ember_atk2.png",
+                    "desc": "Description",
+                    "type": "attack",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "5",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "3"
+                        }
+                    ]
+                },
+                {
+                    "ab_name": "ember_def",
+                    "img": "../cards/abilities/ember_def.png",
+                    "desc": "Description",
+                    "type": "defense",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "0",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "2"
+                        }
+                    ]
+                }
+            ],
+            "buffs": []
+        },
+        {
+            "he_name": "Demoman",
+            "hp": "25",
+            "atk": "25",
+            "mana": "5",
+            "money": "300",
+            "manaregen": "1",
+            "hpregen": "1",
+            "img": "../cards/heroes/demo.png",
+            "desc": "Description",
+            "level": "1",
+            "maxlevel": "15",
+            "abilities": [
+                {
+                    "ab_name": "demo_atk",
+                    "img": "../cards/abilities/demo_atk.png",
+                    "desc": "Description",
+                    "type": "attack",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "10",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "4"
+                        }
+                    ]
+                },
+                {
+                    "ab_name": "demo_atk2",
+                    "img": "../cards/abilities/demo_atk2.png",
+                    "desc": "Description",
+                    "type": "attack",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "5",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "1"
+                        }
+                    ]
+                },
+                {
+                    "ab_name": "demo_def",
+                    "img": "../cards/abilities/demo_def.png",
+                    "desc": "Description",
+                    "type": "defense",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "0",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "1"
+                        }
+                    ]
+                }
+            ],
+            "buffs": []
+        },
+        {
+            "he_name": "Darth Vader",
+            "hp": "50",
+            "atk": "10",
+            "mana": "5",
+            "money": "300",
+            "manaregen": "1",
+            "hpregen": "1",
+            "img": "../cards/heroes/darth.png",
+            "desc": "Description",
+            "level": "1",
+            "maxlevel": "15",
+            "abilities": [
+                {
+                    "ab_name": "darth_atk",
+                    "img": "../cards/abilities/darth_atk.png",
+                    "desc": "Description",
+                    "type": "attack",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "5",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "2"
+                        }
+                    ]
+                },
+                {
+                    "ab_name": "darth_atk2",
+                    "img": "../cards/abilities/darth_atk2.png",
+                    "desc": "Description",
+                    "type": "attack",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "3",
+                            "cooldown": "1",
+                            "duration": "0",
+                            "manacost": "1"
+                        }
+                    ]
+                },
+                {
+                    "ab_name": "darth_atk3",
+                    "img": "../cards/abilities/darth_atk3.png",
+                    "desc": "Description",
+                    "type": "attack",
+                    "behavior": "active",
+                    "level": "1",
+                    "maxlevel": "1",
+                    "property": [
+                        {
+                            "dmg": "2",
+                            "cooldown": "2",
+                            "duration": "0",
+                            "manacost": "2"
+                        }
+                    ]
+                }
+            ],
+            "buffs": []
         }
     ],
     "buffs": [
@@ -694,7 +1096,7 @@
         {
             "bf_name": "Test_buff2",
             "desc": "Description",
-            "img": "../cards/buffs/buff.png",
+            "img": "../cards/buffs/mem1.png",
             "type": "amplification",
             "target": "hero",
             "stackable": "False",
@@ -713,7 +1115,7 @@
         {
             "bf_name": "Test_buff3",
             "desc": "Description",
-            "img": "../cards/buffs/buff1.png",
+            "img": "../cards/buffs/mem2.png",
             "type": "amplification",
             "target": "hero",
             "stackable": "False",
@@ -732,7 +1134,7 @@
         {
             "bf_name": "Test_buff4",
             "desc": "Description",
-            "img": "../cards/buffs/buff2.png",
+            "img": "../cards/buffs/mem3.png",
             "type": "amplification",
             "target": "hero",
             "stackable": "False",
@@ -809,6 +1211,310 @@
             "bf_name": "Jim Beam",
             "desc": "Description",
             "img": "../cards/buffs/4.png",
+            "type": "amplification",
+            "target": "hero",
+            "stackable": "False",
+            "price": "100",
+            "rarity": "Legendary",
+            "level": "4",
+            "maxlevel": "4",
+            "dmg": "3",
+            "hp": "3",
+            "hpregen": "1",
+            "mana": "2",
+            "manaregen": "1",
+            "cooldown": "10",
+            "duration": "0"
+        },
+        {
+            "bf_name": "Blast",
+            "desc": "Description",
+            "img": "../cards/buffs/buff1.png",
+            "type": "amplification",
+            "target": "hero",
+            "stackable": "False",
+            "price": "100",
+            "rarity": "Common",
+            "level": "1",
+            "maxlevel": "4",
+            "dmg": "3",
+            "hp": "3",
+            "hpregen": "1",
+            "mana": "2",
+            "manaregen": "1",
+            "cooldown": "10",
+            "duration": "0"
+        },
+        {
+            "bf_name": "Essential",
+            "desc": "Description",
+            "img": "../cards/buffs/buff2.png",
+            "type": "amplification",
+            "target": "hero",
+            "stackable": "False",
+            "price": "100",
+            "rarity": "Rare",
+            "level": "2",
+            "maxlevel": "4",
+            "dmg": "3",
+            "hp": "3",
+            "hpregen": "1",
+            "mana": "2",
+            "manaregen": "1",
+            "cooldown": "10",
+            "duration": "0"
+        },
+        {
+            "bf_name": "Viral",
+            "desc": "Description",
+            "img": "../cards/buffs/buff3.png",
+            "type": "amplification",
+            "target": "hero",
+            "stackable": "False",
+            "price": "100",
+            "rarity": "Epic",
+            "level": "3",
+            "maxlevel": "4",
+            "dmg": "3",
+            "hp": "3",
+            "hpregen": "1",
+            "mana": "2",
+            "manaregen": "1",
+            "cooldown": "10",
+            "duration": "0"
+        },
+        {
+            "bf_name": "Corrosive",
+            "desc": "Description",
+            "img": "../cards/buffs/buff4.png",
+            "type": "amplification",
+            "target": "hero",
+            "stackable": "False",
+            "price": "100",
+            "rarity": "Legendary",
+            "level": "4",
+            "maxlevel": "4",
+            "dmg": "3",
+            "hp": "3",
+            "hpregen": "1",
+            "mana": "2",
+            "manaregen": "1",
+            "cooldown": "10",
+            "duration": "0"
+        },
+        {
+            "bf_name": "Gas",
+            "desc": "Description",
+            "img": "../cards/buffs/buff5.png",
+            "type": "amplification",
+            "target": "hero",
+            "stackable": "False",
+            "price": "100",
+            "rarity": "Common",
+            "level": "1",
+            "maxlevel": "4",
+            "dmg": "3",
+            "hp": "3",
+            "hpregen": "1",
+            "mana": "2",
+            "manaregen": "1",
+            "cooldown": "10",
+            "duration": "0"
+        },
+        {
+            "bf_name": "Radiation",
+            "desc": "Description",
+            "img": "../cards/buffs/buff6.png",
+            "type": "amplification",
+            "target": "hero",
+            "stackable": "False",
+            "price": "100",
+            "rarity": "Rare",
+            "level": "2",
+            "maxlevel": "4",
+            "dmg": "3",
+            "hp": "3",
+            "hpregen": "1",
+            "mana": "2",
+            "manaregen": "1",
+            "cooldown": "10",
+            "duration": "0"
+        },
+        {
+            "bf_name": "Impact",
+            "desc": "Description",
+            "img": "../cards/buffs/buff7.png",
+            "type": "amplification",
+            "target": "hero",
+            "stackable": "False",
+            "price": "100",
+            "rarity": "Epic",
+            "level": "3",
+            "maxlevel": "4",
+            "dmg": "3",
+            "hp": "3",
+            "hpregen": "1",
+            "mana": "2",
+            "manaregen": "1",
+            "cooldown": "10",
+            "duration": "0"
+        },
+        {
+            "bf_name": "Void",
+            "desc": "Description",
+            "img": "../cards/buffs/buff8.png",
+            "type": "amplification",
+            "target": "hero",
+            "stackable": "False",
+            "price": "100",
+            "rarity": "Legendary",
+            "level": "4",
+            "maxlevel": "4",
+            "dmg": "3",
+            "hp": "3",
+            "hpregen": "1",
+            "mana": "2",
+            "manaregen": "1",
+            "cooldown": "10",
+            "duration": "0"
+        },
+        {
+            "bf_name": "Punture",
+            "desc": "Description",
+            "img": "../cards/buffs/buff9.png",
+            "type": "amplification",
+            "target": "hero",
+            "stackable": "False",
+            "price": "100",
+            "rarity": "Legendary",
+            "level": "4",
+            "maxlevel": "4",
+            "dmg": "3",
+            "hp": "3",
+            "hpregen": "1",
+            "mana": "2",
+            "manaregen": "1",
+            "cooldown": "10",
+            "duration": "0"
+        },
+        {
+            "bf_name": "Cold",
+            "desc": "Description",
+            "img": "../cards/buffs/buff10.png",
+            "type": "amplification",
+            "target": "hero",
+            "stackable": "False",
+            "price": "100",
+            "rarity": "Common",
+            "level": "1",
+            "maxlevel": "4",
+            "dmg": "3",
+            "hp": "3",
+            "hpregen": "1",
+            "mana": "2",
+            "manaregen": "1",
+            "cooldown": "10",
+            "duration": "0"
+        },
+        {
+            "bf_name": "Electric",
+            "desc": "Description",
+            "img": "../cards/buffs/buff11.png",
+            "type": "amplification",
+            "target": "hero",
+            "stackable": "False",
+            "price": "100",
+            "rarity": "Rare",
+            "level": "2",
+            "maxlevel": "4",
+            "dmg": "3",
+            "hp": "3",
+            "hpregen": "1",
+            "mana": "2",
+            "manaregen": "1",
+            "cooldown": "10",
+            "duration": "0"
+        },
+        {
+            "bf_name": "Fire",
+            "desc": "Description",
+            "img": "../cards/buffs/buff12.png",
+            "type": "amplification",
+            "target": "hero",
+            "stackable": "False",
+            "price": "100",
+            "rarity": "Epic",
+            "level": "3",
+            "maxlevel": "4",
+            "dmg": "3",
+            "hp": "3",
+            "hpregen": "1",
+            "mana": "2",
+            "manaregen": "1",
+            "cooldown": "10",
+            "duration": "0"
+        },
+        {
+            "bf_name": "Toxin",
+            "desc": "Description",
+            "img": "../cards/buffs/buff13.png",
+            "type": "amplification",
+            "target": "hero",
+            "stackable": "False",
+            "price": "100",
+            "rarity": "Legendary",
+            "level": "4",
+            "maxlevel": "4",
+            "dmg": "3",
+            "hp": "3",
+            "hpregen": "1",
+            "mana": "2",
+            "manaregen": "1",
+            "cooldown": "10",
+            "duration": "0"
+        },
+        {
+            "bf_name": "Slash",
+            "desc": "Description",
+            "img": "../cards/buffs/buff14.png",
+            "type": "amplification",
+            "target": "hero",
+            "stackable": "False",
+            "price": "100",
+            "rarity": "Rare",
+            "level": "2",
+            "maxlevel": "4",
+            "dmg": "3",
+            "hp": "3",
+            "hpregen": "1",
+            "mana": "2",
+            "manaregen": "1",
+            "cooldown": "10",
+            "duration": "0"
+        },
+        {
+            "bf_name": "ManaDragon",
+            "desc": "Description",
+            "img": "../cards/buffs/buff15.png",
+            "type": "amplification",
+            "target": "hero",
+            "stackable": "False",
+            "price": "100",
+            "rarity": "Rare",
+            "level": "2",
+            "maxlevel": "4",
+            "dmg": "3",
+            "hp": "3",
+            "hpregen": "1",
+            "mana": "2",
+            "manaregen": "1",
+            "cooldown": "10",
+            "duration": "0"
+        },
+        {
+            "bf_name": "ForceNature",
+            "desc": "Description",
+            "img": "../cards/buffs/buff16.png",
             "type": "amplification",
             "target": "hero",
             "stackable": "False",

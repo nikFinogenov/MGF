@@ -389,5 +389,5 @@ app.post('/login', async (request, response) => {
 
 
 server.listen(port, () => {
-    console.log(`Сервер запущен на http://localhost:${port}`);
+    console.log(`Сервер запущен на http://0.0.0.0:${port}`);
 });
